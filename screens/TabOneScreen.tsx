@@ -6,10 +6,11 @@ import mbxClient from "@mapbox/mapbox-sdk";
 import mbxDirections from "@mapbox/mapbox-sdk/services/directions";
 import polyline from "@mapbox/polyline";
 
-const baseClient = mbxClient({ accessToken: "" });
+import {MAPBOX_KEY} from "@env"
+const baseClient = mbxClient({ accessToken: MAPBOX_KEY });
 const directionsClient = mbxDirections(baseClient);
 
-MapboxGL.setAccessToken("");
+MapboxGL.setAccessToken(MAPBOX_KEY);
 
 const styles = StyleSheet.create({
   page: {
@@ -50,7 +51,6 @@ const App: React.FC = () => {
   useEffect(() => {
     getRoute().then((_path: number[][]) => {
       setPath(_path);
-      console.log(_path);
     }).catch((error: any) => {
       console.warn(error);
     });
@@ -89,7 +89,6 @@ const getRoute = (): Promise<number[][]> => {
     }).send()
     .then((response: any) => {
       const directions = response.body;
-      console.log(directions);
       return resolve(polyline.decode(directions.routes[0].geometry));
     })
     .catch((error: string) => {
