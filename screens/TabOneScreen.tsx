@@ -6,7 +6,7 @@ import mbxClient from "@mapbox/mapbox-sdk";
 import mbxDirections from "@mapbox/mapbox-sdk/services/directions";
 import polyline from "@mapbox/polyline";
 
-const baseClient = mbxClient({ accessToken: "sk.eyJ1Ijoib3B1Z2giLCJhIjoiY2tta3dmbnc2MTUzcDJ3azVmOHhxMDk2cSJ9.XP_hR3TpDYj9i5HMz5WzwA" });
+const baseClient = mbxClient({ accessToken: "" });
 const directionsClient = mbxDirections(baseClient);
 
 MapboxGL.setAccessToken("");
