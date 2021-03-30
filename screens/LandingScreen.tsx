@@ -7,6 +7,8 @@ import mbxDirections from "@mapbox/mapbox-sdk/services/directions";
 import polyline from "@mapbox/polyline";
 
 import {MAPBOX_KEY} from "@env"
+
+import { Map } from "../components/Map";
 const baseClient = mbxClient({ accessToken: MAPBOX_KEY });
 const directionsClient = mbxDirections(baseClient);
 
@@ -20,36 +22,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F5FCFF"
   },
-  map: {
-    flex: 1,
-    width: "100%"
-  }
 });
-
-interface geoJSON {
-}
-
-const makeGeoJSON: (data: number[][]) => any = function(data) {
-
-  data.forEach(function(part, index, arr) {
-    arr[index] = part.reverse();
-  });
-
-  return {
-    "type":"Feature",
-    "properties":{},
-    "geometry":{
-      "type":"LineString",
-      "coordinates": data
-    }
-  }
-};
 
 const App: React.FC = () => {
   const [path, setPath] = useState([] as number[][]);
 
   useEffect(() => {
-    getRoute().then((_path: number[][]) => {
+    getRoute([[-1.213787, 52.771881], [-1.2321, 52.7651]]).then((_path: number[][]) => {
       setPath(_path);
     }).catch((error: any) => {
       console.warn(error);
@@ -58,11 +37,7 @@ const App: React.FC = () => {
 
   return (
       <View style={styles.page}>
-        <MapboxGL.MapView style={styles.map}>
-          <MapboxGL.ShapeSource id='line1' shape={makeGeoJSON(path)}>
-            <MapboxGL.LineLayer id="test" style={{"lineColor": "red"}} />
-          </MapboxGL.ShapeSource>
-        </MapboxGL.MapView>
+        <Map path={path}/>
       </View>
   );
 };
@@ -70,12 +45,12 @@ const App: React.FC = () => {
 
 export default App;
 
-const getRoute = (): Promise<number[][]> => {
+const getRoute = (wayPoints: number[][]): Promise<number[][]> => {
   return new Promise((resolve, reject) => {
     directionsClient.getDirections({
       profile: 'walking',
       overview: "full",
-      waypoints: [
+      waypoints: [  // TODO make this actually work with different routes
         {
           coordinates: [-1.213787, 52.771881],  // in order of lat long (East, North)
         },
