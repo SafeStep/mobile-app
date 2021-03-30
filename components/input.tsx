@@ -14,7 +14,7 @@ interface Props {
 const Input : FC<Props> = (props) => {
     return (
     <View style={styles.container}> 
-        <TextInput style={styles.input} placeholder={props.placeholder} onChangeText={props.onChangeText} secureTextEntry={props.secureTextEntry || false} />
+        <TextInput style={styles.input} placeholderTextColor='#000' placeholder={props.placeholder} onChangeText={props.onChangeText} secureTextEntry={props.secureTextEntry || false} />
     </View>
     )
 }
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     input: {
         height: height * 0.065,
         padding: 15,
-
+        fontWeight: 'bold',
  
 
     }
