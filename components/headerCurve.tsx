@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginBottom: width * 0.6,
         backgroundColor: "#90E4FF",
-        transform: [{ scaleX: 1.3}],
+        transform: [{ scaleX: 1.6}],
         
         shadowColor: '#000',
         shadowOffset: { width: 1, height: 4},

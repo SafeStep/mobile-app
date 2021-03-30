@@ -38,6 +38,8 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     text: {
-        color: '#000'
+        color: '#000',
+        fontSize: 20,
+        fontWeight: 'bold',
     }
 })
