@@ -7,7 +7,7 @@ import Navigation from '../navigation/first_index';
 
 const styles = require('./styles');
 
-const App : FC = (props ) => {
+const App : FC = ( { navigation } : any ) => {
 
     return (
 

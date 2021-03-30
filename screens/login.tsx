@@ -5,7 +5,7 @@ import {Input, Button, HeadingCurve} from '../components'
 
 const styles = require('./styles');
 
-const App : FC = (props ) => {
+const App : FC = ( { navigation } : any ) => {
 
     const [email, setEmail] = useState<string | null>(null)
     const [password, setPassword] = useState<string | null>(null)
@@ -21,13 +21,13 @@ const App : FC = (props ) => {
             <View style={styles.forgot}>
                 <Text style={styles.intextButton}>Forgot</Text>
 
-                <TouchableOpacity onPress = {() => props.navigation.navigate('')}> 
+                <TouchableOpacity onPress = {() => navigation.navigate('')}> 
                     <Text style={styles.span}> E-mail </Text>
                 </TouchableOpacity>
 
                 <Text style={styles.intextButton}>or</Text>
 
-                <TouchableOpacity onPress = {() => props.navigation.navigate('')}> 
+                <TouchableOpacity onPress = {() => navigation.navigate('')}> 
                     <Text style={styles.span}> Password </Text>
                 </TouchableOpacity>
             </View>
@@ -48,7 +48,7 @@ const App : FC = (props ) => {
 
             <View style={styles.changePage}> 
                 <Text style={styles.intextButton}> Don't have an account? </Text>
-                <TouchableOpacity onPress = {() => props.navigation.navigate('signup')}> 
+                <TouchableOpacity onPress = {() => navigation.navigate('signup')}> 
                     <Text style={styles.span}>Signup </Text>
                 </TouchableOpacity>
             </View>
