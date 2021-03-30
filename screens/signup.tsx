@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     altText: {
-        marginVertical: 10,
+        marginTop: 10,
+        marginBottom: 5,
         fontSize: 15,
         color: '#605B5B',
     },
@@ -71,7 +72,9 @@ const styles = StyleSheet.create({
         height: 60,
         marginVertical: 10,
 
-        margin: 5,
+        marginLeft: 5,
+        marginRight: 5,
+
 
         backgroundColor: 'red',
 
