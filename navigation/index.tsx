@@ -5,7 +5,7 @@ import AuthStack from './authstack'
 
 const MainNav: FC = () => {
     const [user, setUser] = useState<any>(null)
-    console.log('hi');
+
     const launch = () => {
         //authentication here
         // if (user_) {

@@ -154,5 +154,5 @@ module.exports = StyleSheet.create({
         alignSelf: 'center',
         // alignItems: 'center',
         paddingTop: '30%',
-    }
+    },
 });

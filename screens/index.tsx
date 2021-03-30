@@ -1,7 +1,7 @@
 import SignUp from './signup'
 import Login from './login'
-import map from './map'
-import temphome2 from './temphome2'
+import Maps from './map'
+import Contacts from './contacts'
 
 
-export {SignUp, Login, map, temphome2  }
+export {SignUp, Login, Maps, Contacts  }

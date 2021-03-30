@@ -17,7 +17,7 @@ const App : FC = (props ) => {
                     <TouchableOpacity style={styles.mapTopNavButtons}>
                         <Text style={styles.mapTopNavText}> Recent </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.mapTopNavButtons}>
+                    <TouchableOpacity style={styles.mapTopNavButtons} onPress={() => props.navigation.navigate('contacts')}>
                         <Text style={styles.mapTopNavText}> Contacts </Text>
                     </TouchableOpacity>
                 </View>
