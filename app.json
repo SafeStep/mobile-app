@@ -19,16 +19,14 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.opugh.SafeStep"
+      "supportsTablet": true
     },
     "android": {
       "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      },
-      "package": "com.opugh.SafeStep"
+      }
     },
     "web": {
       "favicon": "./assets/images/favicon.png"

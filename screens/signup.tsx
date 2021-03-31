@@ -8,7 +8,7 @@ import {Input, Button, HeadingCurve} from '../components'
 const styles = require('./styles');
 
 
-const App : FC = ( { navigation }: any ) => {
+const App : FC = (props ) => {
 
     const [username, setUsername] = useState<string | null>(null)
     const [email, setEmail] = useState<string | null>(null)
@@ -55,7 +55,7 @@ const App : FC = ( { navigation }: any ) => {
 
             <View style={styles.changePage}> 
                 <Text style={styles.intextButton}> Already have an account? </Text>
-                <TouchableOpacity onPress = {() => navigation.navigate('login')}> 
+                <TouchableOpacity onPress = {() => props.navigation.navigate('login')}> 
                     <Text style={styles.span}>Login </Text>
                 </TouchableOpacity>
             </View>
