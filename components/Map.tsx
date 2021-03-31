@@ -1,6 +1,8 @@
 import MapboxGL from "@react-native-mapbox-gl/maps";
-
 import React from "react";
+import { MAPBOX_KEY } from "@env"
+
+MapboxGL.setAccessToken(MAPBOX_KEY);
 
 const makeGeoJSON: (data: number[][]) => any = function(data) {
 

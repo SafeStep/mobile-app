@@ -2,18 +2,110 @@ import { useLinkProps } from '@react-navigation/native';
 import React, {FC, useState, useEffect} from 'react';
 import { TextInput, View, Text, TouchableOpacity} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 import mbxClient from "@mapbox/mapbox-sdk";
 import mbxDirections from "@mapbox/mapbox-sdk/services/directions";
 import polyline from "@mapbox/polyline";
 
-import {MAPBOX_KEY} from "@env"
+import { MAPBOX_KEY } from "@env"
 
 const baseClient = mbxClient({ accessToken: MAPBOX_KEY });
 const directionsClient = mbxDirections(baseClient);
 import { Map } from "../components/Map";
 
-const styles = require('./styles');
+let styles = require('./styles');
+
+styles = {...styles,
+  mapContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: "white",
+  },
+  map: {
+      width: '100%',
+      flex: 1,
+      backgroundColor: '#eee',
+  },
+  mapBottomNav: {
+      position: "absolute",
+      bottom: 30,
+      width: '100%',
+      height: '10%',
+      flexDirection: 'row',
+      justifyContent: "space-evenly",
+      alignSelf: "center"
+  },
+  mapBottomNavButtons: {
+      width: 150,
+      height: 40,
+      backgroundColor: '#fff',
+
+      borderRadius: 20,
+      shadowColor: '#000',
+      shadowOffset: { width: 1, height: 4},
+      shadowOpacity: 0.5,
+      shadowRadius: 1,
+      elevation: 5,
+
+      flexDirection: "column",
+      justifyContent: "center"
+  },
+  mapBottomNavText: {
+      alignSelf: 'center',
+  },
+  mapTopNav: {
+      width: '100%',
+      //height: '10%',
+      backgroundColor: '#fff',
+  },
+  destinationContainer: {
+    width: '90%',
+    height: 50,
+
+    alignSelf: 'flex-start',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+
+    marginTop: '2.5%',
+    marginBottom: '5%',
+    marginHorizontal: '5%',
+
+    // IOS
+    shadowColor: '#000',
+    shadowOffset: { width: 1, height: 4},
+    shadowOpacity: 0.5,
+    shadowRadius: 1,
+    elevation: 3,
+  },
+  destinationInput: {
+      paddingLeft: 10,
+      paddingTop: 0,
+      flex: 1,
+  },
+  goButton: {
+      width: 150,
+      height: 40,
+      backgroundColor: '#90E4FF',
+      borderRadius: 50,
+
+      position: "absolute",
+      alignSelf: "center",
+      bottom: 120,
+      flexDirection: "column",
+      justifyContent:"center",
+
+      // IOS
+      shadowColor: '#000',
+      shadowOffset: { width: 1, height: 4},
+      shadowOpacity: 0.5,
+      shadowRadius: 1,
+      elevation: 4,
+  },
+  goButtonText: {
+      fontSize: 18,
+      alignSelf: 'center',
+  },
+}
 
 
 const getRoute = (wayPoints: number[][]): Promise<number[][]> => {
@@ -56,34 +148,29 @@ const App : FC = ( { navigation } : any ) => {
     }, []);  // run like component did mount
 
     return (
-
-        <SafeAreaView style={styles.mapContainer}>
-
-            <View style={styles.map}>
-                <Map path={path}/>
-                <View style={styles.mapTopNav}>
-                    <TouchableOpacity style={styles.mapTopNavButtons}>
-                        <Text style={styles.mapTopNavText}> Recent </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.mapTopNavButtons} onPress={() => navigation.navigate('contacts')}>
-                        <Text style={styles.mapTopNavText}> Contacts </Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-            <View style={styles.mapFooter}>
+        <SafeAreaView style={styles.mapContainer} edges={['right', "top", 'left']}>
+            <View style={styles.mapTopNav}>
                 <View style={styles.destinationContainer}> 
                     <TextInput style={styles.destinationInput} placeholderTextColor='#000' placeholder='Destinations' onChangeText={() => console.log('change')} />
                 </View>
-
+            </View>
+            <View style={styles.map}>
+                <Map path={path}/>
+                
                 <TouchableOpacity style={styles.goButton}>
                     <Text style={styles.goButtonText}> Go </Text>
                 </TouchableOpacity>
 
-
+                <View style={styles.mapBottomNav}>
+                    <TouchableOpacity style={styles.mapBottomNavButtons}>
+                        <Text style={styles.mapBottomNavText}> Recent </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.mapBottomNavButtons} onPress={() => navigation.navigate('contacts')}>
+                        <Text style={styles.mapBottomNavText}> Contacts </Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </SafeAreaView>
-
     )
 }
 
