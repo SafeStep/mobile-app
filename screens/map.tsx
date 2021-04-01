@@ -6,7 +6,7 @@ import {Input, Button, HeadingCurve} from '../components'
 
 const styles = require('./styles');
 
-const App : FC = (props ) => {
+const App : FC = (props:any ) => {
 
     return (
 

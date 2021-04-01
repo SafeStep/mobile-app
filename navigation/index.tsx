@@ -13,7 +13,7 @@ const MainNav: FC = () => {
         //     console.log('hi');
             
         // }
-        setUser(true)
+        setUser(user)
     }
 
     useEffect(() => {
