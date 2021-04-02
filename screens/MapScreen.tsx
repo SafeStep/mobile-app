@@ -1,5 +1,5 @@
 import React, {FC, useState, useEffect} from 'react';
-import { View, Text, TouchableOpacity} from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import mbxClient from "@mapbox/mapbox-sdk";
 import mbxDirections from "@mapbox/mapbox-sdk/services/directions";
@@ -121,11 +121,11 @@ const App : FC = ( { navigation } : any ) => {
         console.warn(error);
         });
     }, []);  // run like component did mount
-
+    
     return (
         <SafeAreaView style={styles.mapContainer} edges={['right', "top", 'left']}>
             <View style={styles.mapTopNav}>
-              <DestinationSearch />
+              <DestinationSearch navigation={navigation}/>
             </View>
             <View style={styles.map}>
                 <Map path={path}/>

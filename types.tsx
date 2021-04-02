@@ -15,3 +15,9 @@ export type TabOneParamList = {
 export type TabTwoParamList = {
   TabTwoScreen: undefined;
 };
+
+export type PhysicalLocation = {
+  title: string,
+  lat: number,
+  long: number,
+}

@@ -6,8 +6,8 @@ import DraggableFlatList, {
   } from 'react-native-draggable-flatlist';
 
 import { v4 as uuidv4 } from 'uuid';
-
-const axios = require('axios');
+import { useLinkProps } from '@react-navigation/native';
+import { PhysicalLocation } from '../../types';
 
 const styles = {
     destinationInputContainer: {
@@ -32,7 +32,12 @@ const styles = {
       destinationInput: {
           paddingLeft: 10,
           paddingTop: 0,
-          flex: 1,
+      },
+
+      destinationInputWrapper: {
+        flexDirection: "column", 
+        justifyContent: "center", 
+        flex: 1,
       },
       searchResults: {
           position: "absolute",
@@ -47,58 +52,42 @@ const styles = {
 }
 
 interface destinationInputProps {
-    _currentTextValue?: string,
-    _latLong?: number[],
     id?: string,
     dragCallback?: any,
-    updateCallback: any
+    updateCallback: Function
+    navigation: any,
+    physicalLocation?: PhysicalLocation
 }
 
-interface destinationResult {
-    lat: number,
-    long: number,
-    distance: number,
-    title: string,
-}
+const DestinationInput = ({ physicalLocation, dragCallback, id, navigation, updateCallback}: destinationInputProps) => {
 
-const DestinationInput = ({ _currentTextValue, _latLong, dragCallback, id, updateCallback}: destinationInputProps) => {
-
-    const [currentText, setCurrentText] = useState(_currentTextValue as string);
-    const [latLong, setLatLong] = useState(_latLong as number[] | null);
     const [inputId, setInputid] = useState(id as string);
-    const [searchResults, setSearchResults] = useState([] as destinationResult[]);
 
-    const updateValue = (newValue: string) => {
-        setCurrentText(newValue);  // update the value stored in the state
-        updateCallback(inputId, newValue);
-    }
+    console.log(physicalLocation);
 
     return (  // had to put flexDirection in new js object for some reason typescript wasnt happy
         <View style={styles.topContainer as any}>
             <View style={styles.destinationInputContainer as any} > 
-                <TextInput style={styles.destinationInput} value={currentText} placeholderTextColor='#000' placeholder='Destinations' onChangeText={(currentInput) =>  updateValue(currentInput)} />
-                <TouchableOpacity onLongPress={dragCallback} style={{flexDirection: "column", justifyContent: "center", flex: 1}}>
+                <TouchableOpacity style={styles.destinationInputWrapper as any} onPress={() => {navigation.navigate("location_search", {inputId: inputId, updateCallback: updateCallback})}}>
+                    <Text style={styles.destinationInput}>{physicalLocation ? physicalLocation.title : "Search"}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onLongPress={dragCallback} style={styles.destinationInputWrapper as any}>
                     <Text>Drag</Text>
                 </TouchableOpacity>
             </View>
-            <ScrollView style={styles.searchResults as any} >
-                <Text>Option1</Text>
-                <Text>Option2</Text>
-                <Text>Option3</Text>
-            </ScrollView>
         </View>
     );
 };
 
 export class DestinationSearch extends React.Component {
-    state: {currentDestinations: destinationInputProps[]}  // specify the type for the props
-    constructor(props: any) {
-        super(props);
+    state: {currentDestinations: destinationInputProps[], navigation: any}  // specify the type for the props
+    constructor({ route, navigation } :any) {
+        super({route, navigation});
         this.updateSingleValue = this.updateSingleValue.bind(this);
         this.setCurrentDestinations = this.setCurrentDestinations.bind(this);
         this.addDestination = this.addDestination.bind(this);
         this.renderItem = this.renderItem.bind(this);
-        this.state = {currentDestinations: [{updateCallback:this.updateSingleValue, _currentTextValue: "test", _latLong:[10,10], id:uuidv4()}]}
+        this.state = { navigation: navigation, currentDestinations: [{updateCallback: this.updateSingleValue, id:uuidv4(), navigation: navigation}]}
     }
 
     setCurrentDestinations(newDestinations: destinationInputProps[]) {
@@ -106,21 +95,23 @@ export class DestinationSearch extends React.Component {
     }
 
     addDestination() {  // add a new destination input to the screen
-        this.setState({currentDestinations: [...this.state.currentDestinations, {id:uuidv4(), updateCallback:this.updateSingleValue}]});
+        this.setState({currentDestinations: [...this.state.currentDestinations, {id:uuidv4()}]});
     }
 
-    updateSingleValue(inputId: string, newValue: string) {
+    updateSingleValue(inputId: string, newValue: PhysicalLocation) {
+        let currentDestinations = [...this.state.currentDestinations];
         // loop through and find the object with the right key then add the changes
         for (let i=0; i <this.state.currentDestinations.length; i++) {
-            if (this.state.currentDestinations[i].id === inputId) {
-                this.state.currentDestinations[i]._currentTextValue = newValue;
-                this.forceUpdate();  // force an update of the components
+            if (currentDestinations[i].id === inputId) {
+                currentDestinations[i].physicalLocation = newValue;
+                this.setState({currentDestinations: currentDestinations, navigation: this.state.navigation});
             }
         }
     }
 
     renderItem({ item, index, drag, isActive }: RenderItemParams<destinationInputProps>) {
-        return <DestinationInput updateCallback={this.updateSingleValue} _currentTextValue={item._currentTextValue} id={item.id} dragCallback={drag} />
+        console.log(item);
+        return <DestinationInput physicalLocation={item.physicalLocation} updateCallback={this.updateSingleValue} id={item.id} dragCallback={drag} navigation={this.state.navigation} />
     }
 
     render() {
