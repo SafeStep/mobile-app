@@ -79,7 +79,7 @@ const App : FC = ( { route, navigation } : any) => {
     const [inputId, setInputId] = useState(route.params.inputId);
     const [results, setResults] = useState([] as PhysicalLocation[]);
     
-    const textInputRef = useRef(null as any);
+    const textInputRef = useRef(null as any);  // store a reference to the text input
 
     const searchLocations = (inputValue: string) => {  // run the mapbox api 
         const currentLocation = {title:"Current Location", lat:52.5680, long:-1.346074};

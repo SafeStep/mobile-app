@@ -32,22 +32,22 @@ const styles = {
       destinationInput: {
           paddingLeft: 10,
           paddingTop: 0,
+          flexDirection: "column",
+          justifyContent: "center",
+          height: "90%"
       },
 
       destinationInputWrapper: {
         flexDirection: "column", 
         justifyContent: "center", 
         flex: 1,
+        marginRight: 10,
+        height: "100%"
       },
-      searchResults: {
-          position: "absolute",
-          top: 50,
-          zIndex: 1,
-          elevation: 5,
-      },
-      topContainer: {
-          position: "relative",
-          overflow: "visible"
+      
+      dragWrapper: {
+        justifyContent: "center", 
+        height: "90%"
       }
 }
 
@@ -66,15 +66,18 @@ const DestinationInput = ({ physicalLocation, dragCallback, id, navigation, upda
     console.log(physicalLocation);
 
     return (  // had to put flexDirection in new js object for some reason typescript wasnt happy
-        <View style={styles.topContainer as any}>
-            <View style={styles.destinationInputContainer as any} > 
-                <TouchableOpacity style={styles.destinationInputWrapper as any} onPress={() => {navigation.navigate("location_search", {inputId: inputId, updateCallback: updateCallback})}}>
-                    <Text style={styles.destinationInput}>{physicalLocation ? physicalLocation.title : "Search"}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onLongPress={dragCallback} style={styles.destinationInputWrapper as any}>
-                    <Text>Drag</Text>
+        <View style={styles.destinationInputContainer as any} > 
+            <View  style={styles.destinationInputWrapper as any}>
+                <TouchableOpacity onPress={() => {navigation.navigate("location_search", {inputId: inputId, updateCallback: updateCallback})}}>
+                    <View style={styles.destinationInput as any}>
+                        <Text style={{width: "100%"}}>{physicalLocation ? physicalLocation.title : "Search"}</Text>
+                    </View>
                 </TouchableOpacity>
             </View>
+            
+            <TouchableOpacity onLongPress={dragCallback} style={styles.dragWrapper as any}>
+                <Text>Drag</Text>
+            </TouchableOpacity>
         </View>
     );
 };
