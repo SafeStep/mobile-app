@@ -1,5 +1,5 @@
 import { useLinkProps } from '@react-navigation/native';
-import React, {FC, useState} from 'react';
+import React, {FC, useState, useRef, useEffect} from 'react';
 import { TextInput, View, Text, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -79,6 +79,8 @@ const App : FC = ( { route, navigation } : any) => {
     const [inputId, setInputId] = useState(route.params.inputId);
     const [results, setResults] = useState([] as PhysicalLocation[]);
     
+    const textInputRef = useRef(null as any);
+
     const searchLocations = (inputValue: string) => {  // run the mapbox api 
         const currentLocation = {title:"Current Location", lat:52.5680, long:-1.346074};
 
@@ -98,13 +100,17 @@ const App : FC = ( { route, navigation } : any) => {
         });  
     };
 
+    useEffect(() => {
+        textInputRef.current.focus();
+    },[])
+
     return (
         <SafeAreaView style={{}}>
             <View style={styles.searchContainer as any}>
                 <TouchableOpacity style={styles.backButton as any} onPress={() => {navigation.navigate("map")}}>
                     <Text style={{alignSelf:"center"}}>{"<-"}</Text>
                 </TouchableOpacity>
-                <TextInput style={styles.inputBox} placeholder={"Search"} onChangeText={(queryString) => searchLocations(queryString)}/>
+                <TextInput ref={textInputRef} style={styles.inputBox} placeholder={"Search"} onChangeText={(queryString) => searchLocations(queryString)}/>
                 <View style={styles.backButton as any}></View>
             </View>
             <KeyboardAvoidingView style={{}}>
