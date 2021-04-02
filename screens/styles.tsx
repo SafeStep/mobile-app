@@ -155,4 +155,18 @@ module.exports = StyleSheet.create({
         // alignItems: 'center',
         paddingTop: '30%',
     },
+    sighOut: {
+        width: '30%',
+        height: '10%',
+        borderRadius: 10,
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        marginTop: '50%',
+        shadowColor: '#000',
+        shadowOffset: { width: 1, height: 4},
+        shadowOpacity: 0.5,
+        shadowRadius: 1,
+        elevation: 4,
+    }
 });

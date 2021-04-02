@@ -3,7 +3,9 @@ import React, {FC, useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Alert} from 'react-native';
 import {Input, Button, HeadingCurve} from '../components'
 
-// import {launch} from '../navigation/index'
+
+import { Auth } from 'aws-amplify';
+
 
 const styles = require('./styles');
 
@@ -14,16 +16,24 @@ const App : FC = (props:any ) => {
     const [email, setEmail] = useState<string | null>(null)
     const [password, setPassword] = useState<string | null>(null)
 
+    const [code, setComCode] = useState<string | null>(null)
+
+
     const signup = async () => {
         if (username && email && password)  {
             try {
-                //try creating an account
-                console.log("success, account created", username, email, password);
-                // const user = true;
-                
+                const { user } = await Auth.signUp({
+                    username,
+                    password,
+                    attributes: {
+                        email,          // optional
+                        // other custom attributes 
+                    }
+                });
+                // console.log(user);
+                props.navigation.navigate('confirm_code', {username:username});
             } catch (error) {
-                console.log(error);
-                
+                console.log('error signing up:', error);
             }
         
         } else {
@@ -36,9 +46,11 @@ const App : FC = (props:any ) => {
             <HeadingCurve text='SignUp'/>
             <Input placeholder='Username' onChangeText={(text) => setUsername(text)} />
             <Input placeholder='E-mail' onChangeText={(text) => setEmail(text)} />
-            <Input placeholder='Password'secureTextEntry={true} onChangeText={(text) => setPassword(text)} />
+            <Input placeholder='Password' secureTextEntry={true} onChangeText={(text) => setPassword(text)} />
 
             <Button title='SignUp' onPress={signup} />
+
+
             <Text style={styles.altText}> - - Or signup with - - </Text>
 
             <View style={styles.alternatives}>

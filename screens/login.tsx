@@ -3,20 +3,38 @@ import React, {FC, useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {Input, Button, HeadingCurve} from '../components'
 
+import { Auth } from 'aws-amplify';
+
+
 const styles = require('./styles');
 
-const App : FC = (props:any ) => {
+const App : FC = (props:any, updateUser ) => {
 
-    const [email, setEmail] = useState<string | null>(null)
+    // const [email, setEmail] = useState<string | null>(null)
+    const [username, setUsername] = useState<string | null>(null)
     const [password, setPassword] = useState<string | null>(null)
 
+    async function signIn() {
+        try {
+            const user = await Auth.signIn(username as string, password as string);
+            // updateAuthState('loggedIn');
+            // console.log(updateUser);
+            
+            // updateUser(true);
+            props.route.params.updateUser(true)
+
+            console.log(user);
+        } catch (error) {
+            console.log('error signing in', error);
+        }
+    }
 
     return (
         <View style={styles.container}>
             <HeadingCurve text='SafeSteps'/>
-            <Input placeholder='E-mail' onChangeText={(text) => setEmail(text)} />
-            <Input placeholder='Password' onChangeText={(text) => setPassword(text)} />
-            <Button title='Login' onPress={() => console.log('hi')} />
+            <Input placeholder='Username' onChangeText={(text) => setUsername(text)} />
+            <Input placeholder='Password'secureTextEntry={true}  onChangeText={(text) => setPassword(text)} />
+            <Button title='Login' onPress={signIn} />
 
             <View style={styles.forgot}>
                 <Text style={styles.intextButton}>Forgot</Text>

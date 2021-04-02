@@ -4,10 +4,13 @@ import {Maps, Contacts} from '../screens'
 
 const {Navigator, Screen} = createStackNavigator();
 
-const AppStack : FC = () => {
+const AppStack : FC = (props:any) => {
+    // console.log([props]);
+    
     return (
+        
         <Navigator screenOptions={{headerShown: false}}>
-            <Screen name='map' component={Maps} />
+            <Screen name='map' component={Maps} initialParams={{ updateUser: props.updateUser }}  />
             <Screen name='contacts' component={Contacts} options={{headerShown: true, title: 'Contacts' }} />
 
         </Navigator>

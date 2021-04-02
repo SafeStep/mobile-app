@@ -4,9 +4,26 @@ import { TextInput, View, Text, StyleSheet, TouchableOpacity, Image} from 'react
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {Input, Button, HeadingCurve} from '../components'
 
+import { Auth } from 'aws-amplify';
+
 const styles = require('./styles');
 
-const App : FC = (props:any ) => {
+const App : FC = (props:any, route ) => {
+
+    // console.log(updateUser);
+    console.log();
+
+
+    async function signOut() {
+        try {
+            await Auth.signOut();
+            // updateAuthState('loggedOut');
+            // props.updateUser(null);
+            props.route.params.updateUser(null)
+        } catch (error) {
+            console.log('error signing out: ', error);
+        }
+    }
 
     return (
 
@@ -20,7 +37,13 @@ const App : FC = (props:any ) => {
                     <TouchableOpacity style={styles.mapTopNavButtons} onPress={() => props.navigation.navigate('contacts')}>
                         <Text style={styles.mapTopNavText}> Contacts </Text>
                     </TouchableOpacity>
+
                 </View>
+
+                
+                <TouchableOpacity style={styles.sighOut} onPress={signOut}>
+                        <Text style={styles.mapTopNavText}> SignOut </Text>
+                </TouchableOpacity>
             </View>
 
             <View style={styles.mapFooter}>
