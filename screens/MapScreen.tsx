@@ -1,6 +1,5 @@
-import { useLinkProps } from '@react-navigation/native';
 import React, {FC, useState, useEffect} from 'react';
-import { TextInput, View, Text, TouchableOpacity} from 'react-native';
+import { View, Text, TouchableOpacity} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import mbxClient from "@mapbox/mapbox-sdk";
 import mbxDirections from "@mapbox/mapbox-sdk/services/directions";
@@ -10,7 +9,9 @@ import { MAPBOX_KEY } from "@env"
 
 const baseClient = mbxClient({ accessToken: MAPBOX_KEY });
 const directionsClient = mbxDirections(baseClient);
+
 import { Map } from "../components/Map";
+import { DestinationSearch } from "../components/CreateRoute/DestinationSearch";
 
 let styles = require('./styles');
 
@@ -54,33 +55,7 @@ styles = {...styles,
   },
   mapTopNav: {
       width: '100%',
-      //height: '10%',
       backgroundColor: '#fff',
-  },
-  destinationContainer: {
-    width: '90%',
-    height: 50,
-
-    alignSelf: 'flex-start',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 10,
-
-    marginTop: '2.5%',
-    marginBottom: '5%',
-    marginHorizontal: '5%',
-
-    // IOS
-    shadowColor: '#000',
-    shadowOffset: { width: 1, height: 4},
-    shadowOpacity: 0.5,
-    shadowRadius: 1,
-    elevation: 3,
-  },
-  destinationInput: {
-      paddingLeft: 10,
-      paddingTop: 0,
-      flex: 1,
   },
   goButton: {
       width: 150,
@@ -150,9 +125,7 @@ const App : FC = ( { navigation } : any ) => {
     return (
         <SafeAreaView style={styles.mapContainer} edges={['right', "top", 'left']}>
             <View style={styles.mapTopNav}>
-                <View style={styles.destinationContainer}> 
-                    <TextInput style={styles.destinationInput} placeholderTextColor='#000' placeholder='Destinations' onChangeText={() => console.log('change')} />
-                </View>
+              <DestinationSearch />
             </View>
             <View style={styles.map}>
                 <Map path={path}/>
