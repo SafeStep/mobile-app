@@ -9,7 +9,7 @@ const AppStack : FC = () => {
         <Navigator screenOptions={{headerShown: false}}>
             <Screen name='map' component={Maps} />
             <Screen name='contacts' component={Contacts} options={{headerShown: true, title: 'Contacts' }} />
-            <Screen name="location_search" component={LocationSearchScreen} options={{headerShown: true, title: 'Search' }} />
+            <Screen name="location_search" component={LocationSearchScreen} />
         </Navigator>
     )
 }

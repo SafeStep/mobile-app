@@ -1,13 +1,63 @@
 import { useLinkProps } from '@react-navigation/native';
 import React, {FC, useState} from 'react';
-import { TextInput, View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import { TextInput, View, Text, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView} from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {Header} from '../components'
 import Navigation from '../navigation/first_index';
 import { PhysicalLocation } from "../types"
 
-const styles = require('./styles');
 const axios = require('axios');
+
+const styles = {
+    inputBox: {
+        margin: 10,
+        padding: 10, 
+        height: 50,
+        borderRadius: 5,
+        backgroundColor: "white",
+        elevation: 5,
+
+        //IOS Shadow
+        shadowColor: '#000',
+        shadowOffset: { width: 1, height: 4},
+        shadowOpacity: 0.5,
+        shadowRadius: 1,
+        flex: 1
+    },
+
+    searchContainer: {
+        flexDirection: "row",
+        width: "100%",
+    },
+
+    backButton: {
+        flexDirection: "column",
+        justifyContent: "center",
+        width: 50,
+    },
+
+    resultsContainer: {
+        width: "95%",
+        height: 500,
+        alignSelf: "center",
+        borderTopWidth: 2,
+        borderColor: "grey",
+        padding: 10
+    },
+
+    result: {
+        width: "100%",
+        borderRadius: 5,
+        borderColor: "#C4C4C4",
+        borderWidth: 2,
+        height: 50,
+        padding: 10,
+        marginVertical: 5,
+        flexDirection: "column",
+        justifyContent: "center",
+    }
+}
 
 interface locationResultInterface extends PhysicalLocation {
     navigation: any,
@@ -49,15 +99,27 @@ const App : FC = ( { route, navigation } : any) => {
     };
 
     return (
-        <SafeAreaView style={styles.mapContainer}>
-            <TextInput placeholder={"Search"} onChangeText={(queryString) => searchLocations(queryString)}/>
-            {results.map(location => <LocationResult 
-                                        clickCallback={route.params.updateCallback}
-                                        inputId={inputId} 
-                                        title={location.title}
-                                        lat={location.lat}
-                                        long={location.long}
-                                        navigation={navigation}/>)}
+        <SafeAreaView style={{}}>
+            <View style={styles.searchContainer as any}>
+                <TouchableOpacity style={styles.backButton as any} onPress={() => {navigation.navigate("map")}}>
+                    <Text style={{alignSelf:"center"}}>{"<-"}</Text>
+                </TouchableOpacity>
+                <TextInput style={styles.inputBox} placeholder={"Search"} onChangeText={(queryString) => searchLocations(queryString)}/>
+                <View style={styles.backButton as any}></View>
+            </View>
+            <KeyboardAvoidingView style={{}}>
+                <ScrollView style={styles.resultsContainer as any}>
+                {results.map(location => <View style={styles.result as any}>
+                                            <LocationResult 
+                                                clickCallback={route.params.updateCallback}
+                                                inputId={inputId} 
+                                                title={location.title}
+                                                lat={location.lat}
+                                                long={location.long}
+                                                navigation={navigation}/>
+                                        </View>)}
+                </ScrollView>
+            </KeyboardAvoidingView>
         </SafeAreaView>
 
     )
