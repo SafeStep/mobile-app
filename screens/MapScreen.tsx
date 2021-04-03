@@ -1,4 +1,4 @@
-import React, {FC, useState, useEffect} from 'react';
+import React, {FC, useState, useEffect, useRef, useCallback} from 'react';
 import { View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import mbxClient from "@mapbox/mapbox-sdk";
@@ -12,6 +12,7 @@ const directionsClient = mbxDirections(baseClient);
 
 import { Map } from "../components/Map";
 import { DestinationSearch } from "../components/CreateRoute/DestinationSearch";
+import { PhysicalLocation } from '../types';
 
 let styles = require('./styles');
 
@@ -113,22 +114,32 @@ const getRoute = (wayPoints: number[][]): Promise<number[][]> => {
 const App : FC = ( { navigation } : any ) => {
 
     const [path, setPath] = useState([] as number[][]);
+    const [markers, setMarkers] = useState([] as PhysicalLocation[]);  // store list of markers
 
     useEffect(() => {
-        getRoute([[-1.213787, 52.771881], [-1.2321, 52.7651]]).then((_path: number[][]) => {
-        setPath(_path);
-        }).catch((error: any) => {
-        console.warn(error);
-        });
+      getRoute([[-1.213787, 52.771881], [-1.2321, 52.7651]]).then((_path: number[][]) => {
+      setPath(_path);
+      }).catch((error: any) => {
+      console.warn(error);
+      });
     }, []);  // run like component did mount
-    
+
+    const markersUpdate=useCallback((positions: any[])=>{
+      let toUpdate = [] as PhysicalLocation[]
+
+      positions.forEach(element => {
+        toUpdate.push(element.physicalLocation);  // will be null if search has not been fulfilled
+      });
+      setMarkers(toUpdate);
+   },[markers])
+
     return (
         <SafeAreaView style={styles.mapContainer} edges={['right', "top", 'left']}>
             <View style={styles.mapTopNav}>
-              <DestinationSearch navigation={navigation}/>
+              <DestinationSearch markerUpdateCallback={markersUpdate} navigation={navigation}/>
             </View>
             <View style={styles.map}>
-                <Map path={path}/>
+                <Map path={path} markers={markers}/>
                 
                 <TouchableOpacity style={styles.goButton}>
                     <Text style={styles.goButtonText}> Go </Text>

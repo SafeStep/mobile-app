@@ -1,13 +1,16 @@
 import MapboxGL from "@react-native-mapbox-gl/maps";
-import React from "react";
+import React, { forwardRef, Ref, RefObject } from "react";
 import { MAPBOX_KEY } from "@env"
+
+import { PhysicalLocation } from '../types';
+import { View, Text } from "react-native";
 
 MapboxGL.setAccessToken(MAPBOX_KEY);
 
 const makeGeoJSON: (data: number[][]) => any = function(data) {
 
     data.forEach(function(part, index, arr) {
-      arr[index] = part.reverse();
+      arr[index] = part.reverse(); // to fix mapbox's criminal ways of long then lat
     });
   
     return {
@@ -24,21 +27,41 @@ const styles = {
     map: {
         flex: 1,
         width: "100%"
-      }
+    },
+    
+    marker: {
+      backgroundColor: "white", 
+      borderColor: "gray",
+      borderWidth: 1,
+      width:20,
+      height:20,
+      borderRadius: 20,
+    }
 }
 
 type mapProps = {
-    path: number[][]
+    path: number[][],
+    markers?: PhysicalLocation[],
 }
 
-
-
-export const Map = ({ path }: mapProps) => {
+export const Map = ({ path, markers}: mapProps) => {
     return (       
     <MapboxGL.MapView style={styles.map}>
         <MapboxGL.UserLocation/> 
+        {
+        markers?.map((location, index) => {
+          if (location){
+            return (  <MapboxGL.MarkerView id={location.title} coordinate={[location.long,location.lat]}>
+                       <View style={styles.marker}>
+                         <Text style={{alignSelf:"center"}}>{String.fromCharCode(index+65)}</Text>
+                       </View>
+                      </MapboxGL.MarkerView> );
+          }
+        }
+          
+        )}
         <MapboxGL.ShapeSource id='line1' shape={makeGeoJSON(path)}>
-            <MapboxGL.LineLayer id="test" style={{"lineColor": "red"}} />
+            <MapboxGL.LineLayer id="path" style={{"lineColor": "red"}} />
         </MapboxGL.ShapeSource>
     </MapboxGL.MapView>);
 };
