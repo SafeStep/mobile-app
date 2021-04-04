@@ -87,7 +87,7 @@ const App : FC = ( { route, navigation } : any) => {
             clearTimeout(typingTimeout); // reset the timeout
         } 
         console.log(inputValue);
-        const searchDelay = 500;
+        const searchDelay = 200;
 
         setTypingTimeout(setTimeout((inputValue) => { searchLocations(inputValue) }, searchDelay, inputValue));
     }
