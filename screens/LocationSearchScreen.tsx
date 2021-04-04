@@ -78,10 +78,22 @@ const App : FC = ( { route, navigation } : any) => {
 
     const [inputId, setInputId] = useState(route.params.inputId);
     const [results, setResults] = useState([] as PhysicalLocation[]);
+    const [typingTimeout, setTypingTimeout] = useState(null as any);
     
     const textInputRef = useRef(null as any);  // store a reference to the text input
 
+    const handleTypingTimeout = (inputValue: string) => {
+        if (typingTimeout) {  // if its not null
+            clearTimeout(typingTimeout); // reset the timeout
+        } 
+        console.log(inputValue);
+        const searchDelay = 500;
+
+        setTypingTimeout(setTimeout((inputValue) => { searchLocations(inputValue) }, searchDelay, inputValue));
+    }
+
     const searchLocations = (inputValue: string) => {  // run the mapbox api 
+        console.log("searching with value: " + inputValue);
         const currentLocation = {title:"Current Location", lat:52.5680, long:-1.346074};
 
         axios.get(`https://y5yyrwkg42.execute-api.eu-west-1.amazonaws.com/dev/places?query=${inputValue}&lat=${currentLocation.lat}&long=${currentLocation.long}`)  // TODO stop hardcoded current position
@@ -110,7 +122,7 @@ const App : FC = ( { route, navigation } : any) => {
                 <TouchableOpacity style={styles.backButton as any} onPress={() => {navigation.navigate("map")}}>
                     <Text style={{alignSelf:"center"}}>{"<-"}</Text>
                 </TouchableOpacity>
-                <TextInput ref={textInputRef} style={styles.inputBox} placeholder={"Search"} onChangeText={(queryString) => searchLocations(queryString)}/>
+                <TextInput ref={textInputRef} style={styles.inputBox} placeholder={"Search"} onChangeText={(queryString) => handleTypingTimeout(queryString)}/>
                 <View style={styles.backButton as any}></View>
             </View>
             <KeyboardAvoidingView style={{}}>

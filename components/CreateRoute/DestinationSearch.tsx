@@ -63,7 +63,7 @@ const DestinationInput = ({ physicalLocation, dragCallback, id, navigation, upda
 
     const [inputId, setInputid] = useState(id as string);
 
-    return (  // had to put flexDirection in new js object for some reason typescript wasnt happy
+    return (  
         <View style={styles.destinationInputContainer as any} > 
             <View  style={styles.destinationInputWrapper as any}>
                 <TouchableOpacity onPress={() => {navigation.navigate("location_search", {inputId: inputId, updateCallback: updateCallback})}}>
