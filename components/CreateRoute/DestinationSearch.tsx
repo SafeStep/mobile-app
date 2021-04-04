@@ -82,13 +82,13 @@ const DestinationInput = ({ physicalLocation, dragCallback, id, navigation, upda
 
 export class DestinationSearch extends React.Component {
     state: { markerUpdateCallback: Function, currentDestinations: destinationInputProps[], navigation: any}  // specify the type for the props
-    constructor({ navigation, markerUpdateCallback } :any) {
-        super({ navigation, markerUpdateCallback });
+    constructor( props :any) {
+        super(props);
         this.updateSingleValue = this.updateSingleValue.bind(this);
         this.setCurrentDestinations = this.setCurrentDestinations.bind(this);
         this.addDestination = this.addDestination.bind(this);
         this.renderItem = this.renderItem.bind(this);
-        this.state = { markerUpdateCallback: markerUpdateCallback, navigation: navigation, currentDestinations: [{updateCallback: this.updateSingleValue, id:uuidv4(), navigation: navigation}]}
+        this.state = { markerUpdateCallback: props.markerUpdateCallback, navigation: props.navigation, currentDestinations: [{updateCallback: this.updateSingleValue, id:uuidv4(), navigation: props.navigation}]}
     }
 
     setCurrentDestinations(newDestinations: destinationInputProps[]) {

@@ -5,6 +5,8 @@ import mbxClient from "@mapbox/mapbox-sdk";
 import mbxDirections from "@mapbox/mapbox-sdk/services/directions";
 import polyline from "@mapbox/polyline";
 
+import Geolocation from 'react-native-geolocation-service';
+
 import { MAPBOX_KEY } from "@env"
 
 const baseClient = mbxClient({ accessToken: MAPBOX_KEY });
@@ -115,13 +117,18 @@ const App : FC = ( { navigation } : any ) => {
 
     const [path, setPath] = useState([] as number[][]);
     const [markers, setMarkers] = useState([] as PhysicalLocation[]);  // store list of markers
+    const [locationSetting, setLocationSetting] = useState("denied");
 
     useEffect(() => {
-      getRoute([[-1.213787, 52.771881], [-1.2321, 52.7651]]).then((_path: number[][]) => {
-      setPath(_path);
-      }).catch((error: any) => {
-      console.warn(error);
+      Geolocation.requestAuthorization("always").then((result) => {
+        setLocationSetting(result);
+        if (result !== "granted") alert("Allow Always is required");
       });
+      // getRoute([[-1.213787, 52.771881], [-1.2321, 52.7651]]).then((_path: number[][]) => {
+      // setPath(_path);
+      // }).catch((error: any) => {
+      // console.warn(error);
+      // });
     }, []);  // run like component did mount
 
     useEffect(() => {  // need to get the users location here too
@@ -146,7 +153,7 @@ const App : FC = ( { navigation } : any ) => {
               <DestinationSearch markerUpdateCallback={markersUpdate} navigation={navigation}/>
             </View>
             <View style={styles.map}>
-                <Map path={path} markers={markers}/>
+                <Map path={path} markers={markers} locationSetting={locationSetting}/>
                 
                 <TouchableOpacity style={styles.goButton}>
                     <Text style={styles.goButtonText}> Go </Text>
