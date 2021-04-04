@@ -49,10 +49,10 @@ export const Map = ({ path, markers, locationSetting}: mapProps) => {
     console.log(path);
     return (       
     <MapboxGL.MapView style={styles.map}>
-        { locationSetting === "granted" ? <MapboxGL.UserLocation/> : null}
+        <MapboxGL.UserLocation/>
         {
         markers?.map((location, index) => {
-          if (location && locationSetting === "granted"){
+          if (location){
             return (  <MapboxGL.MarkerView id={location.title} coordinate={[location.long,location.lat]}>
                        <View style={styles.marker}>
                          <Text style={{alignSelf:"center"}}>{String.fromCharCode(index+65)}</Text>
@@ -63,7 +63,7 @@ export const Map = ({ path, markers, locationSetting}: mapProps) => {
           
         )}
         { 
-          locationSetting === "granted" && path.length !== 0 ?
+          path.length !== 0 ?
         <MapboxGL.ShapeSource id='line1' shape={makeGeoJSON(path)}>
             <MapboxGL.LineLayer id="path" style={{"lineColor": "red"}} />
         </MapboxGL.ShapeSource>
