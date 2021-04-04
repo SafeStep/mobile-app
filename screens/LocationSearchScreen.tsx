@@ -86,14 +86,12 @@ const App : FC = ( { route, navigation } : any) => {
         if (typingTimeout) {  // if its not null
             clearTimeout(typingTimeout); // reset the timeout
         } 
-        console.log(inputValue);
         const searchDelay = 200;
 
         setTypingTimeout(setTimeout((inputValue) => { searchLocations(inputValue) }, searchDelay, inputValue));
     }
 
     const searchLocations = (inputValue: string) => {  // run the mapbox api 
-        console.log("searching with value: " + inputValue);
         const currentLocation = {title:"Current Location", lat:52.5680, long:-1.346074};
 
         axios.get(`https://y5yyrwkg42.execute-api.eu-west-1.amazonaws.com/dev/places?query=${inputValue}&lat=${currentLocation.lat}&long=${currentLocation.long}`)  // TODO stop hardcoded current position

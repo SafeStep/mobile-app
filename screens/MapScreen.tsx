@@ -124,6 +124,13 @@ const App : FC = ( { navigation } : any ) => {
       });
     }, []);  // run like component did mount
 
+    useEffect(() => {  // need to get the users location here too
+      let waypoints = [...markers]
+
+      // get the users current location and add it to the start of the list then generate the path and set it as the path variable
+
+    }, [markers]) // run whenever markers is updated
+
     const markersUpdate=useCallback((positions: any[])=>{
       let toUpdate = [] as PhysicalLocation[]
 
