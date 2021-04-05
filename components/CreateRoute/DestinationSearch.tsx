@@ -56,17 +56,18 @@ interface destinationInputProps {
     dragCallback?: any,
     updateCallback: Function
     navigation: any,
-    physicalLocation?: PhysicalLocation
+    physicalLocation?: PhysicalLocation,
+    currentLocation: PhysicalLocation
 }
 
-const DestinationInput = ({ physicalLocation, dragCallback, id, navigation, updateCallback}: destinationInputProps) => {
+const DestinationInput = ({ currentLocation, physicalLocation, dragCallback, id, navigation, updateCallback}: destinationInputProps) => {
 
     const [inputId, setInputid] = useState(id as string);
 
     return (  
         <View style={styles.destinationInputContainer as any} > 
             <View  style={styles.destinationInputWrapper as any}>
-                <TouchableOpacity onPress={() => {navigation.navigate("location_search", {inputId: inputId, updateCallback: updateCallback})}}>
+                <TouchableOpacity onPress={() => {navigation.navigate("location_search", {inputId: inputId, updateCallback: updateCallback, currentLocation: currentLocation})}}>
                     <View style={styles.destinationInput as any}>
                         <Text style={{width: "100%"}}>{physicalLocation ? physicalLocation.title : "Search"}</Text>
                     </View>
@@ -83,6 +84,7 @@ const DestinationInput = ({ physicalLocation, dragCallback, id, navigation, upda
 interface DestinationSearchProps {
     navigation: any, 
     markerUpdateCallback: Function,
+    currentLocation: PhysicalLocation
 }
 
 export class DestinationSearch extends React.Component<DestinationSearchProps> {
@@ -93,7 +95,7 @@ export class DestinationSearch extends React.Component<DestinationSearchProps> {
         this.setCurrentDestinations = this.setCurrentDestinations.bind(this);
         this.addDestination = this.addDestination.bind(this);
         this.renderItem = this.renderItem.bind(this);
-        this.state = { currentDestinations: [{updateCallback: this.updateSingleValue, id:uuidv4(), navigation: props.navigation}]}
+        this.state = { currentDestinations: [{updateCallback: this.updateSingleValue, id:uuidv4(), navigation: props.navigation, currentLocation: props.currentLocation}]}
     }
 
     setCurrentDestinations(newDestinations: destinationInputProps[]) {
@@ -119,7 +121,7 @@ export class DestinationSearch extends React.Component<DestinationSearchProps> {
     }
 
     renderItem({ item, index, drag, isActive }: RenderItemParams<destinationInputProps>) {
-        return <DestinationInput physicalLocation={item.physicalLocation} updateCallback={this.updateSingleValue} id={item.id} dragCallback={drag} navigation={this.props.navigation} />
+        return <DestinationInput currentLocation={this.props.currentLocation} physicalLocation={item.physicalLocation} updateCallback={this.updateSingleValue} id={item.id} dragCallback={drag} navigation={this.props.navigation} />
     }
 
     render() {

@@ -92,8 +92,7 @@ const App : FC = ( { route, navigation } : any) => {
     }
 
     const searchLocations = (inputValue: string) => {  // run the mapbox api 
-        const currentLocation = {title:"Current Location", lat:52.5680, long:-1.346074};
-
+        let currentLocation = route.params.currentLocation
         axios.get(`https://y5yyrwkg42.execute-api.eu-west-1.amazonaws.com/dev/places?query=${inputValue}&lat=${currentLocation.lat}&long=${currentLocation.long}`)  // TODO stop hardcoded current position
         .then(function (response: any) {
 

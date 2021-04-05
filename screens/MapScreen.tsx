@@ -170,7 +170,7 @@ const App : FC = ( { navigation } : any ) => {
     return (
         <SafeAreaView style={styles.mapContainer} edges={['right', "top", 'left']}>
             <View style={styles.mapTopNav}>
-              <DestinationSearch markerUpdateCallback={markersUpdate} navigation={navigation}/>
+              <DestinationSearch currentLocation={userLocation as any} markerUpdateCallback={markersUpdate} navigation={navigation}/>
             </View>
             <View style={styles.map}>
                 <Map path={path} markers={markers} locationSetting={locationSetting} userPosition={userLocation}/>
