@@ -42,13 +42,17 @@ const styles = {
 type mapProps = {
     path: number[][],
     markers?: PhysicalLocation[],
-    locationSetting: string
+    locationSetting: string,
+    userPosition?: PhysicalLocation | null
 }
 
-export const Map = ({ path, markers, locationSetting}: mapProps) => {
-    console.log(path);
-    return (       
-    <MapboxGL.MapView style={styles.map}>
+export const Map = ({ path, markers, locationSetting, userPosition}: mapProps) => {
+
+  return (       
+    <MapboxGL.MapView style={styles.map} >
+
+        <MapboxGL.Camera centerCoordinate={(userPosition !== null ? [userPosition?.long, userPosition?.lat] as any : [0,0])} zoomLevel={userPosition !== null ? 15 : 1} />
+
         <MapboxGL.UserLocation/>
         {
         markers?.map((location, index) => {
@@ -70,4 +74,4 @@ export const Map = ({ path, markers, locationSetting}: mapProps) => {
         : null
         }
     </MapboxGL.MapView>);
-};  // TODO tidy up this mess
+};

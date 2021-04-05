@@ -85,23 +85,17 @@ styles = {...styles,
   },
 }
 
+interface coordinatesObject {
+  coordinates: number[]
+}
 
-const getRoute = (wayPoints: number[][]): Promise<number[][]> => {
+const getRoute = (wayPoints: coordinatesObject[]): Promise<number[][]> => {
+  console.log(wayPoints);
     return new Promise((resolve, reject) => {
       directionsClient.getDirections({
         profile: 'walking',
         overview: "full",
-        waypoints: [  // TODO make this actually work with different routes
-          {
-            coordinates: [-1.213787, 52.771881],  // in order of lat long (East, North)
-          },
-          {
-            coordinates: [-1.2321, 52.7651],
-          },
-          // {
-          //   coordinates: [13.4194, 52.5072],
-          // }
-        ]
+        waypoints: wayPoints
       }).send()
       .then((response: any) => {
         const directions = response.body;
@@ -118,11 +112,18 @@ const App : FC = ( { navigation } : any ) => {
     const [path, setPath] = useState([] as number[][]);
     const [markers, setMarkers] = useState([] as PhysicalLocation[]);  // store list of markers
     const [locationSetting, setLocationSetting] = useState("denied");
+    const [userLocation, setUserLocation] = useState(null as PhysicalLocation | null);
 
     useEffect(() => {
       Geolocation.requestAuthorization("always").then((result) => {
         setLocationSetting(result);
-        if (result !== "granted") alert("Allow Always is required");
+        if (result !== "granted") {
+          alert("Allow Always is required");
+        }
+        else {
+          Geolocation.getCurrentPosition((position) => {setUserLocation({title: "Current Location", long: position.coords.longitude, lat: position.coords.latitude})}, () => { alert("SafeStep can't access your location currently! Please make sure that the app has access in your settings") }
+          , {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000});
+        }
       });
       // getRoute([[-1.213787, 52.771881], [-1.2321, 52.7651]]).then((_path: number[][]) => {
       // setPath(_path);
@@ -132,7 +133,26 @@ const App : FC = ( { navigation } : any ) => {
     }, []);  // run like component did mount
 
     useEffect(() => {  // need to get the users location here too
-      let waypoints = [...markers]
+      if (userLocation === null) {
+        console.warn("Cant create path as no user location available");
+        return;
+      }      
+      let waypoints = [userLocation, ...markers]  // append the user location to the start of the array
+
+      let latLongs = [] as coordinatesObject[];
+
+      waypoints.forEach(element => {  // convert to lat longs instead of physicalLocations
+        if (element === undefined) {
+          return;  // skip this current element as it is empty
+        }
+        latLongs.push({ coordinates: [element.long, element.lat]});
+      });
+
+      getRoute(latLongs).then((_path: number[][]) => {
+        setPath(_path);
+        }).catch((error: any) => {
+        console.warn(error);
+        });
 
       // get the users current location and add it to the start of the list then generate the path and set it as the path variable
 
@@ -153,7 +173,7 @@ const App : FC = ( { navigation } : any ) => {
               <DestinationSearch markerUpdateCallback={markersUpdate} navigation={navigation}/>
             </View>
             <View style={styles.map}>
-                <Map path={path} markers={markers} locationSetting={locationSetting}/>
+                <Map path={path} markers={markers} locationSetting={locationSetting} userPosition={userLocation}/>
                 
                 <TouchableOpacity style={styles.goButton}>
                     <Text style={styles.goButtonText}> Go </Text>

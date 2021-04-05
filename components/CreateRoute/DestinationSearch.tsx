@@ -80,25 +80,30 @@ const DestinationInput = ({ physicalLocation, dragCallback, id, navigation, upda
     );
 };
 
-export class DestinationSearch extends React.Component {
-    state: { markerUpdateCallback: Function, currentDestinations: destinationInputProps[], navigation: any}  // specify the type for the props
-    constructor( props :any) {
+interface DestinationSearchProps {
+    navigation: any, 
+    markerUpdateCallback: Function,
+}
+
+export class DestinationSearch extends React.Component<DestinationSearchProps> {
+    state: {currentDestinations: destinationInputProps[] }  // specify the type for the props
+    constructor( props : any) {
         super(props);
         this.updateSingleValue = this.updateSingleValue.bind(this);
         this.setCurrentDestinations = this.setCurrentDestinations.bind(this);
         this.addDestination = this.addDestination.bind(this);
         this.renderItem = this.renderItem.bind(this);
-        this.state = { markerUpdateCallback: props.markerUpdateCallback, navigation: props.navigation, currentDestinations: [{updateCallback: this.updateSingleValue, id:uuidv4(), navigation: props.navigation}]}
+        this.state = { currentDestinations: [{updateCallback: this.updateSingleValue, id:uuidv4(), navigation: props.navigation}]}
     }
 
     setCurrentDestinations(newDestinations: destinationInputProps[]) {
-        this.setState({markerUpdateCallback: this.state.markerUpdateCallback, currentDestinations: newDestinations, navigation: this.state.navigation});  // update the state
-        this.state.markerUpdateCallback(this.state.currentDestinations);  // update the states of the markers in the parent component
+        this.setState({currentDestinations: newDestinations});  // update the state
+        this.props.markerUpdateCallback(this.state.currentDestinations);  // update the states of the markers in the parent component
     }
 
     addDestination() {  // add a new destination input to the screen
-        this.setState({markerUpdateCallback: this.state.markerUpdateCallback, navigation: this.state.navigation, currentDestinations: [...this.state.currentDestinations, {id:uuidv4()}]});
-        this.state.markerUpdateCallback(this.state.currentDestinations);  // update the states of the markers in the parent component
+        this.setState({ currentDestinations: [...this.state.currentDestinations, {id:uuidv4()}]});
+        this.props.markerUpdateCallback(this.state.currentDestinations);  // update the states of the markers in the parent component
     }
 
     updateSingleValue(inputId: string, newValue: PhysicalLocation) {
@@ -107,14 +112,14 @@ export class DestinationSearch extends React.Component {
         for (let i=0; i <this.state.currentDestinations.length; i++) {
             if (currentDestinations[i].id === inputId) {
                 currentDestinations[i].physicalLocation = newValue;
-                this.setState({markerUpdateCallback: this.state.markerUpdateCallback,currentDestinations: currentDestinations, navigation: this.state.navigation});
-                this.state.markerUpdateCallback(this.state.currentDestinations);
+                this.setState({ currentDestinations: currentDestinations});
+                this.props.markerUpdateCallback(this.state.currentDestinations);
             }
         }
     }
 
     renderItem({ item, index, drag, isActive }: RenderItemParams<destinationInputProps>) {
-        return <DestinationInput physicalLocation={item.physicalLocation} updateCallback={this.updateSingleValue} id={item.id} dragCallback={drag} navigation={this.state.navigation} />
+        return <DestinationInput physicalLocation={item.physicalLocation} updateCallback={this.updateSingleValue} id={item.id} dragCallback={drag} navigation={this.props.navigation} />
     }
 
     render() {
