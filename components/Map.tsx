@@ -5,8 +5,6 @@ import { MAPBOX_KEY } from "@env"
 import { PhysicalLocation } from '../types';
 import { View, Text } from "react-native";
 
-MapboxGL.setAccessToken(MAPBOX_KEY);
-
 const makeGeoJSON: (data: number[][]) => any = function(data) {
 
     data.forEach(function(part, index, arr) {
@@ -47,7 +45,7 @@ type mapProps = {
 }
 
 export const Map = ({ path, markers, locationSetting, userPosition}: mapProps) => {
-
+  MapboxGL.setAccessToken(MAPBOX_KEY);
   return (       
     <MapboxGL.MapView style={styles.map} >
 
