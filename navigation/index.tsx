@@ -31,7 +31,7 @@ const MainNav: FC = () => {
 
     return (
         <NavigationContainer>
-            {user !== null ? <AppStack {...updateUser} /> : <AuthStack {...updateUser}/>}
+            {user !== null ? <AppStack updateUser={updateUser} /> : <AuthStack updateUser={updateUser} />}
         </NavigationContainer>
     )
 }
