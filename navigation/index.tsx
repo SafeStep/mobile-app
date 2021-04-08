@@ -11,14 +11,14 @@ const MainNav: FC = () => {
     const [user, setUser] = useState<any>(null)
 
     async function checkAuthState() {
-            try {
-              await Auth.currentAuthenticatedUser();
-              console.log(' User is signed in');
-              setUser(true);
-            } catch (err) {
-              console.log(' User is not signed in');
-              setUser(null);
-            }
+        try {
+            await Auth.currentAuthenticatedUser();
+            console.log(' User is signed in');
+            setUser(true);
+        } catch (err) {
+            console.log(' User is not signed in');
+            setUser(null);
+        }
     }
  
     function updateUser(user:any) {

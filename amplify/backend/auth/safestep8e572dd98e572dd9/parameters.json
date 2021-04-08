@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "safestepbfb315a6_identitypool_bfb315a6",
+    "identityPoolName": "safestep8e572dd9_identitypool_8e572dd9",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "safestbfb315a6",
-    "userPoolName": "safestepbfb315a6_userpool_bfb315a6",
+    "resourceNameTruncated": "safest8e572dd9",
+    "userPoolName": "safestep8e572dd9_userpool_8e572dd9",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -18,8 +18,7 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-        "email",
-        "name"
+        "email"
     ],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
@@ -29,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "safestbfb315a6_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "safest8e572dd9_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "bfb315a6",
-    "resourceName": "safestepbfb315a6",
+    "sharedId": "8e572dd9",
+    "resourceName": "safestep8e572dd98e572dd9",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -46,11 +45,15 @@
             "Arn"
         ]
     },
-    "useDefault": "default",
+    "useDefault": "manual",
+    "thirdPartyAuth": false,
     "usernameAttributes": [
         "email"
     ],
+    "userPoolGroups": false,
+    "adminQueries": false,
     "triggers": "{}",
+    "hostedUI": false,
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,

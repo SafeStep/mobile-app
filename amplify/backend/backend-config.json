@@ -1,6 +1,6 @@
 {
   "auth": {
-    "safestepbfb315a6": {
+    "safestep8e572dd98e572dd9": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -12,7 +12,7 @@
       "dependsOn": [
         {
           "category": "auth",
-          "resourceName": "safestepbfb315a6",
+          "resourceName": "safestep8e572dd98e572dd9",
           "attributes": [
             "UserPoolId",
             "AppClientIDWeb",
