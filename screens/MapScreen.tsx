@@ -120,12 +120,13 @@ const getRoute = (wayPoints: coordinatesObject[]): Promise<number[][]> => {
     })
   }
 
-const App : FC = ( { navigation } : any ) => {
+const App : FC = ( { navigation} : any ) => {
 
     const [path, setPath] = useState([] as number[][]);
     const [markers, setMarkers] = useState([] as PhysicalLocation[]);  // store list of markers
     const [locationSetting, setLocationSetting] = useState("null" as string);
     const [userLocation, setUserLocation] = useState(null as PhysicalLocation | null);
+
 
     useEffect(() => {
       console.log("USE EFFECT");

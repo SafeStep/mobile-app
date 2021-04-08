@@ -5,6 +5,8 @@ import {Input, Button, HeadingCurve} from '../components'
 
 // import {launch} from '../navigation/index'
 
+import {Auth} from 'aws-amplify';
+
 const styles = require('./styles');
 
 
@@ -17,13 +19,17 @@ const App : FC = ( { navigation }: any ) => {
     const signup = async () => {
         if (username && email && password)  {
             try {
-                //try creating an account
-                console.log("success, account created", username, email, password);
-                // const user = true;
-                
+                const { user } = await Auth.signUp({
+                    username,
+                    password,
+                    attributes: {
+                        email
+                    }
+                });
+                // console.log(user);
+                navigation.navigate('confirm_code', {username:username});
             } catch (error) {
-                console.log(error);
-                
+                console.log('error signing up:', error);
             }
         
         } else {
