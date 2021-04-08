@@ -4,7 +4,7 @@ import AppStack from './appstack'
 import AuthStack from './authstack'
 
 import Amplify, {Auth} from 'aws-amplify';
-import awsconfig from '../src/aws-exports';
+import awsconfig from '../aws_config';
 Amplify.configure(awsconfig);
 
 const MainNav: FC = () => {
