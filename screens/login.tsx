@@ -26,7 +26,7 @@ const App : FC = ( { navigation , route} : any ) => {
     return (
         <View style={styles.container}>
             <HeadingCurve text='SafeSteps'/>
-            <Input placeholder='E-mail' onChangeText={(text) => setEmail(text)} />
+            <Input placeholder='Username' onChangeText={(text) => setEmail(text)} />
             <Input placeholder='Password' secureTextEntry={true}  onChangeText={(text) => setPassword(text)} />
             <Button title='Login' onPress={Login} />
 
