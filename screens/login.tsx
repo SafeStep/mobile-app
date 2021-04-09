@@ -9,12 +9,12 @@ const styles = require('./styles');
 
 const App : FC = ( { navigation , route} : any ) => {
 
-    const [email, setEmail] = useState<string | null>(null)
+    const [username, setUsername] = useState<string | null>(null)
     const [password, setPassword] = useState<string | null>(null)
 
     async function Login() {
         try {
-            const user = await Auth.signIn(email as string, password as string);
+            const user = await Auth.signIn(username as string, password as string);
             route.params.updateUser(true)
 
             console.log(user);
@@ -26,7 +26,7 @@ const App : FC = ( { navigation , route} : any ) => {
     return (
         <View style={styles.container}>
             <HeadingCurve text='SafeSteps'/>
-            <Input placeholder='Username' onChangeText={(text) => setEmail(text)} />
+            <Input placeholder='Username' onChangeText={(text) => setUsername(text)} />
             <Input placeholder='Password' secureTextEntry={true}  onChangeText={(text) => setPassword(text)} />
             <Button title='Login' onPress={Login} />
 
