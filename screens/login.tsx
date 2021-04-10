@@ -1,7 +1,7 @@
 import { useLinkProps } from '@react-navigation/native';
 import React, {FC, useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import {Input, Button, HeadingCurve} from '../components'
+import {Input, Button, HeadingCurve} from '../components';
 
 import {Auth} from 'aws-amplify';
 
@@ -9,13 +9,13 @@ const styles = require('./styles');
 
 const App : FC = ( { navigation , route} : any ) => {
 
-    const [username, setUsername] = useState<string | null>(null)
-    const [password, setPassword] = useState<string | null>(null)
+    const [email, setEmail] = useState<string | null>(null);
+    const [password, setPassword] = useState<string | null>(null);
 
     async function Login() {
         try {
-            const user = await Auth.signIn(username as string, password as string);
-            route.params.updateUser(true)
+            const user = await Auth.signIn(email as string, password as string);
+            route.params.updateUser(true);
 
             console.log(user);
         } catch (error) {
@@ -26,7 +26,7 @@ const App : FC = ( { navigation , route} : any ) => {
     return (
         <View style={styles.container}>
             <HeadingCurve text='SafeSteps'/>
-            <Input placeholder='Username' onChangeText={(text) => setUsername(text)} />
+            <Input placeholder='E-mail' onChangeText={(text) => setEmail(text)} />
             <Input placeholder='Password' secureTextEntry={true}  onChangeText={(text) => setPassword(text)} />
             <Button title='Login' onPress={Login} />
 

@@ -1,6 +1,6 @@
 {
   "auth": {
-    "safestepe4dc33c3": {
+    "safestep2c99166e": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],

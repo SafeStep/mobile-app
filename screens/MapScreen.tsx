@@ -120,7 +120,21 @@ const getRoute = (wayPoints: coordinatesObject[]): Promise<number[][]> => {
     })
   }
 
-const App : FC = ( { navigation} : any ) => {
+import {Auth} from 'aws-amplify';
+
+
+const App : FC = ( { navigation, route } : any ) => {
+
+  async function signOut() {
+    try {
+        await Auth.signOut();
+        // updateAuthState('loggedOut');
+        // props.updateUser(null);
+        route.params.updateUser(null)
+    } catch (error) {
+        console.log('error signing out: ', error);
+    }
+}
 
     const [path, setPath] = useState([] as number[][]);
     const [markers, setMarkers] = useState([] as PhysicalLocation[]);  // store list of markers
@@ -204,7 +218,7 @@ const App : FC = ( { navigation} : any ) => {
                 </TouchableOpacity>
 
                 <View style={styles.mapBottomNav}>
-                    <TouchableOpacity style={styles.mapBottomNavButtons}>
+                    <TouchableOpacity onPress={signOut} style={styles.mapBottomNavButtons}>
                         <Text style={styles.mapBottomNavText}> Recent </Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.mapBottomNavButtons} onPress={() => navigation.navigate('contacts')}>

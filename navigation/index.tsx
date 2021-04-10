@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, {FC, useEffect, useState, useCallback} from 'react'
 import {NavigationContainer} from '@react-navigation/native'
 import AppStack from './appstack'
 import AuthStack from './authstack'
@@ -9,7 +9,9 @@ import awsconfig from '../aws-exports';
 
 Amplify.configure(awsconfig);
 
-const MainNav: FC = () => {
+const MainNav: FC = (props) => {
+
+    console.log(props)
     const [user, setUser] = useState<any>(null)
 
     async function checkAuthState() {
@@ -23,9 +25,13 @@ const MainNav: FC = () => {
         }
     }
  
-    function updateUser(user:any) {
+    // function updateUser(user:any) {
+    //     // setUser(user);
+    // }
+
+    const updateUser = useCallback((user) => {
         setUser(user);
-    }
+    }, [user]);
 
     useEffect(() => {
         checkAuthState()
