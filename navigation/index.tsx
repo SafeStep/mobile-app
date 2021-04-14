@@ -1,28 +1,45 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, {FC, useEffect, useState, useCallback} from 'react'
 import {NavigationContainer} from '@react-navigation/native'
 import AppStack from './appstack'
 import AuthStack from './authstack'
 
-const MainNav: FC = () => {
+import Amplify, {Auth} from 'aws-amplify';
+import awsconfig from '../aws-exports';
+// import awsconfig from '../aws_config';
+
+Amplify.configure(awsconfig);
+
+const MainNav: FC = (props) => {
+
+    console.log(props)
     const [user, setUser] = useState<any>(null)
 
-    const launch = () => {
-        //authentication here
-        // if (user_) {
-        //     setUser(user_);
-        //     console.log('hi');
-            
-        // }
-        setUser(true)
+    async function checkAuthState() {
+        try {
+            await Auth.currentAuthenticatedUser();
+            console.log(' User is signed in');
+            setUser(true);
+        } catch (err) {
+            console.log(' User is not signed in');
+            setUser(null);
+        }
     }
+ 
+    // function updateUser(user:any) {
+    //     // setUser(user);
+    // }
+
+    const updateUser = useCallback((user) => {
+        setUser(user);
+    }, [user]);
 
     useEffect(() => {
-        launch()
+        checkAuthState()
     }, [])
 
     return (
         <NavigationContainer>
-            {user !== null ? <AppStack /> : <AuthStack />}
+            {user !== null ? <AppStack updateUser={updateUser} /> : <AuthStack updateUser={updateUser} />}
         </NavigationContainer>
     )
 }

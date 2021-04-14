@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "safestep2c99166e": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}

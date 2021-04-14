@@ -5,25 +5,34 @@ import {Input, Button, HeadingCurve} from '../components'
 
 // import {launch} from '../navigation/index'
 
+import {Auth} from 'aws-amplify';
+
 const styles = require('./styles');
 
 
 const App : FC = ( { navigation }: any ) => {
 
-    const [username, setUsername] = useState<string | null>(null)
+    // const [username, setUsername] = useState<string | null>(null)
     const [email, setEmail] = useState<string | null>(null)
     const [password, setPassword] = useState<string | null>(null)
 
+    // const username = "UniqueID";
+
     const signup = async () => {
-        if (username && email && password)  {
+        if (email && password)  {
             try {
-                //try creating an account
-                console.log("success, account created", username, email, password);
-                // const user = true;
-                
+                let username = email;
+                const { user } = await Auth.signUp({
+                    username,
+                    password,
+                    // attributes: {
+                    //     email
+                    // }
+                });
+                console.log(user);
+                navigation.navigate('confirm_code', {username:username});
             } catch (error) {
-                console.log(error);
-                
+                console.log('error signing up:', error);
             }
         
         } else {
@@ -34,7 +43,7 @@ const App : FC = ( { navigation }: any ) => {
     return (
         <View style={styles.container}> 
             <HeadingCurve text='SignUp'/>
-            <Input placeholder='Username' onChangeText={(text) => setUsername(text)} />
+            {/* <Input placeholder='Username' onChangeText={(text) => setUsername(text)} /> */}
             <Input placeholder='E-mail' onChangeText={(text) => setEmail(text)} />
             <Input placeholder='Password'secureTextEntry={true} onChangeText={(text) => setPassword(text)} />
 
