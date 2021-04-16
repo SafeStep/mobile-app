@@ -103,7 +103,6 @@ const requestAndroidLocationPermission = async(): Promise<string> =>  {  // requ
 }
 
 const getRoute = (wayPoints: coordinatesObject[]): Promise<number[][]> => {
-  console.log(wayPoints);
     return new Promise((resolve, reject) => {
       directionsClient.getDirections({
         profile: 'walking',
@@ -143,13 +142,11 @@ const App : FC = ( { navigation, route } : any ) => {
 
 
     useEffect(() => {
-      console.log("USE EFFECT");
       if (locationSetting === "denied") {
         alert("Allow Always is required");
       }
 
       else if (locationSetting === "granted"){  // if changed to granted then try and get the location
-        console.log("getting location");
         Geolocation.getCurrentPosition((position) => {setUserLocation({title: "Current Location", long: position.coords.longitude, lat: position.coords.latitude});}, () => { alert("SafeStep can't access your location currently! Please make sure that the app has access in your settings") }
         , {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000});
       }
@@ -184,6 +181,11 @@ const App : FC = ( { navigation, route } : any ) => {
         latLongs.push({ coordinates: [element.long, element.lat]});
       });
 
+      if (latLongs.length < 2) {
+        setPath([]);
+        return;  // not enough waypoints to create a path
+      }
+
       getRoute(latLongs).then((_path: number[][]) => {
         setPath(_path);
         }).catch((error: any) => {
@@ -195,15 +197,13 @@ const App : FC = ( { navigation, route } : any ) => {
     }, [markers]) // run whenever markers is updated
 
     const markersUpdate=useCallback((positions: any[])=>{
-      let toUpdate = [] as PhysicalLocation[]
+      let toUpdate = [] as PhysicalLocation[];
 
       positions.forEach(element => {
-        toUpdate.push(element.physicalLocation);  // will be null if search has not been fulfilled
+        if (element.physicalLocation !== undefined) toUpdate.push(element.physicalLocation);  // will be null if search has not been fulfilled
       });
       setMarkers(toUpdate);
-   },[markers])
-
-    console.log(MAPBOX_KEY);
+   }, [])
 
     return (
         <SafeAreaView style={styles.mapContainer} edges={['right', "top", 'left']}>
