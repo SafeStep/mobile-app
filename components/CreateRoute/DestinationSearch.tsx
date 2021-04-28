@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, forwardRef } from 'react';
+import React, { useState, useEffect, useCallback, forwardRef, useRef } from 'react';
 import { TextInput, View, Button, Text} from 'react-native';
 import { FlatList, ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import DraggableFlatList, {
@@ -8,6 +8,7 @@ import DraggableFlatList, {
 import { v4 as uuidv4 } from 'uuid';
 import { useLinkProps } from '@react-navigation/native';
 import { PhysicalLocation } from '../../types';
+import { navItem } from '@aws-amplify/ui';
 
 const styles = {
     destinationInputContainer: {
@@ -62,12 +63,10 @@ interface destinationInputProps {
 
 const DestinationInput = ({ currentLocation, physicalLocation, dragCallback, id, navigation, updateCallback}: destinationInputProps) => {
 
-    const [inputId, setInputid] = useState(id as string);
-
     return (  
         <View style={styles.destinationInputContainer as any} > 
             <View  style={styles.destinationInputWrapper as any}>
-                <TouchableOpacity onPress={() => {navigation.navigate("location_search", {inputId: inputId, updateCallback: updateCallback, currentLocation: currentLocation})}}>
+                <TouchableOpacity onPress={() => {navigation.navigate("location_search", {inputId: id, updateCallback: updateCallback, currentLocation: currentLocation})}}>
                     <View style={styles.destinationInput as any}>
                         <Text style={{width: "100%"}}>{physicalLocation ? physicalLocation.title : "Search"}</Text>
                     </View>
@@ -87,58 +86,53 @@ interface DestinationSearchProps {
     currentLocation: PhysicalLocation
 }
 
-export class DestinationSearch extends React.Component<DestinationSearchProps> {
-    state: {currentDestinations: destinationInputProps[] }  // specify the type for the props
-    constructor( props : any) {
-        super(props);
-        this.updateSingleValue = this.updateSingleValue.bind(this);
-        this.setCurrentDestinations = this.setCurrentDestinations.bind(this);
-        this.addDestination = this.addDestination.bind(this);
-        this.renderItem = this.renderItem.bind(this);
-        this.state = { currentDestinations: [{updateCallback: this.updateSingleValue, id:uuidv4(), navigation: props.navigation, currentLocation: props.currentLocation}]}
-    }
+export const DestinationSearch = ({ navigation, markerUpdateCallback, currentLocation }: DestinationSearchProps) => {
 
-    setCurrentDestinations(newDestinations: destinationInputProps[]) {
-        this.setState({currentDestinations: newDestinations});  // update the state
-        this.props.markerUpdateCallback(this.state.currentDestinations);  // update the states of the markers in the parent component
-    }
+    const [currentDestinations, setCurrentDestinations] = useState([] as destinationInputProps[]);
+    const currentDestinationsRef = useRef([] as destinationInputProps[]);
 
-    addDestination() {  // add a new destination input to the screen
-        this.setState({ currentDestinations: [...this.state.currentDestinations, {id:uuidv4()}]});
-        this.props.markerUpdateCallback(this.state.currentDestinations);  // update the states of the markers in the parent component
-    }
-
-    updateSingleValue(inputId: string, newValue: PhysicalLocation) {
-        let currentDestinations = [...this.state.currentDestinations];
+    const updateSingleValue = useCallback((inputId: string, newValue: PhysicalLocation) => {
+        let newCurrentDestinations = [...currentDestinationsRef.current] as destinationInputProps[];
         // loop through and find the object with the right key then add the changes
-        for (let i=0; i <this.state.currentDestinations.length; i++) {
-            if (currentDestinations[i].id === inputId) {
-                currentDestinations[i].physicalLocation = newValue;
-                this.setState({ currentDestinations: currentDestinations});
-                this.props.markerUpdateCallback(this.state.currentDestinations);
+        for (let i=0; i <newCurrentDestinations.length; i++) {
+            if (newCurrentDestinations[i].id === inputId) {
+                newCurrentDestinations[i].physicalLocation = newValue;
+                markerUpdateCallback(newCurrentDestinations);
+                setCurrentDestinations(newCurrentDestinations);
+                return;  // break the loop as the object has been found
             }
         }
-    }
+    }, [currentDestinationsRef.current]);
 
-    renderItem({ item, index, drag, isActive }: RenderItemParams<destinationInputProps>) {
-        return <DestinationInput currentLocation={this.props.currentLocation} physicalLocation={item.physicalLocation} updateCallback={this.updateSingleValue} id={item.id} dragCallback={drag} navigation={this.props.navigation} />
-    }
+    const renderItem = useCallback( ({ item, index, drag, isActive }: RenderItemParams<destinationInputProps>) => {
+        return <DestinationInput currentLocation={currentLocation} physicalLocation={item.physicalLocation} updateCallback={updateSingleValue} id={item.id} dragCallback={drag} navigation={navigation} />;
+    }, [currentLocation]);
 
-    render() {
-        return (
+    const addDestination = useCallback(() => {  // add a new destination input to the screen
+        setCurrentDestinations( oldValues => [...oldValues, {updateCallback: updateSingleValue, id:uuidv4(), navigation: navigation, currentLocation: currentLocation}]);
+    }, [setCurrentDestinations]);
+
+    useEffect(() => {
+        currentDestinationsRef.current = currentDestinations;  // update the ref
+        markerUpdateCallback(currentDestinations);
+    }, [currentDestinations])
+
+    useEffect(() => {  // add the first input value
+        setCurrentDestinations([{updateCallback: updateSingleValue, id:uuidv4(), navigation: navigation, currentLocation: currentLocation}]);
+    }, []);
+
+    return (
         <View>
             <ScrollView style={{maxHeight: 220}}>
                 <DraggableFlatList 
-                    data = { this.state.currentDestinations }
+                    data = { currentDestinations }
                     keyExtractor={(item, index) => `draggable-item-${item.id}`}
-                    renderItem = {this.renderItem}
-                    onDragEnd={({ data }) => { this.setCurrentDestinations(data)}}
-                    extraData = { this.state.currentDestinations }
+                    renderItem = {renderItem}
+                    onDragEnd={({ data }) => { setCurrentDestinations(data); markerUpdateCallback(data); }}
+                    extraData = { currentDestinations }
                 />
             </ScrollView>
-            <Button title={"Add"} disabled={this.state.currentDestinations.length >= 5} onPress={this.addDestination}></Button>
+            <Button title={"Add"} disabled={currentDestinations.length >= 5} onPress={addDestination}></Button>
         </View>
         );
-    }
-}
-
+};
