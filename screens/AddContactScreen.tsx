@@ -21,6 +21,9 @@ const App : FC = ( { navigation } : any ) => {
           <TextInput
           style={{backgroundColor: "green"}}>
           </TextInput>
+          <Text>{"This user will be sent an SMS message when you have gone 'off course' in a journey.\
+They will receive an invitation to become one of your emergency contacts via email."}
+          </Text>
         </View>
     );
 };
