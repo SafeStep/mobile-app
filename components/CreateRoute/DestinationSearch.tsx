@@ -121,8 +121,8 @@ export const DestinationSearch = ({ navigation, markerUpdateCallback, currentLoc
         setCurrentDestinations([{updateCallback: updateSingleValue, id:uuidv4(), navigation: navigation, currentLocation: currentLocation}]);
     }, []);
 
-    return (
-        <View>
+    return (  // set preferable heights in second view
+        <View> 
             <View style={{flexDirection: "row", minHeight: 50, maxHeight: 150}}>
                 <DraggableFlatList 
                     data = { currentDestinations }
