@@ -123,7 +123,7 @@ export const DestinationSearch = ({ navigation, markerUpdateCallback, currentLoc
 
     return (
         <View>
-            <ScrollView style={{maxHeight: 220}}>
+            <View style={{flexDirection: "row", minHeight: 50, maxHeight: 150}}>
                 <DraggableFlatList 
                     data = { currentDestinations }
                     keyExtractor={(item, index) => `draggable-item-${item.id}`}
@@ -131,7 +131,7 @@ export const DestinationSearch = ({ navigation, markerUpdateCallback, currentLoc
                     onDragEnd={({ data }) => { setCurrentDestinations(data); markerUpdateCallback(data); }}
                     extraData = { currentDestinations }
                 />
-            </ScrollView>
+            </View>
             <Button title={"Add"} disabled={currentDestinations.length >= 5} onPress={addDestination}></Button>
         </View>
         );
