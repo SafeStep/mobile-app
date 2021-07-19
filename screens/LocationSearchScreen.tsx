@@ -7,6 +7,8 @@ import {Header} from '../components'
 import Navigation from '../navigation/first_index';
 import { PhysicalLocation } from "../types"
 
+import { MAPBOX_KEY } from "@env";
+
 const axios = require('axios');
 
 const styles = {
@@ -93,7 +95,8 @@ const App : FC = ( { route, navigation } : any) => {
 
     const searchLocations = (inputValue: string) => {  // run the mapbox api 
         let currentLocation = route.params.currentLocation
-        axios.get(`https://y5yyrwkg42.execute-api.eu-west-1.amazonaws.com/dev/places?query=${inputValue}&lat=${currentLocation.lat}&long=${currentLocation.long}`)  // TODO stop hardcoded current position
+        axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${inputValue}.json?proximity=${currentLocation.long},${currentLocation.lat}&access_token=${MAPBOX_KEY}`)
+        //axios.get(`https://y5yyrwkg42.execute-api.eu-west-1.amazonaws.com/dev/places?query=${inputValue}&lat=${currentLocation.lat}&long=${currentLocation.long}`)
         .then(function (response: any) {
 
             let results = [] as PhysicalLocation[]
