@@ -1,38 +1,20 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-safestep-dev-154919-authRole",
-      "UnauthRoleArn": "arn:aws:iam::209523969378:role/amplify-safestep-dev-154919-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::209523969378:role/amplify-safestep-dev-154919-authRole",
-      "Region": "eu-west-2",
-      "DeploymentBucketName": "amplify-safestep-dev-154919-deployment",
-      "UnauthRoleName": "amplify-safestep-dev-154919-unauthRole",
-      "StackName": "amplify-safestep-dev-154919",
-      "StackId": "arn:aws:cloudformation:eu-west-2:209523969378:stack/amplify-safestep-dev-154919/72260b60-92f9-11eb-aba7-02f44636bb76",
-      "AmplifyAppId": "dcufuz4lb9nxf"
-    },
-    "categories": {
-      "auth": {
-        "safestep943284f0": {}
-      }
-    }
-  },
-  "safestepir": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-safestep-safestepir-141757-authRole",
-      "UnauthRoleArn": "arn:aws:iam::209523969378:role/amplify-safestep-safestepir-141757-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::209523969378:role/amplify-safestep-safestepir-141757-authRole",
+      "AuthRoleName": "amplify-safestepapp-dev-194559-authRole",
+      "UnauthRoleArn": "arn:aws:iam::209523969378:role/amplify-safestepapp-dev-194559-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::209523969378:role/amplify-safestepapp-dev-194559-authRole",
       "Region": "eu-west-1",
-      "DeploymentBucketName": "amplify-safestep-safestepir-141757-deployment",
-      "UnauthRoleName": "amplify-safestep-safestepir-141757-unauthRole",
-      "StackName": "amplify-safestep-safestepir-141757",
-      "StackId": "arn:aws:cloudformation:eu-west-1:209523969378:stack/amplify-safestep-safestepir-141757/d9238740-93b5-11eb-b312-066f5dd8ee8d",
-      "AmplifyAppId": "d30jera27ugdf"
+      "DeploymentBucketName": "amplify-safestepapp-dev-194559-deployment",
+      "UnauthRoleName": "amplify-safestepapp-dev-194559-unauthRole",
+      "StackName": "amplify-safestepapp-dev-194559",
+      "StackId": "arn:aws:cloudformation:eu-west-1:209523969378:stack/amplify-safestepapp-dev-194559/3a723220-ebe6-11eb-9096-021190ae6275",
+      "AmplifyAppId": "d2qtdl2legqvn9"
     },
     "categories": {
       "auth": {
-        "safestep943284f0": {},
-        "userPoolGroups": {}
+        "safestep2c99166e": {},
+        "safestepapp50c8fbb350c8fbb3": {}
       }
     }
   }

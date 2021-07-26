@@ -1,5 +1,5 @@
 import React, {FC, useState, useEffect, useRef, useCallback} from 'react';
-import { View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import { View, Text, TouchableOpacity, Platform, PermissionsAndroid} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import mbxClient from "@mapbox/mapbox-sdk";
 import mbxDirections from "@mapbox/mapbox-sdk/services/directions";
@@ -7,7 +7,7 @@ import polyline from "@mapbox/polyline";
 
 import Geolocation from 'react-native-geolocation-service';
 
-import { MAPBOX_KEY } from "@env"
+import { MAPBOX_KEY } from "@env";
 
 const baseClient = mbxClient({ accessToken: MAPBOX_KEY });
 const directionsClient = mbxDirections(baseClient);
@@ -89,8 +89,20 @@ interface coordinatesObject {
   coordinates: number[]
 }
 
+const requestAndroidLocationPermission = async(): Promise<string> =>  {  // request location permissions on android
+  return new Promise((resolve, reject) => {
+    PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION, PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]).then((result)=>
+    {
+      for (let i = 0; i < Object.values(result).length; i++) {  // loop through each permission requested
+        if (Object.values(result)[i] !== "granted") resolve("denied");  // if any are denied assume all denied
+        
+      }
+      resolve("granted");  // if promise resolved by here then must all be granted as all permissions were 
+    });
+  });
+}
+
 const getRoute = (wayPoints: coordinatesObject[]): Promise<number[][]> => {
-  console.log(wayPoints);
     return new Promise((resolve, reject) => {
       directionsClient.getDirections({
         profile: 'walking',
@@ -107,29 +119,52 @@ const getRoute = (wayPoints: coordinatesObject[]): Promise<number[][]> => {
     })
   }
 
-const App : FC = ( { navigation } : any ) => {
+
+import {Auth} from 'aws-amplify';
+
+
+const App : FC = ( { navigation, route } : any ) => {
+
+
+  async function LogOut() {
+    try {
+        await Auth.signOut();
+        // updateAuthState('loggedOut');
+        // props.updateUser(null);
+        route.params.updateUser(null)
+    } catch (error) {
+        console.log('error signing out: ', error);
+    }
+}
 
     const [path, setPath] = useState([] as number[][]);
     const [markers, setMarkers] = useState([] as PhysicalLocation[]);  // store list of markers
-    const [locationSetting, setLocationSetting] = useState("denied");
+    const [locationSetting, setLocationSetting] = useState("null" as string);
     const [userLocation, setUserLocation] = useState(null as PhysicalLocation | null);
 
+
     useEffect(() => {
-      Geolocation.requestAuthorization("always").then((result) => {
-        setLocationSetting(result);
-        if (result !== "granted") {
-          alert("Allow Always is required");
-        }
-        else {
-          Geolocation.getCurrentPosition((position) => {setUserLocation({title: "Current Location", long: position.coords.longitude, lat: position.coords.latitude})}, () => { alert("SafeStep can't access your location currently! Please make sure that the app has access in your settings") }
-          , {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000});
-        }
-      });
-      // getRoute([[-1.213787, 52.771881], [-1.2321, 52.7651]]).then((_path: number[][]) => {
-      // setPath(_path);
-      // }).catch((error: any) => {
-      // console.warn(error);
-      // });
+      if (locationSetting === "denied") {
+        alert("Allow Always is required");
+      }
+
+      else if (locationSetting === "granted"){  // if changed to granted then try and get the location
+        Geolocation.getCurrentPosition((position) => {setUserLocation({title: "Current Location", long: position.coords.longitude, lat: position.coords.latitude});}, () => { alert("SafeStep can't access your location currently! Please make sure that the app has access in your settings") }
+        , {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000});
+      }
+    }, [locationSetting]);
+
+    useEffect(() => {  // get location permission
+      if (Platform.OS === "ios"){
+        Geolocation.requestAuthorization("always").then((result) => {
+          setLocationSetting(result);
+        })
+      }
+      else if (Platform.OS === "android") {
+        requestAndroidLocationPermission().then((result) => {
+          setLocationSetting(result);
+        })
+      }
     }, []);  // run like component did mount
 
     useEffect(() => {  // need to get the users location here too
@@ -148,6 +183,11 @@ const App : FC = ( { navigation } : any ) => {
         latLongs.push({ coordinates: [element.long, element.lat]});
       });
 
+      if (latLongs.length < 2) {
+        setPath([]);
+        return;  // not enough waypoints to create a path
+      }
+
       getRoute(latLongs).then((_path: number[][]) => {
         setPath(_path);
         }).catch((error: any) => {
@@ -159,13 +199,13 @@ const App : FC = ( { navigation } : any ) => {
     }, [markers]) // run whenever markers is updated
 
     const markersUpdate=useCallback((positions: any[])=>{
-      let toUpdate = [] as PhysicalLocation[]
+      let toUpdate = [] as PhysicalLocation[];
 
       positions.forEach(element => {
-        toUpdate.push(element.physicalLocation);  // will be null if search has not been fulfilled
+        if (element.physicalLocation !== undefined) toUpdate.push(element.physicalLocation);  // will be null if search has not been fulfilled
       });
       setMarkers(toUpdate);
-   },[markers])
+   }, [])
 
     return (
         <SafeAreaView style={styles.mapContainer} edges={['right', "top", 'left']}>
@@ -180,8 +220,9 @@ const App : FC = ( { navigation } : any ) => {
                 </TouchableOpacity>
 
                 <View style={styles.mapBottomNav}>
-                    <TouchableOpacity style={styles.mapBottomNavButtons}>
-                        <Text style={styles.mapBottomNavText}> Recent </Text>
+
+                    <TouchableOpacity onPress={LogOut} style={styles.mapBottomNavButtons}>
+                        <Text style={styles.mapBottomNavText}> Logout </Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.mapBottomNavButtons} onPress={() => navigation.navigate('contacts')}>
                         <Text style={styles.mapBottomNavText}> Contacts </Text>

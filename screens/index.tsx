@@ -1,9 +1,11 @@
-import SignUp from './signup'
-import Login from './login'
-import Maps from './map'
-import Contacts from './contacts'
-import ConfirmCode from './ConfirmCode'
+import SignUp from './SignUp'
+import Login from './Login'
+import MapScreen from './MapScreen'
+import Contacts from './Contacts'
+import LocationSearchScreen from "./LocationSearchScreen"
+import ConfirmCode from './ConfirmCode';
+import LoadingScreen from './LoadingScreen'
+import ResetPassword from './ResetPassword'
 
 
-
-export {SignUp, Login, Maps, Contacts, ConfirmCode }
+export { SignUp, Login, MapScreen, Contacts, LocationSearchScreen, ConfirmCode, LoadingScreen, ResetPassword }

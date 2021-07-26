@@ -1,42 +1,37 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, {FC, useEffect, useState, useCallback} from 'react'
 import {NavigationContainer} from '@react-navigation/native'
 import AppStack from './appstack'
 import AuthStack from './authstack'
 
 import Amplify, {Auth} from 'aws-amplify';
-import awsconfig from '../src/aws-exports';
+import awsconfig from '../aws-exports';
+// import awsconfig from '../aws_config';
+
 Amplify.configure(awsconfig);
 
-const MainNav: FC = () => {
+const MainNav: FC = (props) => {
+
+    console.log(props)
     const [user, setUser] = useState<any>(null)
 
-    // const launch = () => {
-    //     try {
-    //         let user =  Auth.currentAuthenticatedUser()
-    //         setUser(user)
-    //       } catch {
-    //         setUser(null)
-    //       }
-    // }
     async function checkAuthState() {
-            try {
-              await Auth.currentAuthenticatedUser();
-              console.log(' User is signed in');
-              setUser(true);
-            } catch (err) {
-              console.log(' User is not signed in');
-              setUser(null);
-            }
+        try {
+            await Auth.currentAuthenticatedUser();
+            console.log(' User is signed in');
+            setUser(true);
+        } catch (err) {
+            console.log(' User is not signed in');
+            setUser(null);
+        }
     }
-    
+ 
+    // function updateUser(user:any) {
+    //     // setUser(user);
+    // }
 
-    interface updateUser {
-        (text:any): void,
-    
-    }
-    function updateUser(user:any) {
+    const updateUser = useCallback((user) => {
         setUser(user);
-    }
+    }, [user]);
 
     useEffect(() => {
         checkAuthState()
@@ -44,7 +39,7 @@ const MainNav: FC = () => {
 
     return (
         <NavigationContainer>
-            {user !== null ? <AppStack {...updateUser} /> : <AuthStack {...updateUser}/>}
+            {user !== null ? <AppStack updateUser={updateUser} /> : <AuthStack updateUser={updateUser} />}
         </NavigationContainer>
     )
 }
