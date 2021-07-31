@@ -121,10 +121,10 @@ const getRoute = (wayPoints: coordinatesObject[]): Promise<number[][]> => {
 
 import {Auth} from 'aws-amplify';
 
-
 const App : FC = ( { navigation, route } : any ) => {
 
-  async function signOut() {
+
+  async function LogOut() {
     try {
         await Auth.signOut();
         // updateAuthState('loggedOut');
@@ -218,8 +218,9 @@ const App : FC = ( { navigation, route } : any ) => {
                 </TouchableOpacity>
 
                 <View style={styles.mapBottomNav}>
-                    <TouchableOpacity onPress={signOut} style={styles.mapBottomNavButtons}>
-                        <Text style={styles.mapBottomNavText}> Recent </Text>
+
+                    <TouchableOpacity onPress={LogOut} style={styles.mapBottomNavButtons}>
+                        <Text style={styles.mapBottomNavText}> Logout </Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.mapBottomNavButtons} onPress={() => navigation.navigate('contacts')}>
                         <Text style={styles.mapBottomNavText}> Contacts </Text>

@@ -1,7 +1,7 @@
 import { useLinkProps } from '@react-navigation/native';
 import React, {FC, useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Alert} from 'react-native';
-import {Input, Button, HeadingCurve} from '../components'
+import {Input, Button, HeadingCurve, AuthError} from '../components'
 
 // import {launch} from '../navigation/index'
 
@@ -15,6 +15,9 @@ const App : FC = ( { navigation }: any ) => {
     // const [username, setUsername] = useState<string | null>(null)
     const [email, setEmail] = useState<string | null>(null)
     const [password, setPassword] = useState<string | null>(null)
+    const [errorMessage, setErrorMessage] = useState<string>("");
+
+    // const username = "UniqueID";
 
     // const username = "UniqueID";
 
@@ -33,17 +36,22 @@ const App : FC = ( { navigation }: any ) => {
                 navigation.navigate('confirm_code', {username:username});
             } catch (error) {
                 console.log('error signing up:', error);
+                setErrorMessage(error.message);
+
             }
         
         } else {
             console.log("error, unfilled inputs");
+            setErrorMessage("E-mail cannot be empty");
+
         }
     }
 
     return (
         <View style={styles.container}> 
             <HeadingCurve text='SignUp'/>
-            {/* <Input placeholder='Username' onChangeText={(text) => setUsername(text)} /> */}
+            <AuthError errMessage = {errorMessage} />
+
             <Input placeholder='E-mail' onChangeText={(text) => setEmail(text)} />
             <Input placeholder='Password'secureTextEntry={true} onChangeText={(text) => setPassword(text)} />
 

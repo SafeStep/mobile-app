@@ -1,19 +1,20 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-safestep-dev-230650-authRole",
-      "UnauthRoleArn": "arn:aws:iam::209523969378:role/amplify-safestep-dev-230650-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::209523969378:role/amplify-safestep-dev-230650-authRole",
+      "AuthRoleName": "amplify-safestepapp-dev-194559-authRole",
+      "UnauthRoleArn": "arn:aws:iam::209523969378:role/amplify-safestepapp-dev-194559-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::209523969378:role/amplify-safestepapp-dev-194559-authRole",
       "Region": "eu-west-1",
-      "DeploymentBucketName": "amplify-safestep-dev-230650-deployment",
-      "UnauthRoleName": "amplify-safestep-dev-230650-unauthRole",
-      "StackName": "amplify-safestep-dev-230650",
-      "StackId": "arn:aws:cloudformation:eu-west-1:209523969378:stack/amplify-safestep-dev-230650/b9d165f0-98b6-11eb-8837-02b2e48c2d03",
-      "AmplifyAppId": "duvkrsglbcwm0"
+      "DeploymentBucketName": "amplify-safestepapp-dev-194559-deployment",
+      "UnauthRoleName": "amplify-safestepapp-dev-194559-unauthRole",
+      "StackName": "amplify-safestepapp-dev-194559",
+      "StackId": "arn:aws:cloudformation:eu-west-1:209523969378:stack/amplify-safestepapp-dev-194559/3a723220-ebe6-11eb-9096-021190ae6275",
+      "AmplifyAppId": "d2qtdl2legqvn9"
     },
     "categories": {
       "auth": {
-        "safestep2c99166e": {}
+        "safestep2c99166e": {},
+        "safestepapp50c8fbb350c8fbb3": {}
       }
     }
   }
