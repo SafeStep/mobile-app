@@ -1,7 +1,7 @@
 import React, {FC} from 'react'
 import {createStackNavigator} from '@react-navigation/stack'
 
-import {SignUp, Login, ConfirmCode, LoadingScreen, ResetPassword} from '../screens/Index'
+import {SignUp, Login, ConfirmCode, LoadingScreen, ResetPassword} from '../screens/index'
 
 const {Navigator, Screen} = createStackNavigator();
 

@@ -1,7 +1,7 @@
 import React, {FC} from 'react'
 import { Button, Text } from "react-native"
 import {createStackNavigator} from '@react-navigation/stack'
-import {MapScreen, Contacts, LocationSearchScreen } from '../screens/Index';
+import {MapScreen, Contacts, LocationSearchScreen } from '../screens/index';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AddContactScreen from '../screens/AddContactScreen';
 
