@@ -6,6 +6,7 @@ import LocationSearchScreen from "./LocationSearchScreen"
 import ConfirmCode from './ConfirmCode';
 import LoadingScreen from './LoadingScreen'
 import ResetPassword from './ResetPassword'
+import AddContactScreen from "./AddContactScreen"
 
 
-export { SignUp, Login, MapScreen, Contacts, LocationSearchScreen, ConfirmCode, LoadingScreen, ResetPassword }
+export { SignUp, Login, MapScreen, Contacts, LocationSearchScreen, ConfirmCode, LoadingScreen, ResetPassword, AddContactScreen }

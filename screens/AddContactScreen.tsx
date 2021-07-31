@@ -5,7 +5,7 @@ import {
   Text
 } from "react-native";
 
-const App : FC = ( { navigation } : any ) => {
+const App : FC = ( { navigation, route } : any ) => {
 
     const [ecName, changeECName] = useState("");
 
@@ -28,4 +28,4 @@ They will receive an invitation to become one of your emergency contacts via ema
     );
 };
 
-export default App;
+export default App
