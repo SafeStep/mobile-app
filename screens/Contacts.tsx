@@ -5,7 +5,6 @@ import { TextInput, View, Text, StyleSheet, TouchableOpacity, Image} from 'react
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {Header} from '../components'
 import Navigation from '../navigation/first_index';
-
 const styles = require('./styles');
 
 const ContactElement: FC = ({ }) : any => {
@@ -33,6 +32,10 @@ const App : FC = ( { navigation } : any ) => {
         console.warn("Loading Contacts");
 
         setTimeout(() => {updateLoading(false)}, 1000)  // update loading as loading has completed after a second for testing
+    }, [])
+
+    useEffect(() => {  // init fake endpoints
+
     }, [])
     
     return (
