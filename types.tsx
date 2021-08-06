@@ -21,3 +21,18 @@ export type PhysicalLocation = {
   lat: number,
   long: number,
 }
+
+export type responsibility = {
+  greenID: string;
+  RID: string;
+  status: "accepted" | "pending"
+}  
+
+export type EC  = {
+  ECID: string;
+  firstName: string;
+  email: string;
+  phone: null | string;
+  dialingCode: null | string;
+  responsibilities: responsibility[]
+}
