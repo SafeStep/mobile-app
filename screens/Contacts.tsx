@@ -1,10 +1,9 @@
 import { useLinkProps } from '@react-navigation/native';
 import React, {FC, useState} from 'react';
 import { useEffect } from 'react';
-import { TextInput, View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {Header} from '../components'
-import Navigation from '../navigation/first_index';
+import { API_URL } from "@env"
 const styles = require('./styles');
 
 const ContactElement: FC = ({ }) : any => {
@@ -28,14 +27,12 @@ const App : FC = ( { navigation } : any ) => {
     const [loading, updateLoading] = useState(true);
 
     useEffect(() => {
-        
         console.warn("Loading Contacts");
-
-        setTimeout(() => {updateLoading(false)}, 1000)  // update loading as loading has completed after a second for testing
-    }, [])
-
-    useEffect(() => {  // init fake endpoints
-
+        fetch(API_URL+"/1.0/responsibilities", {method: "GET"}) // TODO some authentication will be required here
+        .then(response => console.log(response))
+        .catch(error => console.log("failed to load contacts" + error))
+        .finally(() => updateLoading(false));
+        //setTimeout(() => {updateLoading(false)}, 1000)  // update loading as loading has completed after a second for testing
     }, [])
     
     return (
