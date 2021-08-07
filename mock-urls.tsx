@@ -34,6 +34,18 @@ export const initMocks = () => {
                       "status": "pending"
                   }
               ]
+            },
+            {
+              "ECID": "1a26ss25-b81f-7856-s5g9-4b23972c43w2",
+              "firstName": "Ollie",
+              "email": "oliver.pugh@yahoo.com",
+              "responsibilities": [
+                  {
+                      "greenID": request.params.id,
+                      "RID": "eff0589f-4cbb-4061-b0d0-dda5ea0a7ecd",
+                      "status": "pending"
+                  }
+              ]
             }
           ])
         },
