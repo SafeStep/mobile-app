@@ -5,8 +5,10 @@ export const initMocks = () => {
     createServer({
         routes() {
           this.namespace = API_URL!;  // ! means defo not null
-          this.passthrough("https://cognito-idp.eu-west-1.amazonaws.com");
-
+          this.passthrough("https://cognito-idp.eu-west-1.amazonaws.com/**");
+          this.passthrough("http://10.0.2.2:8081/**");
+          this.passthrough("https://api.mapbox.com/**");
+          
           this.get("/1.0/responsibilities", (schema, request) => // this request is for when a user wants to see their saviours
           [
             {

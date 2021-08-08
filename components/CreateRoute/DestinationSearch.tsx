@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useCallback, forwardRef, useRef } from 'react';
-import { TextInput, View, Button, Text} from 'react-native';
-import { FlatList, ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import {  View, Button, Text} from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import DraggableFlatList, {
     RenderItemParams,
   } from 'react-native-draggable-flatlist';
-
+import { UserGeolocationInteractions } from "../../logic/UserGeolocationInteractions";
 import { v4 as uuidv4 } from 'uuid';
-import { useLinkProps } from '@react-navigation/native';
 import { PhysicalLocation } from '../../types';
-import { navItem } from '@aws-amplify/ui';
 
 const styles = {
     destinationInputContainer: {
@@ -57,18 +55,19 @@ interface destinationInputProps {
     dragCallback?: any,
     updateCallback: Function
     navigation: any,
-    physicalLocation?: PhysicalLocation,
-    currentLocation: PhysicalLocation
+    physicalLocation?: PhysicalLocation | null
 }
 
-const DestinationInput = ({ currentLocation, physicalLocation, dragCallback, id, navigation, updateCallback}: destinationInputProps) => {
+const DestinationInput = ({ dragCallback, id, navigation, updateCallback}: destinationInputProps) => {
+
+    let currentLocation = UserGeolocationInteractions.instance.cachedLocation;
 
     return (  
         <View style={styles.destinationInputContainer as any} > 
             <View  style={styles.destinationInputWrapper as any}>
-                <TouchableOpacity onPress={() => {navigation.navigate("location_search", {inputId: id, updateCallback: updateCallback, currentLocation: currentLocation})}}>
+                <TouchableOpacity onPress={() => {navigation.navigate("location_search", {inputId: id, updateCallback: updateCallback})}}>
                     <View style={styles.destinationInput as any}>
-                        <Text style={{width: "100%"}}>{physicalLocation ? physicalLocation.title : "Search"}</Text>
+                        <Text style={{width: "100%"}}>{currentLocation ? currentLocation.title : "Search"}</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -83,10 +82,9 @@ const DestinationInput = ({ currentLocation, physicalLocation, dragCallback, id,
 interface DestinationSearchProps {
     navigation: any, 
     markerUpdateCallback: Function,
-    currentLocation: PhysicalLocation
 }
 
-export const DestinationSearch = ({ navigation, markerUpdateCallback, currentLocation }: DestinationSearchProps) => {
+export const DestinationSearch = ({ navigation, markerUpdateCallback }: DestinationSearchProps) => {
 
     const [currentDestinations, setCurrentDestinations] = useState([] as destinationInputProps[]);
     const currentDestinationsRef = useRef([] as destinationInputProps[]);
@@ -105,11 +103,11 @@ export const DestinationSearch = ({ navigation, markerUpdateCallback, currentLoc
     }, [currentDestinationsRef.current]);
 
     const renderItem = useCallback( ({ item, index, drag, isActive }: RenderItemParams<destinationInputProps>) => {
-        return <DestinationInput currentLocation={currentLocation} physicalLocation={item.physicalLocation} updateCallback={updateSingleValue} id={item.id} dragCallback={drag} navigation={navigation} />;
-    }, [currentLocation]);
+        return <DestinationInput physicalLocation={item.physicalLocation} updateCallback={updateSingleValue} id={item.id} dragCallback={drag} navigation={navigation} />;
+    }, [UserGeolocationInteractions.instance.cachedLocation]);
 
     const addDestination = useCallback(() => {  // add a new destination input to the screen
-        setCurrentDestinations( oldValues => [...oldValues, {updateCallback: updateSingleValue, id:uuidv4(), navigation: navigation, currentLocation: currentLocation}]);
+        setCurrentDestinations( oldValues => [...oldValues, {updateCallback: updateSingleValue, id:uuidv4(), navigation: navigation, currentLocation: UserGeolocationInteractions.instance.cachedLocation}]);
     }, [setCurrentDestinations]);
 
     useEffect(() => {
@@ -118,7 +116,9 @@ export const DestinationSearch = ({ navigation, markerUpdateCallback, currentLoc
     }, [currentDestinations])
 
     useEffect(() => {  // add the first input value
-        setCurrentDestinations([{updateCallback: updateSingleValue, id:uuidv4(), navigation: navigation, currentLocation: currentLocation}]);
+        if (UserGeolocationInteractions.instance.cachedLocation) {
+            setCurrentDestinations([{updateCallback: updateSingleValue, id:uuidv4(), navigation: navigation, physicalLocation: UserGeolocationInteractions.instance.cachedLocation}]);
+        }
     }, []);
 
     return (  // set preferable heights in second view

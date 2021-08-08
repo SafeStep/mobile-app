@@ -1,12 +1,10 @@
 import React, {FC, useState, useEffect, useRef, useCallback} from 'react';
-import { View, Text, TouchableOpacity, Platform, PermissionsAndroid} from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import mbxClient from "@mapbox/mapbox-sdk";
 import mbxDirections from "@mapbox/mapbox-sdk/services/directions";
 import polyline from "@mapbox/polyline";
-
-import Geolocation from 'react-native-geolocation-service';
-
+import { UserGeolocationInteractions } from "../logic/UserGeolocationInteractions";
 import { MAPBOX_KEY } from "@env";
 
 const baseClient = mbxClient({ accessToken: MAPBOX_KEY });
@@ -89,19 +87,6 @@ interface coordinatesObject {
   coordinates: number[]
 }
 
-const requestAndroidLocationPermission = async(): Promise<string> =>  {  // request location permissions on android
-  return new Promise((resolve, reject) => {
-    PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION, PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]).then((result)=>
-    {
-      for (let i = 0; i < Object.values(result).length; i++) {  // loop through each permission requested
-        if (Object.values(result)[i] !== "granted") resolve("denied");  // if any are denied assume all denied
-        
-      }
-      resolve("granted");  // if promise resolved by here then must all be granted as all permissions were 
-    });
-  });
-}
-
 const getRoute = (wayPoints: coordinatesObject[]): Promise<number[][]> => {
     return new Promise((resolve, reject) => {
       directionsClient.getDirections({
@@ -137,40 +122,14 @@ const App : FC = ( { navigation, route } : any ) => {
 
     const [path, setPath] = useState([] as number[][]);
     const [markers, setMarkers] = useState([] as PhysicalLocation[]);  // store list of markers
-    const [locationSetting, setLocationSetting] = useState("null" as string);
-    const [userLocation, setUserLocation] = useState(null as PhysicalLocation | null);
-
-
-    useEffect(() => {
-      if (locationSetting === "denied") {
-        alert("Allow Always is required");
-      }
-
-      else if (locationSetting === "granted"){  // if changed to granted then try and get the location
-        Geolocation.getCurrentPosition((position) => {setUserLocation({title: "Current Location", long: position.coords.longitude, lat: position.coords.latitude});}, () => { alert("SafeStep can't access your location currently! Please make sure that the app has access in your settings") }
-        , {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000});
-      }
-    }, [locationSetting]);
-
-    useEffect(() => {  // get location permission
-      if (Platform.OS === "ios"){
-        Geolocation.requestAuthorization("always").then((result) => {
-          setLocationSetting(result);
-        })
-      }
-      else if (Platform.OS === "android") {
-        requestAndroidLocationPermission().then((result) => {
-          setLocationSetting(result);
-        })
-      }
-    }, []);  // run like component did mount
 
     useEffect(() => {  // need to get the users location here too
-      if (userLocation === null) {
+      if (UserGeolocationInteractions.instance.cachedLocation === null) {
         console.warn("Cant create path as no user location available");
+        UserGeolocationInteractions.instance.getLocation();
         return;
       }      
-      let waypoints = [userLocation, ...markers]  // append the user location to the start of the array
+      let waypoints = [UserGeolocationInteractions.instance.cachedLocation, ...markers]  // append the user location to the start of the array
 
       let latLongs = [] as coordinatesObject[];
 
@@ -208,10 +167,10 @@ const App : FC = ( { navigation, route } : any ) => {
     return (
         <SafeAreaView style={styles.mapContainer} edges={['right', "top", 'left']}>
             <View style={styles.mapTopNav}>
-              <DestinationSearch currentLocation={userLocation as any} markerUpdateCallback={markersUpdate} navigation={navigation}/>
+              <DestinationSearch markerUpdateCallback={markersUpdate} navigation={navigation}/> 
             </View>
             <View style={styles.map}>
-                <Map path={path} markers={markers} locationSetting={locationSetting} userPosition={userLocation}/>
+                {<Map path={path} markers={markers} /> }
                 
                 <TouchableOpacity style={styles.goButton}>
                     <Text style={styles.goButtonText}> Go </Text>
