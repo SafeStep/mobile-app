@@ -131,7 +131,7 @@ const App : FC = ( { route, navigation } : any) => {
             </View>
             <KeyboardAvoidingView style={{}}>
                 <ScrollView style={styles.resultsContainer as any}>
-                {results.map(location => <View style={styles.result as any}>
+                {results.map(location => <View style={styles.result as any} key={location.title}>
                                             <LocationResult 
                                                 clickCallback={route.params.updateCallback}
                                                 inputId={inputId} 
