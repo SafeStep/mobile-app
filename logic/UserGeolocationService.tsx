@@ -4,22 +4,22 @@ import { PermissionsAndroid, Platform } from "react-native";
 
 const LOCATION_REFRESH_FREQ_SECS = 30;
 
-export class UserGeolocationInteractions {
+export class UserGeolocationService {
   cachedLocation: PhysicalLocation | null = null;
   locationPermission: "denied" | "granted" = "denied";
-  static instance: UserGeolocationInteractions;
+  static instance: UserGeolocationService;
 
 
   constructor() {
-    if (UserGeolocationInteractions.instance) { return; }
+    if (UserGeolocationService.instance) { return; }
 
-    UserGeolocationInteractions.instance = this;
+    UserGeolocationService.instance = this;
 
     this.cachedLocation = null;
 
     let _this = this;
 
-    UserGeolocationInteractions.requestPermission() // request permission from the user
+    UserGeolocationService.requestPermission() // request permission from the user
       .then(result => { _this.locationPermission = result; }) // set the result to property in this object
       .then(_this.getLocation); // get the users location
 
@@ -60,7 +60,7 @@ export class UserGeolocationInteractions {
           .catch(err => reject(err));
       }
       else if (Platform.OS === "android") {
-        UserGeolocationInteractions.requestAndroidPermission().then(result => {
+        UserGeolocationService.requestAndroidPermission().then(result => {
           resolve(result);
         })
           .catch(err => reject(err));

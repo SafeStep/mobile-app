@@ -1,12 +1,12 @@
 import MapboxGL from "@react-native-mapbox-gl/maps";
 import React from "react";
 import { MAPBOX_KEY } from "@env"
-import { UserGeolocationInteractions } from "../logic/UserGeolocationInteractions";
+import { UserGeolocationService } from "../logic/UserGeolocationService";
 import { PhysicalLocation } from '../types';
 import { View, Text } from "react-native";
 import { useEffect } from "react";
 
-new UserGeolocationInteractions();
+new UserGeolocationService();
 
 const makeGeoJSON: (data: number[][]) => any = function(data) {
 
@@ -48,7 +48,7 @@ interface mapProps {
 export const Map = ({ path, markers}: mapProps) => {
 
   MapboxGL.setAccessToken(MAPBOX_KEY);
-  let userPosition = UserGeolocationInteractions.instance.cachedLocation;
+  let userPosition = UserGeolocationService.instance.cachedLocation;
   return (       
     <MapboxGL.MapView style={styles.map} >
 

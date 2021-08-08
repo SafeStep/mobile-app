@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import DraggableFlatList, {
     RenderItemParams,
   } from 'react-native-draggable-flatlist';
-import { UserGeolocationInteractions } from "../../logic/UserGeolocationInteractions";
+import { UserGeolocationService } from "../../logic/UserGeolocationService";
 import { v4 as uuidv4 } from 'uuid';
 import { PhysicalLocation } from '../../types';
 
@@ -102,7 +102,7 @@ export const DestinationSearch = ({ navigation, markerUpdateCallback }: Destinat
 
     const renderItem = useCallback( ({ item, index, drag, isActive }: RenderItemParams<destinationInputProps>) => {
         return <DestinationInput physicalLocation={item.physicalLocation} updateCallback={updateSingleValue} id={item.id} dragCallback={drag} navigation={navigation} />;
-    }, [UserGeolocationInteractions.instance.cachedLocation]);
+    }, [UserGeolocationService.instance.cachedLocation]);
 
     const addDestination = useCallback(() => {  // add a new destination input to the screen
         setCurrentDestinations( oldValues => [...oldValues, {updateCallback: updateSingleValue, id:uuidv4(), navigation: navigation}]);
@@ -114,7 +114,7 @@ export const DestinationSearch = ({ navigation, markerUpdateCallback }: Destinat
     }, [currentDestinations])
 
     useEffect(() => {  // add the first input value
-            setCurrentDestinations([{updateCallback: updateSingleValue, id:uuidv4(), navigation: navigation, physicalLocation: UserGeolocationInteractions.instance.cachedLocation}]);
+            setCurrentDestinations([{updateCallback: updateSingleValue, id:uuidv4(), navigation: navigation, physicalLocation: UserGeolocationService.instance.cachedLocation}]);
     }, []);
 
     return (  // set preferable heights in second view

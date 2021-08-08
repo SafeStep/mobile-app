@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import mbxClient from "@mapbox/mapbox-sdk";
 import mbxDirections from "@mapbox/mapbox-sdk/services/directions";
 import polyline from "@mapbox/polyline";
-import { UserGeolocationInteractions } from "../logic/UserGeolocationInteractions";
+import { UserGeolocationService } from "../logic/UserGeolocationService";
 import { MAPBOX_KEY } from "@env";
 
 const baseClient = mbxClient({ accessToken: MAPBOX_KEY });
@@ -124,12 +124,12 @@ const App : FC = ( { navigation, route } : any ) => {
     const [markers, setMarkers] = useState([] as PhysicalLocation[]);  // store list of markers
 
     useEffect(() => {  // need to get the users location here too
-      if (UserGeolocationInteractions.instance.cachedLocation === null) {
+      if (UserGeolocationService.instance.cachedLocation === null) {
         console.warn("Cant create path as no user location available");
-        UserGeolocationInteractions.instance.getLocation();
+        UserGeolocationService.instance.getLocation();
         return;
       }      
-      let waypoints = [UserGeolocationInteractions.instance.cachedLocation, ...markers]  // append the user location to the start of the array
+      let waypoints = [UserGeolocationService.instance.cachedLocation, ...markers]  // append the user location to the start of the array
 
       let latLongs = [] as coordinatesObject[];
 

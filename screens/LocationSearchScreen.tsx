@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {Header} from '../components'
 import Navigation from '../navigation/first_index';
 import { PhysicalLocation } from "../types"
-import { UserGeolocationInteractions } from '../logic/UserGeolocationInteractions';
+import { UserGeolocationService } from '../logic/UserGeolocationService';
 
 import { MAPBOX_KEY } from "@env";
 
@@ -95,7 +95,7 @@ const App : FC = ( { route, navigation } : any) => {
     }
 
     const searchLocations = (inputValue: string) => {  // run the mapbox api 
-        let currentLocation = UserGeolocationInteractions.instance.cachedLocation;
+        let currentLocation = UserGeolocationService.instance.cachedLocation;
         if (!currentLocation) {
             alert("Cant get your location right now!");
         }
