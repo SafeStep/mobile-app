@@ -29,7 +29,7 @@ export class UserGeolocationService {
     }, LOCATION_REFRESH_FREQ_SECS * 1000);  // get the location every X seconds
   }
 
-  private getLocation(): Promise<PhysicalLocation> {
+  getLocation(): Promise<PhysicalLocation> {
     const _this = this;
     return new Promise((resolve, reject) => {
       if (_this.locationPermission === "denied") {

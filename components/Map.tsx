@@ -58,7 +58,7 @@ export const Map = ({ path, markers}: mapProps) => {
         {
         markers?.map((location, index) => {
           if (location){
-            return (  <MapboxGL.MarkerView id={location.title} coordinate={[location.long,location.lat]}>
+            return (  <MapboxGL.MarkerView key={location.lat.toString() + location.long.toString()} id={location.title} coordinate={[location.long,location.lat]}>
                        <View style={styles.marker}>
                          <Text style={{alignSelf:"center"}}>{String.fromCharCode(index+65)}</Text>
                        </View>
