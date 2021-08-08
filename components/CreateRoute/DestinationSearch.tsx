@@ -58,16 +58,14 @@ interface destinationInputProps {
     physicalLocation?: PhysicalLocation | null
 }
 
-const DestinationInput = ({ dragCallback, id, navigation, updateCallback}: destinationInputProps) => {
-
-    let currentLocation = UserGeolocationInteractions.instance.cachedLocation;
+const DestinationInput = ({ dragCallback, id, navigation, updateCallback, physicalLocation}: destinationInputProps) => {
 
     return (  
         <View style={styles.destinationInputContainer as any} > 
             <View  style={styles.destinationInputWrapper as any}>
                 <TouchableOpacity onPress={() => {navigation.navigate("location_search", {inputId: id, updateCallback: updateCallback})}}>
                     <View style={styles.destinationInput as any}>
-                        <Text style={{width: "100%"}}>{currentLocation ? currentLocation.title : "Search"}</Text>
+                        <Text style={{width: "100%"}}>{physicalLocation ? physicalLocation.title : "Search"}</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -107,7 +105,7 @@ export const DestinationSearch = ({ navigation, markerUpdateCallback }: Destinat
     }, [UserGeolocationInteractions.instance.cachedLocation]);
 
     const addDestination = useCallback(() => {  // add a new destination input to the screen
-        setCurrentDestinations( oldValues => [...oldValues, {updateCallback: updateSingleValue, id:uuidv4(), navigation: navigation, currentLocation: UserGeolocationInteractions.instance.cachedLocation}]);
+        setCurrentDestinations( oldValues => [...oldValues, {updateCallback: updateSingleValue, id:uuidv4(), navigation: navigation}]);
     }, [setCurrentDestinations]);
 
     useEffect(() => {
@@ -116,9 +114,7 @@ export const DestinationSearch = ({ navigation, markerUpdateCallback }: Destinat
     }, [currentDestinations])
 
     useEffect(() => {  // add the first input value
-        if (UserGeolocationInteractions.instance.cachedLocation) {
             setCurrentDestinations([{updateCallback: updateSingleValue, id:uuidv4(), navigation: navigation, physicalLocation: UserGeolocationInteractions.instance.cachedLocation}]);
-        }
     }, []);
 
     return (  // set preferable heights in second view
