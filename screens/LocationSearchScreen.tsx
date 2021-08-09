@@ -8,7 +8,9 @@ import Navigation from '../navigation/first_index';
 import { PhysicalLocation } from "../types"
 import { UserGeolocationService } from '../logic/UserGeolocationService';
 
-import { MAPBOX_KEY } from "@env";
+import * as config from "../configuration.json";
+
+const MAPBOX_KEY = config.mapbox_key
 
 const axios = require('axios');
 
