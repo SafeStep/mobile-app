@@ -1,5 +1,7 @@
-import { createServer } from "miragejs"
-import { API_URL } from "@env"
+import { createServer } from "miragejs";
+import * as config from "./configuration.json";
+
+const API_URL = config.api_url
 
 export const initMocks = () => {
     createServer({
@@ -8,6 +10,7 @@ export const initMocks = () => {
           this.passthrough("https://cognito-idp.eu-west-1.amazonaws.com/");
           this.passthrough("http://10.0.2.2:8081/**");
           this.passthrough("https://api.mapbox.com/**");
+          this.passthrough("http://localhost:8081/**");
           
           this.get("/1.0/responsibilities", (schema, request) => // this request is for when a user wants to see their saviours
           [
