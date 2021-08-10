@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import {  View, Button, Text} from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {  View, Button, Text, TouchableOpacity } from 'react-native';
 import DraggableFlatList, {
     RenderItemParams,
   } from 'react-native-draggable-flatlist';
 import { UserGeolocationService } from "../../logic/UserGeolocationService";
+import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { PhysicalLocation } from '../../types';
 
@@ -120,7 +120,7 @@ export const DestinationSearch = ({ navigation, markerUpdateCallback }: Destinat
     return (  // set preferable heights in second view
         <View> 
             <View style={{flexDirection: "row", minHeight: 50, maxHeight: 150}}>
-                <DraggableFlatList 
+                 <DraggableFlatList 
                     data = { currentDestinations }
                     keyExtractor={(item, index) => `draggable-item-${item.id}`}
                     renderItem = {renderItem}

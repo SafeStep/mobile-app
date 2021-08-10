@@ -1,11 +1,14 @@
 import React, {FC, useState, useEffect, useCallback} from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { API_URL } from "@env"
 import { EC } from "../types"; 
 import Auth from '@aws-amplify/auth';
 import { ContactsList } from "../components/Contacts/ContactList";
 const styles = require('./styles');
+
+import * as config from "../configuration.json";
+
+const API_URL = config.api_url
 
 const App : FC = ( { navigation } : any ) => {
 

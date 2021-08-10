@@ -5,7 +5,9 @@ import mbxClient from "@mapbox/mapbox-sdk";
 import mbxDirections from "@mapbox/mapbox-sdk/services/directions";
 import polyline from "@mapbox/polyline";
 import { UserGeolocationService } from "../logic/UserGeolocationService";
-import { MAPBOX_KEY } from "@env";
+import * as config from "../configuration.json";
+
+const MAPBOX_KEY = config.mapbox_key
 
 const baseClient = mbxClient({ accessToken: MAPBOX_KEY });
 const directionsClient = mbxDirections(baseClient);
@@ -167,7 +169,7 @@ const App : FC = ( { navigation, route } : any ) => {
     return (
         <SafeAreaView style={styles.mapContainer} edges={['right', "top", 'left']}>
             <View style={styles.mapTopNav}>
-              <DestinationSearch markerUpdateCallback={markersUpdate} navigation={navigation}/> 
+              <DestinationSearch markerUpdateCallback={markersUpdate} navigation={navigation}/>
             </View>
             <View style={styles.map}>
                 {<Map path={path} markers={markers} /> }
