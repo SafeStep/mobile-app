@@ -1,5 +1,5 @@
 import SignUp from './SignUp'
-import Login from './Login'
+import Login from './LoginScreen'
 import MapScreen from './MapScreen'
 import Contacts from './Contacts'
 import LocationSearchScreen from "./LocationSearchScreen"
