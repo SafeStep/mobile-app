@@ -1,7 +1,7 @@
 import React, {FC} from 'react'
 import { Button, Text } from "react-native"
 import {createStackNavigator} from '@react-navigation/stack'
-import {MapScreen, Contacts, LocationSearchScreen } from '../screens/index';
+import {MapScreen, Contacts, LocationSearchScreen, LocationPermCheckScreen } from '../screens/index';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AddContactScreen from '../screens/AddContactScreen';
 
@@ -14,6 +14,7 @@ const AppStack : FC = (props:any) => {
         
         <Navigator screenOptions={{headerShown: false}}>
 
+            <Screen name="location_perm_check" component={LocationPermCheckScreen} />
             <Screen name='map' component={MapScreen} initialParams={{ updateUser: props.updateUser }}  />
             <Screen name='contacts' component={Contacts} options={contactsOptions} />
             <Screen name="location_search" component={LocationSearchScreen} />

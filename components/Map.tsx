@@ -3,12 +3,9 @@ import React from "react";
 import { UserGeolocationService } from "../logic/UserGeolocationService";
 import { PhysicalLocation } from '../types';
 import { View, Text } from "react-native";
-import { useEffect } from "react";
 import * as config from "../configuration.json";
 
 const MAPBOX_KEY = config.mapbox_key
-
-new UserGeolocationService();
 
 const makeGeoJSON: (data: number[][]) => any = function(data) {
 
