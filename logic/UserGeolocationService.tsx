@@ -28,14 +28,13 @@ export class UserGeolocationService {
     }
 
     setInterval(() => {
-      _this.getLocation().then(result => console.log(result))
+      _this.getLocation()
       .catch()
     }, LOCATION_REFRESH_FREQ_SECS * 1000);  // get the location every X seconds
   }
 
   getLocation(): Promise<PhysicalLocation> {
     const _this = this;
-    console.log("Getting location");
     return new Promise((resolve, reject) => {
       if (_this.locationPermission === "denied") {
         reject("Location permission denied");

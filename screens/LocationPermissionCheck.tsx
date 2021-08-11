@@ -16,7 +16,7 @@ const App : FC = ( { navigation }: any ) => {
     }, []);
 
     useEffect(() => {
-        console.log(locationPermission);
+        console.log("Location Permission: " + locationPermission);
         if (locationPermission === "granted") {
             navigation.navigate("map")  // redirect to map because permission has been granted
         }
