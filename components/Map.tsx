@@ -78,3 +78,5 @@ export const Map = ({ path, markers}: mapProps) => {
         }
     </MapboxGL.MapView>);
 };
+
+export default Map;

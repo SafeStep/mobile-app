@@ -132,3 +132,6 @@ export const DestinationSearch = ({ navigation, markerUpdateCallback }: Destinat
         </View>
         );
 };
+
+
+export default DestinationSearch;
