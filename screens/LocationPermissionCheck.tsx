@@ -22,15 +22,15 @@ const App : FC = ( { navigation }: any ) => {
         }
     }, [locationPermission]);
     
-    if (locationPermission === "waiting" ){
+    if (locationPermission === "denied" ){
         return (
-            <View><Text>Checking Permission...</Text></View>
+            <View><Text>Instructions on how to change to allow</Text></View>
         )
     }
     
     else { // has been denied
         return (
-            <View><Text>Instructions on how to change to allow</Text></View>
+            <View><Text>Checking Permission...</Text></View>
         )
     }
 }
