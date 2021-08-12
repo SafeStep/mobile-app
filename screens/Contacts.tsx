@@ -3,8 +3,8 @@ import { View, Text, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { EC } from "../types"; 
 import Auth from '@aws-amplify/auth';
-import { ContactsList } from "../components/Contacts/ContactList";
-const styles = require('./styles');
+
+import { ContactsList } from '../components'
 
 import * as config from "../configuration.json";
 

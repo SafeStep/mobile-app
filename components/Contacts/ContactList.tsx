@@ -16,3 +16,5 @@ export const ContactsList: FC<allContactProps> = (props) : JSX.Element => {  // 
     keyExtractor={(item) => item.ECID}
     />
 }
+
+export default ContactsList;
