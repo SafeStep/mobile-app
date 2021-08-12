@@ -12,8 +12,8 @@ const MAPBOX_KEY = config.mapbox_key
 const baseClient = mbxClient({ accessToken: MAPBOX_KEY });
 const directionsClient = mbxDirections(baseClient);
 
-import { Map } from "../components/Map";
-import { DestinationSearch } from "../components/CreateRoute/DestinationSearch";
+import {Map, DestinationSearch} from '../components'
+
 import { PhysicalLocation } from '../types';
 
 let styles = require('./styles');
