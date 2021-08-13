@@ -174,7 +174,7 @@ const App : FC = ( { navigation, route } : any ) => {
             <View style={styles.map}>
                 {<Map path={path} markers={markers} /> }
                 
-                <TouchableOpacity style={styles.goButton}>
+                <TouchableOpacity style={styles.goButton} onPress={UserGeolocationService.instance.startBackgroundLocation}>
                     <Text style={styles.goButtonText}> Go </Text>
                 </TouchableOpacity>
 

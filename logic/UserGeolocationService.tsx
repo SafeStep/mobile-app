@@ -1,7 +1,16 @@
 import { PhysicalLocation } from "../types";
 import Geolocation from 'react-native-geolocation-service';
 import { PermissionsAndroid, Platform } from "react-native";
-import { throwStatement } from "@babel/types";
+import * as TaskManager from "expo-task-manager";
+import * as Location from "expo-location";
+
+TaskManager.defineTask("OUTPUT-LOCATION", ({ data, error }) => {
+  if (error) {
+    // check `error.message` for more details.
+    return;
+  }
+  console.log('Received new locations', data);
+});
 
 const LOCATION_REFRESH_FREQ_SECS = 30;
 
@@ -31,6 +40,16 @@ export class UserGeolocationService {
       _this.getLocation()
       .catch()
     }, LOCATION_REFRESH_FREQ_SECS * 1000);  // get the location every X seconds
+  }
+
+  startBackgroundLocation() {
+    Location.startLocationUpdatesAsync("OUTPUT-LOCATION", {
+      foregroundService: {
+        notificationTitle: "SafeStep",
+        notificationBody: "test",
+      },
+      showsBackgroundLocationIndicator: true
+    });
   }
 
   getLocation(): Promise<PhysicalLocation> {

@@ -36,7 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
 
-          // // Add unimodules
+          // Add unimodules
           // List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
           //   new ModuleRegistryAdapter(mModuleRegistryProvider)
           // );
