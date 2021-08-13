@@ -114,7 +114,6 @@
 				80FBE1C49CF09E1A73CB57B8 /* Pods-SafeStep-SafeStepTests.debug.xcconfig */,
 				300B0B0ED39B563F6E727D48 /* Pods-SafeStep-SafeStepTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
