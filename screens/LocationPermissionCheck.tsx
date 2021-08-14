@@ -8,9 +8,9 @@ const App : FC = ( { navigation }: any ) => {
 
     useEffect(()=> {
         new UserGeolocationService(false);  // create the geolocation service
-        UserGeolocationService.instance.requestPermission()
+        UserGeolocationService.instance.requestForegroundPermission()
         .then(result => {
-            setLocationPermission(result);
+            setLocationPermission(result.status);
         })
         .catch(() => {setLocationPermission("denied")})  // if it fails set as denied
     }, []);

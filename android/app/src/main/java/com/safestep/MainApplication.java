@@ -37,10 +37,10 @@ public class MainApplication extends Application implements ReactApplication {
           // packages.add(new MyReactNativePackage());
 
           // Add unimodules
-          // List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
-          //   new ModuleRegistryAdapter(mModuleRegistryProvider)
-          // );
-          // packages.addAll(unimodules);
+          List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
+            new ModuleRegistryAdapter(mModuleRegistryProvider)
+          );
+          packages.addAll(unimodules);
           return packages;
         }
 
