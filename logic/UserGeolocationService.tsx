@@ -4,12 +4,14 @@ import * as TaskManager from "expo-task-manager";
 import * as Location from "expo-location";
 import { LocationAccuracy } from "expo-location";
 
-TaskManager.defineTask("OUTPUT-LOCATION", ({ data, error }) => {
+TaskManager.defineTask("OUTPUT-LOCATION", ({ data, error } : any) => {
   if (error) {
     // check `error.message` for more details.
     return;
   }
-  console.log('Received new locations', data);
+  const location = {lat: data.locations[0].coords.latitude, long:  data.locations[0].coords.longtitude, title: "Current Location" } as PhysicalLocation  // TODO check if this is the most recent or the oldest value
+  UserGeolocationService.instance.cachedLocation = location
+  console.log('Received new locations', location);
 });
 
 const FOREGROUND_LOCATION_INTERVAL = 30;
@@ -37,6 +39,7 @@ export class UserGeolocationService {
 
     if (autoRequestPerm) {
       this.requestForegroundPermission() // request permission from the user
+      .then(this.requestBackgroundPermission)  // request their background permission
       .then(_this.getLocation); // get the users location
     }
 
