@@ -2,6 +2,7 @@ import { PhysicalLocation } from "../types";
 import { PermissionsAndroid, Platform } from "react-native";
 import * as TaskManager from "expo-task-manager";
 import * as Location from "expo-location";
+import { LocationAccuracy } from "expo-location";
 
 TaskManager.defineTask("OUTPUT-LOCATION", ({ data, error }) => {
   if (error) {
@@ -11,12 +12,17 @@ TaskManager.defineTask("OUTPUT-LOCATION", ({ data, error }) => {
   console.log('Received new locations', data);
 });
 
-const LOCATION_REFRESH_FREQ_SECS = 30;
+const FOREGROUND_LOCATION_INTERVAL = 30;
+
+const defaultWatchRemove = () => {
+  throw "No watch to remove"
+}
 
 export class UserGeolocationService {
   cachedLocation: PhysicalLocation | null = null;
-  locationPermission: Location.PermissionStatus = Location.PermissionStatus.DENIED;
   static instance: UserGeolocationService;
+  
+  watchRemove: CallableFunction = defaultWatchRemove
 
   constructor(autoRequestPerm=false) {
     if (UserGeolocationService.instance) { return; }
@@ -31,47 +37,71 @@ export class UserGeolocationService {
 
     if (autoRequestPerm) {
       this.requestForegroundPermission() // request permission from the user
-        .then(result => { _this.locationPermission = result.status; }) // set the result to property in this object
-        .then(_this.getLocation); // get the users location
+      .then(_this.getLocation); // get the users location
     }
 
-    setInterval(() => {
-      _this.getLocation()
-      .catch()
-    }, LOCATION_REFRESH_FREQ_SECS * 1000);  // get the location every X seconds
+    this.startForegroundWatch()
   }
 
-  startBackgroundLocation() {
+  startBackgroundWatch() {
     Location.startLocationUpdatesAsync("OUTPUT-LOCATION", {
       foregroundService: {
         notificationTitle: "SafeStep",
         notificationBody: "test",
       },
-      showsBackgroundLocationIndicator: true
+      showsBackgroundLocationIndicator: true,
+      timeInterval: 10,
+      distanceInterval: 30,
     });
+  }
+
+  startForegroundWatch() {
+    if (this.watchRemove != defaultWatchRemove) { console.error("Watch already running!") }  // stop the creation of two watches
+
+    let _this = this
+     Location.watchPositionAsync({
+      accuracy: LocationAccuracy.Balanced,
+      timeInterval: FOREGROUND_LOCATION_INTERVAL * 1000
+    }, (location) => {_this.cachedLocation = {lat: location.coords.latitude, long: location.coords.longitude, title: "Current Location"}})
+    .then(removeCallback => {this.watchRemove = removeCallback.remove})
+    .catch(err => {console.error(err)})
+  }
+
+  stopBackgroundWatch() {
+    Location.stopLocationUpdatesAsync("OUTPUT-LOCATION")
+  }
+
+  stopForegroundWatch() {
+    this.watchRemove();
+    this.watchRemove=defaultWatchRemove  // reset the callback
   }
 
   getLocation(): Promise<PhysicalLocation> {
     const _this = this;
-    return new Promise((resolve, reject) => {
-      if (_this.locationPermission === "denied") {
+    return new Promise(async (resolve, reject) => {
+      let permissionStatus = (await Location.getForegroundPermissionsAsync()).status
+      if (permissionStatus === Location.PermissionStatus.DENIED) {
         reject("Location permission denied");
       }
 
-      else if (_this.locationPermission === "granted") {
-        // TODO IMPLIMENT FOREGROUND GET LOCATION
+      else if (permissionStatus === Location.PermissionStatus.GRANTED) {
+        Location.getCurrentPositionAsync({accuracy:LocationAccuracy.Balanced}).then((location)=> {  // TODO test accuracy of this
+          let newLocation = {lat: location.coords.latitude, long: location.coords.longitude, title: "Current Location"} as PhysicalLocation
+          _this.cachedLocation = newLocation;
+          resolve(newLocation);
+        })
+        .catch(err => {console.error(err)});
       }
     });
   }
 
   public requestForegroundPermission(): Promise<Location.LocationPermissionResponse> {
-    let _this = this;
     return Location.getForegroundPermissionsAsync()
   }
 
   
-  // public requestBackgroundPermission(): Promise<locationPermissionOption> {
-    
-  // }
+  public requestBackgroundPermission(): Promise<Location.LocationPermissionResponse> {
+    return Location.getBackgroundPermissionsAsync()
+  }
 }
 
