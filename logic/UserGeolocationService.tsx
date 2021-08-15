@@ -9,12 +9,13 @@ TaskManager.defineTask("OUTPUT-LOCATION", ({ data, error } : any) => {
     // check `error.message` for more details.
     return;
   }
-  const location = {lat: data.locations[0].coords.latitude, long:  data.locations[0].coords.longtitude, title: "Current Location" } as PhysicalLocation  // TODO check if this is the most recent or the oldest value
+  const location = {lat: data.locations[0].coords.latitude, long:  data.locations[0].coords.longitude, title: "Current Location" } as PhysicalLocation  // TODO check if this is the most recent or the oldest value
   UserGeolocationService.instance.cachedLocation = location
   console.log('Received new locations', location);
 });
 
 const FOREGROUND_LOCATION_INTERVAL = 30;
+const BACKGROUND_LOCATION_INTERVAL = 10;
 
 const defaultWatchRemove = () => {
   throw "No watch to remove"
@@ -46,20 +47,29 @@ export class UserGeolocationService {
     this.startForegroundWatch()
   }
 
-  startBackgroundWatch() {
+  async startBackgroundWatch() {
+    try {
+      await this.stopForegroundWatch();  // stop the foreground watch and let background watch takeover
+    }
+    catch{}  // dont care about successfulness
+    console.log("Starting background watch")
     Location.startLocationUpdatesAsync("OUTPUT-LOCATION", {
       foregroundService: {
         notificationTitle: "SafeStep",
         notificationBody: "test",
       },
       showsBackgroundLocationIndicator: true,
-      timeInterval: 10,
+      timeInterval: BACKGROUND_LOCATION_INTERVAL*1000,
       distanceInterval: 30,
+      accuracy: LocationAccuracy.Highest,  // this value determines the update interval
+      activityType: Location.ActivityType.OtherNavigation,
+      pausesUpdatesAutomatically: false
     });
   }
 
   startForegroundWatch() {
     if (this.watchRemove != defaultWatchRemove) { console.error("Watch already running!") }  // stop the creation of two watches
+    console.log("Starting foreground watch")
 
     let _this = this
      Location.watchPositionAsync({
@@ -71,10 +81,14 @@ export class UserGeolocationService {
   }
 
   stopBackgroundWatch() {
+    console.log("Stopping background watch")
+    const _this = this;
     Location.stopLocationUpdatesAsync("OUTPUT-LOCATION")
+    .then(_this.startForegroundWatch)
   }
 
   stopForegroundWatch() {
+    console.log("Stopping foreground watch")
     this.watchRemove();
     this.watchRemove=defaultWatchRemove  // reset the callback
   }
@@ -88,7 +102,7 @@ export class UserGeolocationService {
       }
 
       else if (permissionStatus === Location.PermissionStatus.GRANTED) {
-        Location.getCurrentPositionAsync({accuracy:LocationAccuracy.Balanced}).then((location)=> {  // TODO test accuracy of this
+        Location.getCurrentPositionAsync({accuracy:LocationAccuracy.Highest}).then((location)=> {  // TODO test accuracy of this
           let newLocation = {lat: location.coords.latitude, long: location.coords.longitude, title: "Current Location"} as PhysicalLocation
           _this.cachedLocation = newLocation;
           resolve(newLocation);
