@@ -8,5 +8,6 @@ import LoadingScreen from './LoadingScreen'
 import ResetPassword from './ResetPassword'
 import AddContactScreen from "./AddContactScreen"
 import LocationPermCheckScreen from "./LocationPermissionCheck"
+import OnRouteScreen from "./OnRouteScreen"
 
-export { SignUp, Login, MapScreen, Contacts, LocationSearchScreen, ConfirmCode, LoadingScreen, ResetPassword, AddContactScreen, LocationPermCheckScreen }
+export { SignUp, Login, MapScreen, Contacts, LocationSearchScreen, ConfirmCode, LoadingScreen, ResetPassword, AddContactScreen, LocationPermCheckScreen, OnRouteScreen }

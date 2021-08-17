@@ -166,6 +166,14 @@ const App : FC = ( { navigation, route } : any ) => {
       setMarkers(toUpdate);
    }, [])
 
+   const startJourney= useCallback(() => {
+     UserGeolocationService.instance.stopForegroundWatch(); 
+     UserGeolocationService.instance.startBackgroundWatch(); 
+     navigation.navigate("on_route", {
+       path: path
+     });
+   }, [path])
+
     return (
         <SafeAreaView style={styles.mapContainer} edges={['right', "top", 'left']}>
             <View style={styles.mapTopNav}>
@@ -174,7 +182,7 @@ const App : FC = ( { navigation, route } : any ) => {
             <View style={styles.map}>
                 {<Map path={path} markers={markers} /> }
                 
-                <TouchableOpacity style={styles.goButton} onPress={UserGeolocationService.instance.startBackgroundWatch}>
+                <TouchableOpacity style={styles.goButton} onPress={() => {startJourney()}}>
                     <Text style={styles.goButtonText}> Go </Text>
                 </TouchableOpacity>
 
