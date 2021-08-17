@@ -136,7 +136,7 @@ const App : FC = ( { navigation, route } : any ) => {
       let latLongs = [] as coordinatesObject[];
 
       waypoints.forEach(element => {  // convert to lat longs instead of physicalLocations
-        if (element === undefined) {
+        if (!element || !element.long) {
           return;  // skip this current element as it is empty
         }
         latLongs.push({ coordinates: [element.long, element.lat]});
