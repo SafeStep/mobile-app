@@ -4,8 +4,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { OnRouteMap } from '../components'
 import { UserGeolocationService } from "../logic/UserGeolocationService";
 
-let styles = require('./styles');
-
+let styles = {
+    mapContainer: {
+        flex: 1
+    },
+    map: {
+        flex: 1
+    }
+}
 const App : FC = ( { route, navigation } : any ) => {
 
     const endJourney = () => {
@@ -24,8 +30,8 @@ const App : FC = ( { route, navigation } : any ) => {
             <View style={styles.map}>
                 {<OnRouteMap path={route.params.path} /> }
                 
-                <TouchableOpacity style={styles.goButton} onPress={endJourney}>
-                    <Text style={styles.goButtonText}> End </Text>
+                <TouchableOpacity onPress={endJourney}>
+                    <Text> End </Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
