@@ -13,3 +13,19 @@ export const diffBetweenLatlong = function (lat1:number, lon1:number, lat2:numbe
     const d = R * c; // in metres
     return d
 }
+
+export const makeGeoJSON: (data: number[][]) => any = function(data) {
+
+    data.forEach(function(part, index, arr) {
+      arr[index] = part.reverse(); // to fix mapbox's criminal ways of long then lat
+    });
+  
+    return {
+      "type":"Feature",
+      "properties":{},
+      "geometry":{
+        "type":"LineString",
+        "coordinates": data
+      }
+    }
+  };

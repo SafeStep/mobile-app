@@ -1,24 +1,9 @@
 import MapboxGL from "@react-native-mapbox-gl/maps";
-import React from "react";
+import React, {useState} from "react";
 import * as config from "../configuration.json";
+import { makeGeoJSON } from "../logic/GeographicLogic";
 
 const MAPBOX_KEY = config.mapbox_key
-
-const makeGeoJSON: (data: number[][]) => any = function(data) {
-
-    data.forEach(function(part, index, arr) {
-      arr[index] = part.reverse(); // to fix mapbox's criminal ways of long then lat
-    });
-  
-    return {
-      "type":"Feature",
-      "properties":{},
-      "geometry":{
-        "type":"LineString",
-        "coordinates": data
-      }
-    }
-  };
 
 const styles = {
     map: {
@@ -41,18 +26,23 @@ interface mapProps {
 }
 
 export const OnRouteMap = ({ path }: mapProps) => {
-    console.log(path)
     MapboxGL.setAccessToken(MAPBOX_KEY);
-    return (       
-    <MapboxGL.MapView style={styles.map} >
+  
+    const [mapLoaded, setMapLoaded] = useState(false)
+    
+    const geoJsonPath = makeGeoJSON(path); 
 
-        <MapboxGL.Camera followUserLocation={true} followUserMode={MapboxGL.UserTrackingModes.FollowWithHeading} />
+
+    return (       
+    <MapboxGL.MapView style={styles.map} onDidFinishLoadingMap={()=>{setMapLoaded(true)}}>
+
+        <MapboxGL.Camera followUserLocation={true} />
 
         <MapboxGL.UserLocation/>
         { 
             path.length !== 0 ?
-        <MapboxGL.ShapeSource id='line1' shape={makeGeoJSON(path)}>
-            <MapboxGL.LineLayer id="path" style={{"lineColor": "red"}} />
+        <MapboxGL.ShapeSource id='finalLine' shape={geoJsonPath}>
+            <MapboxGL.LineLayer id="finalPath" style={{"lineColor": "red"}} />
         </MapboxGL.ShapeSource>
         : null
         }
