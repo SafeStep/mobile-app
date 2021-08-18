@@ -51,7 +51,7 @@ export const Map = ({ path, markers}: mapProps) => {
   return (       
     <MapboxGL.MapView style={styles.map} >
 
-        <MapboxGL.Camera centerCoordinate={(userPosition !== null ? [userPosition?.long, userPosition?.lat] as any : [0,0])} zoomLevel={userPosition !== null ? 15 : 1} />
+        <MapboxGL.Camera followUserLocation={true} />
 
         <MapboxGL.UserLocation/>
         {
