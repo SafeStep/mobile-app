@@ -167,7 +167,12 @@ const App : FC = ( { navigation, route } : any ) => {
    }, [])
 
    const startJourney= useCallback(() => {
-     UserGeolocationService.instance.stopForegroundWatch(); 
+     try {
+       UserGeolocationService.instance.stopForegroundWatch(); // if throws an error something is really wrong 
+     }
+     catch {
+      console.log("Foreground watch not defined in foreground mode :(")
+     }
      UserGeolocationService.instance.startBackgroundWatch(); 
      navigation.navigate("on_route", {
        path: path
