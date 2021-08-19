@@ -32,17 +32,21 @@ export const OnRouteMap = ({ path }: mapProps) => {
     
     const geoJsonPath = makeGeoJSON(path); 
 
-
     return (       
     <MapboxGL.MapView style={styles.map} onDidFinishLoadingMap={()=>{setMapLoaded(true)}}>
 
-        <MapboxGL.Camera followUserLocation={true} />
+        <MapboxGL.Camera 
+        followUserLocation={true} 
+        followUserMode={MapboxGL.UserTrackingModes.FollowWithHeading} 
+        followZoomLevel={20}
+        followPitch={90}
+         />
 
         <MapboxGL.UserLocation/>
         { 
             path.length !== 0 ?
         <MapboxGL.ShapeSource id='finalLine' shape={geoJsonPath}>
-            <MapboxGL.LineLayer id="finalPath" style={{"lineColor": "red"}} />
+            <MapboxGL.LineLayer id="finalPath" style={{lineColor: "blue", lineWidth: 15, lineOpacity: 0.4}} />
         </MapboxGL.ShapeSource>
         : null
         }
