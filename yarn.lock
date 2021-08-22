@@ -2386,7 +2386,7 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@expo/config-plugins@2.0.4", "@expo/config-plugins@^2.0.2":
+"@expo/config-plugins@2.0.4":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-2.0.4.tgz#955fd70a2aeefbe99ec71cecb1d7ea7b626dc79e"
   integrity sha512-JGt/X2tFr7H8KBQrKfbGo9hmCubQraMxq5sj3bqDdKmDOLcE1a/EDCP9g0U4GHsa425J8VDIkQUHYz3h3ndEXQ==
@@ -2408,6 +2408,25 @@
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-3.0.7.tgz#50870e26d34b11740a5841076c921729381d4319"
   integrity sha512-7YOoFtxB6XqDil+OlGXi7iredKHxXVFCAOIVfFyEDzO3oo0gBmWGmUnHgrPDvpMj0q+adCCh5BL8OcvGfc9ITQ==
+  dependencies:
+    "@expo/config-types" "^42.0.0"
+    "@expo/json-file" "8.2.33"
+    "@expo/plist" "0.0.13"
+    debug "^4.3.1"
+    find-up "~5.0.0"
+    fs-extra "9.0.0"
+    getenv "^1.0.0"
+    glob "7.1.6"
+    resolve-from "^5.0.0"
+    semver "^7.3.5"
+    slash "^3.0.0"
+    xcode "^3.0.1"
+    xml2js "^0.4.23"
+
+"@expo/config-plugins@^3.0.2":
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-3.0.8.tgz#f8842902aea726c2845e837bb59c07ac497e6a04"
+  integrity sha512-reNYaYklOIq8QUY5ua1ubSRhVgY7hllvjingo22HHSaGhX4UvFFKDGYrjBdjcutHD6jw/eYLa8yJS74o1/rqkg==
   dependencies:
     "@expo/config-types" "^42.0.0"
     "@expo/json-file" "8.2.33"
@@ -3046,12 +3065,12 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-6.0.0.tgz#2a4d7190b508dd0c2293656c9c1aa068f6f60a71"
   integrity sha512-Z9M8VGcF2IZVOo2x+oUStvpCW/8HjIRi4+iQCu5n+PhC7OqCQX58KYAzdBr///alIfRXiu6oMb+lK+rXQH1FvQ==
 
-"@react-native-mapbox-gl/maps@^8.2.1":
-  version "8.2.1"
-  resolved "https://registry.yarnpkg.com/@react-native-mapbox-gl/maps/-/maps-8.2.1.tgz#9bd031861917004d7289aa73b7ea9ca73b20d257"
-  integrity sha512-CtcA9Dp2jJpvlo0DsTcJOuqE2KMAjzmD5SNLYIOOpyl6PJkPGy5pEaCxcFaXFt/Xx+PVIbjaSdKiMBpfbR7xAQ==
+"@react-native-mapbox-gl/maps@^8.3.0":
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/@react-native-mapbox-gl/maps/-/maps-8.3.0.tgz#30dea30521847ba8d6bc1d46040a39f015b8a858"
+  integrity sha512-JdHVM7yfOv3YG1GDgHi9GDNllpOEj9RSiX6bhYwrO3W2qHko8kPQ6xGsHTkSGS6bt2F1okXVyEJjEyisUmnXwg==
   dependencies:
-    "@expo/config-plugins" "^2.0.2"
+    "@expo/config-plugins" "^3.0.2"
     "@mapbox/geo-viewport" ">= 0.4.0"
     "@turf/along" ">= 4.0.0 <7.0.0"
     "@turf/distance" ">= 4.0.0 <7.0.0"
