@@ -1,7 +1,9 @@
 import MapboxGL from "@react-native-mapbox-gl/maps";
 import React, {useState} from "react";
+import {Button} from "react-native"
 import * as config from "../configuration.json";
 import { makeGeoJSON } from "../logic/GeographicLogic";
+import { UserGeolocationService } from "../logic/UserGeolocationService";
 
 const MAPBOX_KEY = config.mapbox_key
 
@@ -29,17 +31,19 @@ export const OnRouteMap = ({ path }: mapProps) => {
     MapboxGL.setAccessToken(MAPBOX_KEY);
   
     const [mapLoaded, setMapLoaded] = useState(false)
+    const [followUser, setFollowUser] = useState(true)
     
     const geoJsonPath = makeGeoJSON(path); 
 
-    return (       
+    return <>
     <MapboxGL.MapView style={styles.map} onDidFinishLoadingMap={()=>{setMapLoaded(true)}}>
 
         <MapboxGL.Camera 
-        followUserLocation={true} 
+        followUserLocation={followUser} 
         followUserMode={MapboxGL.UserTrackingModes.FollowWithHeading} 
         followZoomLevel={20}
         followPitch={90}
+        onUserTrackingModeChange={(data) => {console.log(data.nativeEvent.payload)}}
          />
 
         <MapboxGL.UserLocation/>
@@ -50,7 +54,8 @@ export const OnRouteMap = ({ path }: mapProps) => {
         </MapboxGL.ShapeSource>
         : null
         }
-    </MapboxGL.MapView>);
-};
+    </MapboxGL.MapView>
+    <Button onPress={() => {setFollowUser(true)}} title={"Recenter"}></Button></>;
+}
 
 export default OnRouteMap;
