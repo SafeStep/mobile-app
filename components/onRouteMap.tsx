@@ -37,18 +37,24 @@ export const OnRouteMap = ({ path }: mapProps) => {
 
     return <>
     <MapboxGL.MapView style={styles.map} onDidFinishLoadingMap={()=>{setMapLoaded(true)}}>
-
-        <MapboxGL.Camera 
-        followUserLocation={followUser} 
+        {
+        !mapLoaded ?
+        <MapboxGL.Camera followUserLocation={followUser}
+        followUserMode={MapboxGL.UserTrackingModes.FollowWithHeading}  
+        onUserTrackingModeChange={(data) => {console.log(data.nativeEvent.payload); setFollowUser(data.nativeEvent.payload.followUserLocation)}}
+        />
+        :
+        <MapboxGL.Camera followUserLocation={followUser} 
         followUserMode={MapboxGL.UserTrackingModes.FollowWithHeading} 
-        followZoomLevel={20}
-        followPitch={90}
+        followZoomLevel={20}  // avoid changing this and the follow pitch as IOS really freaks out with any higher numbers
+        followPitch={80}
         onUserTrackingModeChange={(data) => {console.log(data.nativeEvent.payload)}}
-         />
+        />
+        }
 
         <MapboxGL.UserLocation/>
         { 
-            path.length !== 0 ?
+            path.length !== 0 && mapLoaded?
         <MapboxGL.ShapeSource id='finalLine' shape={geoJsonPath}>
             <MapboxGL.LineLayer id="finalPath" style={{lineColor: "blue", lineWidth: 15, lineOpacity: 0.4}} />
         </MapboxGL.ShapeSource>
