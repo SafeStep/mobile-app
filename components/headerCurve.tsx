@@ -14,10 +14,9 @@ interface Props {
 const HeadingCurve : FC<Props> = (props) => {
     return (
      <View style={styles.container}> 
-         <View style={styles.curve}> 
-         {/* <View>  */}
+         {/* <View style={styles.curve}> 
 
-         </View>
+         </View> */}
          <Text style={styles.text}> {props.text} </Text>
 
      </View>
@@ -29,35 +28,38 @@ export default HeadingCurve;
 const styles = StyleSheet.create({
     container: {
         top: 0, 
-        width: width,
+        width: width*0.95,
         height: height * 0.3,
-        justifyContent: 'center',
-        alignSelf: 'flex-end',
+        justifyContent: 'flex-start',
+        marginTop: 50,
+        // marginLeft: 20,
+        // alignSelf: 'flex-end',
         position: 'absolute',
         // backgroundColor: '#fff',
         // overflow: 'hidden'
     },
     curve: {
         width: width,
-        height: width,
-        borderRadius: width/2,
+        height: 100,
+        // borderRadius: width/2,
         alignSelf: 'center',
-        marginBottom: width * 0.6,
-        backgroundColor: "#90E4FF",
-        transform: [{ scaleX: 1.6}],
+        // marginBottom: width * 0.6,
+        // backgroundColor: "#0779E4",
+        // transform: [{ scaleX: 1.6}],
         
-        shadowColor: '#000',
-        shadowOffset: { width: 1, height: 4},
-        shadowOpacity: 0.5,
-        shadowRadius: 1,
-        elevation: 15,
+        // shadowColor: '#000',
+        // shadowOffset: { width: 1, height: 4},
+        // shadowOpacity: 0.5,
+        // shadowRadius: 1,
+        // elevation: 5,
     },
     text: {
         width: width,
-        textAlign: 'center',
-        fontSize: 50,
-        color: '#000',
+        textAlign: 'left',
+        fontSize: 40,
+        fontWeight: 'bold',
+        color: '#fff',
         position: 'absolute',
-        elevation: 16,
+        elevation: 6,
     }
 })

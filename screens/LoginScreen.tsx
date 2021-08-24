@@ -17,7 +17,11 @@ const App : FC = ( { route, navigation }:any ) => {
     //const navigation = props.navigation
     async function Login() {
         try {
-            const user = await Auth.signIn(email as string, password as string);
+            if (!email || !password ) {
+                return 
+            }
+            const user = await Auth.signIn(email!, password!);
+
             // updateAuthState('loggedIn');
             // console.log(updateUser);
             
@@ -37,46 +41,48 @@ const App : FC = ( { route, navigation }:any ) => {
     return (
         <View style={styles.container}>
             <HeadingCurve text='SafeSteps'/>
-            <AuthError errMessage = {errorMessage} />
-            <Input placeholder='E-mail' onChangeText={(text) => setEmail(text)} />
+            <View style={styles.formContainer}>
+                {/* <View style={styles.logo}> <Text> LOGO</Text></View> */}
+                <AuthError errMessage = {errorMessage} />
+                <Input label='E-mail' placeholder='E-mail' onChangeText={(text) => setEmail(text)} />
 
-            <Input placeholder='Password' secureTextEntry={true}  onChangeText={(text) => setPassword(text)} />
-            <Button title='Login' onPress={Login} />
+                <Input label='Password' placeholder='Password' secureTextEntry={true}  onChangeText={(text) => setPassword(text)} />
+                <Button title='Login' onPress={Login} />
 
 
-            <View style={styles.forgot}>
-                <Text style={styles.intextButton}>Forgot</Text>
+                <View style={styles.forgot}>
+                    <Text style={styles.intextButton}>Forgot</Text>
 
-                <TouchableOpacity onPress = {() => navigation.navigate('')}> 
-                    <Text style={styles.span}> E-mail </Text>
-                </TouchableOpacity>
+                    <TouchableOpacity onPress = {() => navigation.navigate('')}> 
+                        <Text style={styles.span}> E-mail </Text>
+                    </TouchableOpacity>
 
-                <Text style={styles.intextButton}>or</Text>
+                    <Text style={styles.intextButton}>or</Text>
 
-                <TouchableOpacity onPress = {() => navigation.navigate('reset_password')}> 
-                    <Text style={styles.span}> Password </Text>
-                </TouchableOpacity>
+                    <TouchableOpacity onPress = {() => navigation.navigate('reset_password')}> 
+                        <Text style={styles.span}> Password </Text>
+                    </TouchableOpacity>
+                </View>
+
+                <Text style={styles.altText}> - - Or login with - - </Text>
+
+                <View style={styles.alternatives}>
+                    <TouchableOpacity style={styles.altMethods}> 
+                        <Image style={styles.stretch} source={require('../assets/images/google-icon.jpg')} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.altMethods}> 
+                        {/* <Image style={styles.stretch} source={require('../assets/images/google.jpg')} /> */}
+                    </TouchableOpacity>
+
+                </View>
+
+                <View style={styles.changePage}> 
+                    <Text style={styles.intextButton}> Don't have an account? </Text>
+                    <TouchableOpacity onPress = {() => navigation.navigate('signup')}> 
+                        <Text style={styles.span}>Signup </Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-
-            <Text style={styles.altText}> - - Or login with - - </Text>
-
-            <View style={styles.alternatives}>
-                <TouchableOpacity style={styles.altMethods}> 
-                    <Image style={styles.stretch} source={require('../assets/images/google-icon.jpg')} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.altMethods}> 
-                    {/* <Image style={styles.stretch} source={require('../assets/images/google.jpg')} /> */}
-                </TouchableOpacity>
-
-            </View>
-
-            <View style={styles.changePage}> 
-                <Text style={styles.intextButton}> Don't have an account? </Text>
-                <TouchableOpacity onPress = {() => navigation.navigate('signup')}> 
-                    <Text style={styles.span}>Signup </Text>
-                </TouchableOpacity>
-            </View>
-
         </View>
     )
 }
@@ -87,8 +93,22 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: '40%',
-        backgroundColor: '#eee'
+        paddingTop: '30%',
+        backgroundColor: '#0779E4'
+    },
+    formContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        // borderRadius: 30,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        alignItems: 'center',
+        backgroundColor: '#fff'
+    },
+    logo: {
+        height: 10,
+        width: 10,
+        backgroundColor: '#0779E4'
     },
     forgot: {
         flexDirection: 'row',

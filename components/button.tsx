@@ -21,14 +21,14 @@ export default Button;
 
 const styles = StyleSheet.create({
     container: {
-        width: width / 1.1,
-        height: height * 0.065,
-        backgroundColor: '#90E4FF',
+        width: width *0.9,
+        height: 50,
+        backgroundColor: '#0779E4',
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'center',
         padding: 10,
-        borderRadius: 10,
+        borderRadius: 5,
         marginVertical: 10,
 
         shadowColor: '#000',
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     text: {
-        color: '#000',
+        color: '#fff',
         fontSize: 20,
         fontWeight: 'bold',
     }
