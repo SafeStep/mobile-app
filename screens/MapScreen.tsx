@@ -136,7 +136,7 @@ const App : FC = ( { navigation, route } : any ) => {
       let latLongs = [] as coordinatesObject[];
 
       waypoints.forEach(element => {  // convert to lat longs instead of physicalLocations
-        if (element === undefined) {
+        if (!element || !element.long) {
           return;  // skip this current element as it is empty
         }
         latLongs.push({ coordinates: [element.long, element.lat]});
@@ -166,6 +166,19 @@ const App : FC = ( { navigation, route } : any ) => {
       setMarkers(toUpdate);
    }, [])
 
+   const startJourney= useCallback(() => {
+     try {
+       UserGeolocationService.instance.stopForegroundWatch(); // if throws an error something is really wrong 
+     }
+     catch {
+      console.log("Foreground watch not defined in foreground mode :(")
+     }
+     UserGeolocationService.instance.startBackgroundWatch(); 
+     navigation.navigate("on_route", {
+       path: path
+     });
+   }, [path])
+
     return (
         <SafeAreaView style={styles.mapContainer} edges={['right', "top", 'left']}>
             <View style={styles.mapTopNav}>
@@ -174,7 +187,7 @@ const App : FC = ( { navigation, route } : any ) => {
             <View style={styles.map}>
                 {<Map path={path} markers={markers} /> }
                 
-                <TouchableOpacity style={styles.goButton} onPress={UserGeolocationService.instance.startBackgroundWatch}>
+                <TouchableOpacity style={styles.goButton} onPress={() => {startJourney()}}>
                     <Text style={styles.goButtonText}> Go </Text>
                 </TouchableOpacity>
 

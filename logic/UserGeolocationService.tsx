@@ -4,7 +4,9 @@ import * as TaskManager from "expo-task-manager";
 import * as Location from "expo-location";
 import { LocationAccuracy } from "expo-location";
 
-TaskManager.defineTask("OUTPUT-LOCATION", ({ data, error } : any) => {
+const BACKGROUND_TASK_NAME ="OUTPUT-LOCATION"
+
+TaskManager.defineTask(BACKGROUND_TASK_NAME, ({ data, error } : any) => {
   if (error) {
     // check `error.message` for more details.
     return;
@@ -36,7 +38,10 @@ export class UserGeolocationService {
 
     let _this = this;
 
-    Location.stopLocationUpdatesAsync("OUTPUT-LOCATION")  // stop any already created background processes
+    if (TaskManager.isTaskDefined(BACKGROUND_TASK_NAME)) {
+      this.stopBackgroundWatch()
+    }
+
 
     if (autoRequestPerm) {
       this.requestForegroundPermission() // request permission from the user
@@ -53,7 +58,7 @@ export class UserGeolocationService {
     }
     catch{}  // dont care about successfulness
     console.log("Starting background watch")
-    Location.startLocationUpdatesAsync("OUTPUT-LOCATION", {
+    Location.startLocationUpdatesAsync(BACKGROUND_TASK_NAME, {
       foregroundService: {
         notificationTitle: "SafeStep",
         notificationBody: "test",
@@ -83,8 +88,9 @@ export class UserGeolocationService {
   stopBackgroundWatch() {
     console.log("Stopping background watch")
     const _this = this;
-    Location.stopLocationUpdatesAsync("OUTPUT-LOCATION")
-    .then(_this.startForegroundWatch)
+    if (TaskManager.isTaskDefined(BACKGROUND_TASK_NAME) && Location.hasStartedLocationUpdatesAsync(BACKGROUND_TASK_NAME)) {  // if the task exists and has started
+      Location.stopLocationUpdatesAsync(BACKGROUND_TASK_NAME)
+    }
   }
 
   stopForegroundWatch() {

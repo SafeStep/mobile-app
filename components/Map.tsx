@@ -4,24 +4,9 @@ import { UserGeolocationService } from "../logic/UserGeolocationService";
 import { PhysicalLocation } from '../types';
 import { View, Text } from "react-native";
 import * as config from "../configuration.json";
+import { makeGeoJSON } from "../logic/GeographicLogic"
 
 const MAPBOX_KEY = config.mapbox_key
-
-const makeGeoJSON: (data: number[][]) => any = function(data) {
-
-    data.forEach(function(part, index, arr) {
-      arr[index] = part.reverse(); // to fix mapbox's criminal ways of long then lat
-    });
-  
-    return {
-      "type":"Feature",
-      "properties":{},
-      "geometry":{
-        "type":"LineString",
-        "coordinates": data
-      }
-    }
-  };
 
 const styles = {
     map: {
@@ -51,7 +36,7 @@ export const Map = ({ path, markers}: mapProps) => {
   return (       
     <MapboxGL.MapView style={styles.map} >
 
-        <MapboxGL.Camera centerCoordinate={(userPosition !== null ? [userPosition?.long, userPosition?.lat] as any : [0,0])} zoomLevel={userPosition !== null ? 15 : 1} />
+        <MapboxGL.Camera followUserLocation={true} />
 
         <MapboxGL.UserLocation/>
         {
