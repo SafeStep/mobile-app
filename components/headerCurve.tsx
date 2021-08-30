@@ -1,23 +1,28 @@
 import React, { FC } from 'react'
-import {Dimensions, Text, View, StyleSheet} from 'react-native'
+import {Dimensions, Text, View, StyleSheet, Image} from 'react-native'
 import {TouchableOpacity} from 'react-native-gesture-handler'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
+import Images from '../assets/images'
 
 const {height, width} = Dimensions.get('screen')
 
 interface Props {
-    curveHeight?: number;
-    curve?: number;
+    backButton?: boolean;
+    onPress?: () => void;
     text: string;
 }
 
 const HeadingCurve : FC<Props> = (props) => {
     return (
-     <View style={styles.container}> 
-         {/* <View style={styles.curve}> 
+        <View style={styles.container}> 
+            { props.backButton 
+                ?   <TouchableOpacity style={styles.backButton} onPress={props.onPress}>
+                        <Image style={styles.backIcon} source={Images.backIcon} />
 
-         </View> */}
-         <Text style={styles.text}> {props.text} </Text>
+                    </TouchableOpacity>
+                :   <></>
+            }
+            
+            <Text style={styles.text}> {props.text} </Text>
 
      </View>
     )
@@ -27,20 +32,23 @@ export default HeadingCurve;
 
 const styles = StyleSheet.create({
     container: {
-        top: 0, 
-        width: width*0.95,
-        height: height * 0.3,
-        justifyContent: 'flex-start',
-        marginTop: 50,
+        // top: 0, 
+        width: width,
+        flexDirection: 'row',
+        padding: 10,
+        alignItems: 'center',
+        // height: height * 0.3,
+        // justifyContent: 'center',
+        // marginTop: 50,
         // marginLeft: 20,
         // alignSelf: 'flex-end',
-        position: 'absolute',
-        // backgroundColor: '#fff',
+        // position: 'absolute',
+        // backgroundColor: 'pink',
         // overflow: 'hidden'
     },
     curve: {
-        width: width,
-        height: 100,
+        // width: width,
+        // height: 100,
         // borderRadius: width/2,
         alignSelf: 'center',
         // marginBottom: width * 0.6,
@@ -59,7 +67,17 @@ const styles = StyleSheet.create({
         fontSize: 40,
         fontWeight: 'bold',
         color: '#fff',
-        position: 'absolute',
+        // position: 'absolute',
         elevation: 6,
+    },
+    backButton: {
+        width: 50,
+        height: 20,
+        // backgroundColor: 'orange',
+
+    },
+    backIcon: {
+        width: 50,
+        height: 20
     }
 })

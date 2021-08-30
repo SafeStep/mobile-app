@@ -6,5 +6,6 @@ import AuthError from './authErrors'
 import ContactsList from './Contacts/ContactList'
 import Map from './Map'
 import DestinationSearch from './CreateRoute/DestinationSearch'
+import RoundButton from './RoundButton'
 
-export {Input, Button, HeadingCurve, Header, AuthError, ContactsList, Map, DestinationSearch}
+export {Input, Button, HeadingCurve, Header, AuthError, ContactsList, Map, DestinationSearch, RoundButton}

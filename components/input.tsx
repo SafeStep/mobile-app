@@ -25,12 +25,12 @@ export default Input;
 
 const styles = StyleSheet.create({
     container: {
-        width: width * 0.9,
-        alignSelf: 'center',
+        width: width * 0.8,
+        // alignSelf: 'center',
         justifyContent: 'center',
         backgroundColor: '#fff',
         // borderRadius: 10,
-        marginVertical: 5,
+        marginVertical: 15,
 
         // IOS
         // shadowColor: '#000',
@@ -43,14 +43,14 @@ const styles = StyleSheet.create({
 
     },
     label: {
-        color: '#5F5F5F',
+        color: '#7F7F7F',
         fontWeight: 'bold',
-        fontSize: 17
+        fontSize: 17,
     },
     input: {
-        height: 50,
+        height: 40,
         // padding: 15, 5, 0 5,
-        borderBottomWidth: 1,
+        borderBottomWidth: 0.5,
         paddingTop: 10,
         paddingBottom: 0,
         paddingLeft: 5

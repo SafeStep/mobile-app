@@ -21,7 +21,7 @@ export default Button;
 
 const styles = StyleSheet.create({
     container: {
-        width: width *0.9,
+        width: width *0.8,
         height: 50,
         backgroundColor: '#0779E4',
         alignItems: 'center',

@@ -20,19 +20,14 @@ export default AuthError;
 const styles = StyleSheet.create({
     container: {
         width: width,
-        height: '12%',
-        flexDirection: 'column',
+        height: 40,
+        flexDirection: 'row',
         // backgroundColor: 'pink',
-        shadowColor: '#000',
-        shadowOffset: { width: 1, height: 4},
-        shadowOpacity: 0.5,
-        shadowRadius: 1,
-        elevation: 4,
     },
     title: {
         color: 'red',
         fontSize: 20,
         alignSelf: 'center',
-        paddingTop: '5%',
+        paddingTop: 10,
     }
 })
