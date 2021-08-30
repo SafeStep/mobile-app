@@ -8,5 +8,8 @@ import LoadingScreen from './LoadingScreen'
 import ResetPassword from './ResetPassword'
 import AddContactScreen from "./AddContactScreen"
 import LocationPermCheckScreen from "./LocationPermissionCheck"
+import ResetPasswordConfirm from './ResetPasswordConfirm'
 
-export { SignUp, Login, MapScreen, Contacts, LocationSearchScreen, ConfirmCode, LoadingScreen, ResetPassword, AddContactScreen, LocationPermCheckScreen }
+export {    SignUp, Login, MapScreen, Contacts, LocationSearchScreen, 
+            ConfirmCode, LoadingScreen, ResetPassword, AddContactScreen, 
+            LocationPermCheckScreen, ResetPasswordConfirm }

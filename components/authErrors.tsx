@@ -19,9 +19,9 @@ export default AuthError;
 
 const styles = StyleSheet.create({
     container: {
-        width: width,
-        height: 40,
-        flexDirection: 'row',
+        width: width*0.8,
+        // height: 70,
+        flexDirection: 'column',
         // backgroundColor: 'pink',
     },
     title: {
@@ -29,5 +29,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         alignSelf: 'center',
         paddingTop: 10,
+        textAlign: 'center'
     }
 })

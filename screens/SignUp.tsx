@@ -65,6 +65,7 @@ const App : FC = ( { navigation }: any ) => {
 }
 
 export default App;
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

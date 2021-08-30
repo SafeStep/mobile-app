@@ -1,11 +1,9 @@
 import React, {FC, useState, useEffect} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import {Input, Button, HeadingCurve} from '../components';
-
+import { View, Text, StyleSheet, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
+import {Input, Button, HeadingCurve, RoundButton} from '../components';
+import Images from '../assets/images'
 import {Auth} from 'aws-amplify';
 import { RotationGestureHandler } from 'react-native-gesture-handler';
-
-const styles = require('./styles');
 
 const App : FC = ( { navigation , route} : any ) => {
 
@@ -27,64 +25,33 @@ const App : FC = ( { navigation , route} : any ) => {
     return (
         <View style={styles.container}>
             <HeadingCurve text='SafeSteps'/>
+            <View style={styles.loading}>
+                <View style={styles.logo}>
+                    <RoundButton icon={Images.logo} onPress={() => {return}} />
+                </View>
+                <ActivityIndicator size="large" color="#fff" />
 
+            </View>
         </View>
     )
 }
 
 export default App;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: '10%',
+        backgroundColor: '#0779E4'
+    },
+    loading: {
+        marginVertical: 10,
+        flexDirection: 'column',
 
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         paddingTop: '40%'
-//     },
-//     stretch: {
-//         width: '100%',
-//         height: '100%',
-//         alignSelf: 'center',
-//         borderRadius: 10,
-//     },
-//     altText: {
-//         marginTop: 10,
-//         marginBottom: 5,
-//         fontSize: 15,
-//         color: '#605B5B',
-//     },
-//     alternatives: {
-//         // flex: 1,
-//         flexDirection: 'row'
-//     },
-//     altMethods: {
-//         width: '25%',
-//         height: 60,
-//         marginVertical: 10,
-
-//         marginLeft: 5,
-//         marginRight: 5,
-
-
-//         backgroundColor: 'red',
-
-//         // flex: 2,
-//         // flexDirection: 'row',
-
-//         borderRadius: 10,
-
-//         shadowColor: '#000',
-//         shadowOffset: { width: 1, height: 4},
-//         shadowOpacity: 0.5,
-//         shadowRadius: 1,
-//         elevation: 5,
-//     },
-//     changePage: {
-//         flexDirection: 'row',
-//         marginVertical: 10,
-//     },
-//     intextButton: {
-//         color: '#000',
-//         fontWeight: 'bold'
-//     }
-// })
+    },
+    logo: {
+        marginTop: 30,
+        marginBottom: 200,
+    }
+})

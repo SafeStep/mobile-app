@@ -1,8 +1,8 @@
 import { useLinkProps } from '@react-navigation/native';
 import React, {FC, useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Alert} from 'react-native';
-import {Input, Button, HeadingCurve} from '../components'
-
+import {Input, Button, HeadingCurve, RoundButton, AuthError} from '../components'
+import Images from '../assets/images';
 // import {launch} from '../navigation/index'
 
 import {Auth} from 'aws-amplify';
@@ -11,39 +11,30 @@ import {Auth} from 'aws-amplify';
 
 
 const App : FC = ( { navigation }: any ) => {
+    const [errorMessage, setErrorMsg] = useState<string>("")
 
-    // const [username, setUsername] = useState<string | null>(null)
     const [email, setEmail] = useState<string | null>(null)
-    const [code, setCode] = useState<string | null>(null)
-    const [new_password, setNewPassword] = useState<string | null>(null)
 
-    async function sendConfirmationCode() {
+    const sendConfirmationCode = async () => {
         await Auth.forgotPassword(email as string)
-        .then(data => console.log(data))
-        .catch(err => console.log(err));
-    }
-
-    async function submitForgotPass() {
-        await Auth.forgotPasswordSubmit(email as string, code as string, new_password as string)
-        .then(data => console.log(data))
-        .catch(err => console.log(err));
-        navigation.navigate('login');
+        .then(data => navigation.navigate('reset_password_confirm', {email:email}))
+        .catch(err => setErrorMsg(err.message))    
     }
     
 
     return (
         <View style={styles.container}> 
-            <HeadingCurve text='Forgot Password'/>
-            
-            {/* <Input placeholder='Username' onChangeText={(text) => setUsername(text)} /> */}
-            <Input placeholder='E-Mail' onChangeText={(text) => setEmail(text)} />
+            <HeadingCurve backButton={true} onPress={() => navigation.navigate('login')} text='Forgot Password'/>
+            <View style={styles.formContainer}>
+                <View style={styles.logo}>
+                    <RoundButton icon={Images.logo} onPress={() => {return}} />
+                </View>
+                <AuthError errMessage = {errorMessage} />
 
-            <Button title='Send Code' onPress={sendConfirmationCode} />
+                <Input label="Email" placeholder='Email' onChangeText={(text) => setEmail(text)} />
 
-            <Input placeholder='Code' onChangeText={(text) => setCode(text)} />
-            <Input secureTextEntry={true} placeholder='New Password' onChangeText={(text) => setNewPassword(text)} />
-
-            <Button title='Submit Code' onPress={submitForgotPass} />
+                <Button title='Send Code' onPress={sendConfirmationCode} />
+            </View>
         </View>
     )
 }
@@ -53,54 +44,23 @@ export default App;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        // justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: '20%'
+        paddingTop: '10%',
+        backgroundColor: '#0779E4'
     },
-    stretch: {
+    formContainer: {
+        flex: 1,
         width: '100%',
-        height: '100%',
-        alignSelf: 'center',
-        borderRadius: 10,
+        // justifyContent: 'center',
+        // borderRadius: 30,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        alignItems: 'center',
+        backgroundColor: '#fff'
     },
-    altText: {
-        marginTop: 10,
-        marginBottom: 5,
-        fontSize: 15,
-        color: '#605B5B',
-    },
-    alternatives: {
-        // flex: 1,
-        flexDirection: 'row'
-    },
-    altMethods: {
-        width: '25%',
-        height: 60,
-        marginVertical: 10,
-
-        marginLeft: 5,
-        marginRight: 5,
-
-
-        backgroundColor: 'red',
-
-        // flex: 2,
-        // flexDirection: 'row',
-
-        borderRadius: 10,
-
-        shadowColor: '#000',
-        shadowOffset: { width: 1, height: 4},
-        shadowOpacity: 0.5,
-        shadowRadius: 1,
-        elevation: 5,
-    },
-    changePage: {
-        flexDirection: 'row',
-        marginVertical: 10,
-    },
-    intextButton: {
-        color: '#000',
-        fontWeight: 'bold'
+    logo: {
+        marginTop: 30,
+        marginBottom: 70,
     }
 })
