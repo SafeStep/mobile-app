@@ -1,6 +1,7 @@
 import React, {FC, useState, useEffect} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
 import {Input, Button, HeadingCurve, RoundButton} from '../components';
+import ColorPalette from '../constants/ColorPalette';
 import Images from '../assets/images'
 import {Auth} from 'aws-amplify';
 import { RotationGestureHandler } from 'react-native-gesture-handler';
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         alignItems: 'center',
         paddingTop: '10%',
-        backgroundColor: '#0779E4'
+        backgroundColor: ColorPalette.mainBlue
     },
     loading: {
         marginVertical: 10,

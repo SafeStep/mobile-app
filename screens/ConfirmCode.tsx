@@ -1,6 +1,7 @@
 import React, {FC, useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Alert} from 'react-native';
 import {Input, Button, HeadingCurve, AuthError, RoundButton} from '../components'
+import ColorPalette from '../constants/ColorPalette';
 import Images from '../assets/images';
 import { Auth } from 'aws-amplify';
 
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         alignItems: 'center',
         paddingTop: '10%',
-        backgroundColor: '#0779E4'
+        backgroundColor: ColorPalette.mainBlue
     },
     formContainer: {
         flex: 1,
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         alignItems: 'center',
-        backgroundColor: '#fff'
+        backgroundColor: ColorPalette.white
     },
     logo: {
         marginTop: 30,
