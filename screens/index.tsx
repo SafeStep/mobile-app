@@ -9,7 +9,8 @@ import ResetPassword from './ResetPassword'
 import AddContactScreen from "./AddContactScreen"
 import LocationPermCheckScreen from "./LocationPermissionCheck"
 import ResetPasswordConfirm from './ResetPasswordConfirm'
+import OnRouteScreen from "./OnRouteScreen"
 
 export {    SignUp, Login, MapScreen, Contacts, LocationSearchScreen, 
             ConfirmCode, LoadingScreen, ResetPassword, AddContactScreen, 
-            LocationPermCheckScreen, ResetPasswordConfirm }
+            LocationPermCheckScreen, ResetPasswordConfirm, OnRouteScreen}
