@@ -32,7 +32,6 @@ export default HeadingCurve;
 
 const styles = StyleSheet.create({
     container: {
-        // top: 0, 
         width: width,
         flexDirection: 'row',
         padding: 10,
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
     text: {
         width: width,
         textAlign: 'left',
-        fontSize: 40,
+        fontSize: 35,
         fontWeight: 'bold',
         color: '#fff',
         elevation: 6,
