@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import {Dimensions, Text, StyleSheet} from 'react-native'
+import ColorPalette from '../constants/ColorPalette'
 import {TouchableOpacity, Image} from 'react-native'
 
 interface Props {
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
     container: {
         width: 40,
         height: 40,
-        backgroundColor: '#fff',
+        backgroundColor: ColorPalette.white,
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'center',

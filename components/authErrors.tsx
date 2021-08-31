@@ -20,9 +20,7 @@ export default AuthError;
 const styles = StyleSheet.create({
     container: {
         width: width*0.8,
-        // height: 70,
         flexDirection: 'column',
-        // backgroundColor: 'pink',
     },
     title: {
         color: 'red',

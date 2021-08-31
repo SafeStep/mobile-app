@@ -37,29 +37,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 10,
         alignItems: 'center',
-        // height: height * 0.3,
-        // justifyContent: 'center',
-        // marginTop: 50,
-        // marginLeft: 20,
-        // alignSelf: 'flex-end',
-        // position: 'absolute',
-        // backgroundColor: 'pink',
-        // overflow: 'hidden'
     },
     curve: {
-        // width: width,
-        // height: 100,
-        // borderRadius: width/2,
         alignSelf: 'center',
-        // marginBottom: width * 0.6,
-        // backgroundColor: "#0779E4",
-        // transform: [{ scaleX: 1.6}],
-        
-        // shadowColor: '#000',
-        // shadowOffset: { width: 1, height: 4},
-        // shadowOpacity: 0.5,
-        // shadowRadius: 1,
-        // elevation: 5,
     },
     text: {
         width: width,
@@ -67,14 +47,11 @@ const styles = StyleSheet.create({
         fontSize: 40,
         fontWeight: 'bold',
         color: '#fff',
-        // position: 'absolute',
         elevation: 6,
     },
     backButton: {
         width: 50,
         height: 20,
-        // backgroundColor: 'orange',
-
     },
     backIcon: {
         width: 50,

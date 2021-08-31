@@ -1,6 +1,6 @@
 const images = {
     login: {
-        googleIcon: require('./google-icon.jpg'),
+        googleIcon: require('./login-google-icon.svg'),
         facebookIcon: require('./facebook-icon.png'),
         appleIcon: require('./apple-icon.png'),
     },

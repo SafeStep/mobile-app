@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import {Dimensions, View, StyleSheet, Text} from 'react-native'
 import {TextInput } from 'react-native-gesture-handler'
-
+import ColorPalette from '../constants/ColorPalette'
 const {height, width} = Dimensions.get('screen')
 
 interface Props {
@@ -26,37 +26,21 @@ export default Input;
 const styles = StyleSheet.create({
     container: {
         width: width * 0.8,
-        // alignSelf: 'center',
         justifyContent: 'center',
-        backgroundColor: '#fff',
-        // borderRadius: 10,
+        backgroundColor: ColorPalette.white,
         marginVertical: 15,
-
-        // IOS
-        // shadowColor: '#000',
-        // shadowOffset: { width: 1, height: 4},
-        // shadowOpacity: 0.5,
-        // shadowRadius: 1,
-
-        // // Android
-        // elevation: 3,
 
     },
     label: {
-        color: '#7F7F7F',
+        color: ColorPalette.fontDarkGrey,
         fontWeight: 'bold',
         fontSize: 17,
     },
     input: {
         height: 40,
-        // padding: 15, 5, 0 5,
         borderBottomWidth: 0.5,
         paddingTop: 10,
         paddingBottom: 0,
         paddingLeft: 5
-        // textAlign: 'center'
-        //fontWeight: 'bold',
- 
-
     }
 })

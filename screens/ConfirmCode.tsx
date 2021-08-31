@@ -57,7 +57,6 @@ export default App;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: 'center',
         alignItems: 'center',
         paddingTop: '10%',
         backgroundColor: ColorPalette.mainBlue
@@ -65,8 +64,6 @@ const styles = StyleSheet.create({
     formContainer: {
         flex: 1,
         width: '100%',
-        // justifyContent: 'center',
-        // borderRadius: 30,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         alignItems: 'center',

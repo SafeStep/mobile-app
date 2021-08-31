@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import {Dimensions, Text, StyleSheet} from 'react-native'
 import {TouchableOpacity} from 'react-native-gesture-handler'
+import ColorPalette from '../constants/ColorPalette'
 
 const {height, width} = Dimensions.get('screen')
 
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     container: {
         width: width *0.8,
         height: 50,
-        backgroundColor: '#0779E4',
+        backgroundColor: ColorPalette.mainBlue,
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'center',
@@ -31,14 +32,14 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginVertical: 10,
 
-        shadowColor: '#000',
+        shadowColor: ColorPalette.black,
         shadowOffset: { width: 1, height: 4},
         shadowOpacity: 0.5,
         shadowRadius: 1,
         elevation: 5,
     },
     text: {
-        color: '#fff',
+        color: ColorPalette.white,
         fontSize: 20,
         fontWeight: 'bold',
     }

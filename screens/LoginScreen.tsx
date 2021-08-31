@@ -42,7 +42,7 @@ const App : FC = ( { route, navigation }:any ) => {
 
     return (
         <View style={styles.container}>
-            <HeadingCurve text='SafeSteps'/>
+            <HeadingCurve text='Login'/>
             <View style={styles.formContainer}>
                 <View style={styles.logo}>
                     <RoundButton icon={Images.logo} onPress={() => console.log("logo")} />
@@ -93,8 +93,6 @@ const styles = StyleSheet.create({
     formContainer: {
         flex: 1,
         width: '100%',
-        // justifyContent: 'center',
-        // borderRadius: 30,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         alignItems: 'center',
@@ -103,7 +101,6 @@ const styles = StyleSheet.create({
     logo: {
         marginTop: 30,
         marginBottom: 5,
-        // backgroundColor: '#0779E4'
     },
     forgot: {
         flexDirection: 'row',
@@ -112,12 +109,10 @@ const styles = StyleSheet.create({
     alternatives: {
         width: 150,
         marginVertical: 10,
-        // backgroundColor: '#fef',
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     changePage: {
-        // backgroundColor: '#fef',
         marginTop: 50,
         flexDirection: 'row',
         alignSelf: 'center'
@@ -127,7 +122,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     span: {
-        color: ColorPalette.black,
+        color: ColorPalette.fontLightBlue,
         fontWeight: 'bold',
         fontSize: 15,
 

@@ -15,16 +15,16 @@ const App : FC = ( { navigation, route}: any ) => {
     const [errorMessage, setErrorMsg] = useState<string>("")
     const [code, setCode] = useState<string | null>(null)
     const [newPassword, setNewPassword] = useState<string>("")
-    const [repeatePassword, setRepeatePassword] = useState<string>("")
+    const [repeatPassword, setRepeatPassword] = useState<string>("")
 
     const email = route.params.email;
     // console.log("ALOKDINOAISDN", email)
 
     const submitForgotPass = async () => {
 
-        if (newPassword !== repeatePassword) {
+        if (newPassword !== repeatPassword) {
             setErrorMsg("Password missmatch");
-        } else if (newPassword === "" || repeatePassword === "" ) {
+        } else if (newPassword === "" || repeatPassword === "" ) {
             setErrorMsg("Password field empty");
         } else {
             await Auth.forgotPasswordSubmit(email as string, code as string, newPassword as string)
@@ -45,7 +45,7 @@ const App : FC = ( { navigation, route}: any ) => {
 
                 <Input label="Code" placeholder='Code' onChangeText={(text) => setCode(text)} />
                 <Input label="New Password" secureTextEntry={true} placeholder='Password' onChangeText={(text) => setNewPassword(text)} />
-                <Input label="Repeate New Password" secureTextEntry={true} placeholder='Password' onChangeText={(text) => setRepeatePassword(text)} />
+                <Input label="Repeate New Password" secureTextEntry={true} placeholder='Password' onChangeText={(text) => setRepeatPassword(text)} />
 
                 <Button title='Confirm Change' onPress={submitForgotPass} />
             </View>
@@ -58,7 +58,6 @@ export default App;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: 'center',
         alignItems: 'center',
         paddingTop: '10%',
         backgroundColor: ColorPalette.mainBlue
@@ -66,8 +65,6 @@ const styles = StyleSheet.create({
     formContainer: {
         flex: 1,
         width: '100%',
-        // justifyContent: 'center',
-        // borderRadius: 30,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         alignItems: 'center',
