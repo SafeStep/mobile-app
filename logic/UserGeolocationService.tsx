@@ -1,10 +1,10 @@
 import { PhysicalLocation } from "../types";
-import { PermissionsAndroid, Platform } from "react-native";
 import * as TaskManager from "expo-task-manager";
 import * as Location from "expo-location";
 import { LocationAccuracy } from "expo-location";
 
-const BACKGROUND_TASK_NAME ="OUTPUT-LOCATION"
+const BACKGROUND_TASK_NAME = "TRACK-PATH"
+const RANGE_RADIUS = 50  // in meters
 
 TaskManager.defineTask(BACKGROUND_TASK_NAME, ({ data, error } : any) => {
   if (error) {
@@ -13,6 +13,9 @@ TaskManager.defineTask(BACKGROUND_TASK_NAME, ({ data, error } : any) => {
   }
   const location = {lat: data.locations[0].coords.latitude, long:  data.locations[0].coords.longitude, title: "Current Location" } as PhysicalLocation  // TODO check if this is the most recent or the oldest value
   UserGeolocationService.instance.cachedLocation = location
+
+
+
   console.log('Received new locations', location);
 });
 
@@ -25,6 +28,7 @@ const defaultWatchRemove = () => {
 
 export class UserGeolocationService {
   cachedLocation: PhysicalLocation | null = null;
+  trackedPath: number[][] = [];
   static instance: UserGeolocationService;
   
   watchRemove: CallableFunction = defaultWatchRemove
@@ -50,12 +54,15 @@ export class UserGeolocationService {
     }
   }
 
-  async startBackgroundWatch() {
+  async startPathTracking(path: number[][]) {
     try {
       await this.stopForegroundWatch();  // stop the foreground watch and let background watch takeover
     }
     catch{}  // dont care about successfulness
     console.log("Starting background watch")
+
+    this.trackedPath = path;
+
     Location.startLocationUpdatesAsync(BACKGROUND_TASK_NAME, {
       foregroundService: {
         notificationTitle: "SafeStep",
@@ -85,6 +92,7 @@ export class UserGeolocationService {
 
   stopBackgroundWatch() {
     console.log("Stopping background watch")
+    this.trackedPath = [];  // reset the tracked path 
     const _this = this;
     if (TaskManager.isTaskDefined(BACKGROUND_TASK_NAME) && Location.hasStartedLocationUpdatesAsync(BACKGROUND_TASK_NAME)) {  // if the task exists and has started
       Location.stopLocationUpdatesAsync(BACKGROUND_TASK_NAME)
@@ -125,4 +133,3 @@ export class UserGeolocationService {
     return Location.requestBackgroundPermissionsAsync()
   }
 }
-
