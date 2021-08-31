@@ -173,7 +173,7 @@ const App : FC = ( { navigation, route } : any ) => {
      catch {
       console.log("Foreground watch not defined in foreground mode :(")
      }
-     UserGeolocationService.instance.startBackgroundWatch(); 
+     UserGeolocationService.instance.startPathTracking(path); 
      navigation.navigate("on_route", {
        path: path
      });
