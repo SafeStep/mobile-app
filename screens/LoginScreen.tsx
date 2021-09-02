@@ -2,7 +2,9 @@ import { useLinkProps } from '@react-navigation/native';
 import React, {FC, useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 
-import {Input, Button, HeadingCurve, AuthError} from '../components'
+import {Input, Button, HeadingCurve, AuthError, RoundButton} from '../components'
+import ColorPalette from '../constants/ColorPalette';
+import Images from '../assets/images'
 
 import { Auth } from 'aws-amplify';
 
@@ -17,7 +19,11 @@ const App : FC = ( { route, navigation }:any ) => {
     //const navigation = props.navigation
     async function Login() {
         try {
-            const user = await Auth.signIn(email as string, password as string);
+            if (!email || !password ) {
+                return 
+            }
+            const user = await Auth.signIn(email!, password!);
+
             // updateAuthState('loggedIn');
             // console.log(updateUser);
             
@@ -36,47 +42,41 @@ const App : FC = ( { route, navigation }:any ) => {
 
     return (
         <View style={styles.container}>
-            <HeadingCurve text='SafeSteps'/>
-            <AuthError errMessage = {errorMessage} />
-            <Input placeholder='E-mail' onChangeText={(text) => setEmail(text)} />
+            <HeadingCurve text='Login'/>
+            <View style={styles.formContainer}>
+                <View style={styles.logo}>
+                    <RoundButton icon={Images.logo} onPress={() => console.log("logo")} />
 
-            <Input placeholder='Password' secureTextEntry={true}  onChangeText={(text) => setPassword(text)} />
-            <Button title='Login' onPress={Login} />
+                </View>
+                <AuthError errMessage = {errorMessage} />
+                <Input label='E-mail' placeholder='E-mail' onChangeText={(text) => setEmail(text)} />
 
+                <Input label='Password' placeholder='Password' secureTextEntry={true}  onChangeText={(text) => setPassword(text)} />
+                
+                <View style={styles.forgot}>
+                    <Text style={styles.intextButton}>Forgot</Text>
 
-            <View style={styles.forgot}>
-                <Text style={styles.intextButton}>Forgot</Text>
+                    <TouchableOpacity onPress = {() => navigation.navigate('reset_password')}> 
+                        <Text style={styles.span}> Password </Text>
+                    </TouchableOpacity>
+                </View>
 
-                <TouchableOpacity onPress = {() => navigation.navigate('')}> 
-                    <Text style={styles.span}> E-mail </Text>
-                </TouchableOpacity>
+                <Button title='Login' onPress={Login} />
+    
+                <View  style={styles.alternatives}>
+                    <RoundButton icon={Images.login.googleIcon} onPress={() => console.log("pressed")} />
+                    <RoundButton icon={Images.login.facebookIcon} onPress={() => console.log("pressed")} />
+                    <RoundButton icon={Images.login.appleIcon} onPress={() => console.log("pressed")} />
 
-                <Text style={styles.intextButton}>or</Text>
+                </View>
 
-                <TouchableOpacity onPress = {() => navigation.navigate('reset_password')}> 
-                    <Text style={styles.span}> Password </Text>
-                </TouchableOpacity>
+                <View style={styles.changePage}>
+                    <Text style={styles.intextButton}> Don't have an account? </Text>
+                    <TouchableOpacity onPress = {() => navigation.navigate('signup')}> 
+                        <Text style={styles.span}>Signup </Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-
-            <Text style={styles.altText}> - - Or login with - - </Text>
-
-            <View style={styles.alternatives}>
-                <TouchableOpacity style={styles.altMethods}> 
-                    <Image style={styles.stretch} source={require('../assets/images/google-icon.jpg')} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.altMethods}> 
-                    {/* <Image style={styles.stretch} source={require('../assets/images/google.jpg')} /> */}
-                </TouchableOpacity>
-
-            </View>
-
-            <View style={styles.changePage}> 
-                <Text style={styles.intextButton}> Don't have an account? </Text>
-                <TouchableOpacity onPress = {() => navigation.navigate('signup')}> 
-                    <Text style={styles.span}>Signup </Text>
-                </TouchableOpacity>
-            </View>
-
         </View>
     )
 }
@@ -87,61 +87,42 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: '40%',
-        backgroundColor: '#eee'
+        paddingTop: '10%',
+        backgroundColor: ColorPalette.mainBlue
+    },
+    formContainer: {
+        flex: 1,
+        width: '100%',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        alignItems: 'center',
+        backgroundColor: ColorPalette.white
+    },
+    logo: {
+        marginTop: 30,
+        marginBottom: 5,
     },
     forgot: {
         flexDirection: 'row',
         marginTop: 5,
     },
-    stretch: {
-        flex: 1,
-        width: null,
-        height: null,
-        resizeMode: 'contain',
-        // alignSelf: 'center',
-        borderRadius: 10,
-    },
-    altText: {
-        marginTop: 10,
-        marginBottom: 0,
-        fontSize: 15,
-        color: '#605B5B',
-    },
     alternatives: {
-        // flex: 1,
-        flexDirection: 'row'
-    },
-    altMethods: {
-        width: '35%',
-        height: 60,
+        width: 150,
         marginVertical: 10,
-        marginLeft: 5,
-        marginRight: 5,
-
-
-        backgroundColor: '#fff',
-        // flex: 1,
-        // flexDirection: 'row',
-        //borderWidth: 1,
-        borderRadius: 10,
-
-        shadowColor: '#000',
-        shadowOffset: { width: 1, height: 4},
-        shadowOpacity: 0.5,
-        shadowRadius: 1,
-        elevation: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     changePage: {
+        marginTop: 50,
         flexDirection: 'row',
-        marginVertical: 10,
+        alignSelf: 'center'
     },
     intextButton: {
-        color: '#605B5B',
+        color: ColorPalette.fontGrey,
         fontSize: 15,
     },
     span: {
-        color: '#000',
+        color: ColorPalette.fontLightBlue,
         fontWeight: 'bold',
         fontSize: 15,
 
