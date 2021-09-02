@@ -45,7 +45,7 @@ const App : FC = ( { navigation, route}: any ) => {
 
                 <Input label="Code" placeholder='Code' onChangeText={(text) => setCode(text)} />
                 <Input label="New Password" secureTextEntry={true} placeholder='Password' onChangeText={(text) => setNewPassword(text)} />
-                <Input label="Repeate New Password" secureTextEntry={true} placeholder='Password' onChangeText={(text) => setRepeatPassword(text)} />
+                <Input label="Repeat New Password" secureTextEntry={true} placeholder='Password' onChangeText={(text) => setRepeatPassword(text)} />
 
                 <Button title='Confirm Change' onPress={submitForgotPass} />
             </View>
