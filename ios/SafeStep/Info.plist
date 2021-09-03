@@ -42,7 +42,7 @@
 	<key>NSLocationUsageDescription</key>
 	<string>Test Message</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Test Message</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
