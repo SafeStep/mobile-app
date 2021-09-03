@@ -13,12 +13,10 @@ const App : FC = ( { navigation , route} : any ) => {
             await Auth.currentAuthenticatedUser()
             .catch((err) => console.log(err));
             console.log('User is signed in');
-            route.params.updateUser(false);
+            route.params.updateUser(true);
         } catch (err) {
             console.log('User is not signed in');
             navigation.navigate('login');
-            route.params.updateUser(false);
-
         }
     }
 
