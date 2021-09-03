@@ -18,7 +18,7 @@ const App : FC = ( { navigation }: any ) => {
         .then(result => {
             setBackgroundLocationPermission(result.granted.toString())
         })
-        .catch(() => {setForegroundLocationPermission("false")})  // if it fails set as denied
+        .catch(() => {setForegroundLocationPermission("false")})  // if it fails set as false
     }, []);
 
     useEffect(() => {
