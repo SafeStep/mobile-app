@@ -1,15 +1,8 @@
 {
-<<<<<<< Updated upstream:amplify/backend/auth/safestep943284f0/parameters.json
-    "identityPoolName": "safestep943284f0_identitypool_943284f0",
-    "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "safest943284f0",
-    "userPoolName": "safestep943284f0_userpool_943284f0",
-=======
     "identityPoolName": "safestepapp50c8fbb3_identitypool_50c8fbb3",
     "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "safest50c8fbb3",
     "userPoolName": "safestepapp50c8fbb3_userpool_50c8fbb3",
->>>>>>> Stashed changes:amplify/backend/auth/safestepapp50c8fbb350c8fbb3/parameters.json
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -35,17 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-<<<<<<< Updated upstream:amplify/backend/auth/safestep943284f0/parameters.json
-    "userpoolClientLambdaRole": "safest943284f0_userpoolclient_lambda_role",
-    "userpoolClientSetAttributes": false,
-    "sharedId": "943284f0",
-    "resourceName": "safestep943284f0",
-=======
     "userpoolClientLambdaRole": "safest50c8fbb3_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
     "sharedId": "50c8fbb3",
     "resourceName": "safestepapp50c8fbb350c8fbb3",
->>>>>>> Stashed changes:amplify/backend/auth/safestepapp50c8fbb350c8fbb3/parameters.json
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -59,19 +45,14 @@
             "Arn"
         ]
     },
-<<<<<<< Updated upstream:amplify/backend/auth/safestep943284f0/parameters.json
-    "useDefault": "default",
-=======
-    "useDefault": "manual",
-    "thirdPartyAuth": false,
+    "useDefault": "defaultSocial",
     "usernameAttributes": [
         "email"
     ],
     "userPoolGroups": false,
     "adminQueries": false,
     "triggers": "{}",
-    "hostedUI": false,
->>>>>>> Stashed changes:amplify/backend/auth/safestepapp50c8fbb350c8fbb3/parameters.json
+    "hostedUI": true,
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
@@ -81,5 +62,11 @@
     "breakCircularDependency": true,
     "permissions": [],
     "dependsOn": [],
-    "authProviders": []
+    "hostedUIDomainName": "safestepapp909a797a-909a797a",
+    "authProvidersUserPool": [
+        "Google"
+    ],
+    "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
+    "authProviders": [],
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"safestep://\"],\"LogoutURLs\":[\"safestep://\"]}"
 }

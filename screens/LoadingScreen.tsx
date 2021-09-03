@@ -10,12 +10,15 @@ const App : FC = ( { navigation , route} : any ) => {
 
     async function checkAuthState() {
         try {
-            await Auth.currentAuthenticatedUser();
-            console.log(' User is signed in');
-            route.params.updateUser(true);
+            await Auth.currentAuthenticatedUser()
+            .catch((err) => console.log(err));
+            console.log('User is signed in');
+            route.params.updateUser(false);
         } catch (err) {
-            console.log(' User is not signed in');
+            console.log('User is not signed in');
             navigation.navigate('login');
+            route.params.updateUser(false);
+
         }
     }
 

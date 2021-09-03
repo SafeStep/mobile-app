@@ -1,6 +1,7 @@
 import { useLinkProps } from '@react-navigation/native';
 import React, {FC, useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth/lib/types";
 
 import {Input, Button, HeadingCurve, AuthError, RoundButton} from '../components'
 import ColorPalette from '../constants/ColorPalette';
@@ -17,27 +18,27 @@ const App : FC = ( { route, navigation }:any ) => {
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     //const navigation = props.navigation
-    async function Login() {
+    const Login = async () => {
         try {
             if (!email || !password ) {
                 return 
             }
             const user = await Auth.signIn(email!, password!);
-
-            // updateAuthState('loggedIn');
-            // console.log(updateUser);
-            
-            // updateUser(true);
-
             route.params.updateUser(true)
 
             console.log(user);
-        } catch (error) {
-            console.log('error signing in',error );
+        } catch (err: any) {
+            console.log('error signing in',err );
             //console.log('errro obj', Object.keys(error) );
 
-            setErrorMessage(error.message);
+            setErrorMessage(err.message);
         }
+    }
+
+    const FederatedLogin = async () => {
+        Auth.federatedSignIn({ provider:CognitoHostedUIIdentityProvider.Google })
+        .then((user) => console.log(user))
+        .catch((err) => console.log("Federated Error: ", err))
     }
 
     return (
@@ -64,7 +65,7 @@ const App : FC = ( { route, navigation }:any ) => {
                 <Button title='Login' onPress={Login} />
     
                 <View  style={styles.alternatives}>
-                    <RoundButton icon={Images.login.googleIcon} onPress={() => console.log("pressed")} />
+                    <RoundButton icon={Images.login.googleIcon} onPress={FederatedLogin} />
                     <RoundButton icon={Images.login.facebookIcon} onPress={() => console.log("pressed")} />
                     <RoundButton icon={Images.login.appleIcon} onPress={() => console.log("pressed")} />
 
