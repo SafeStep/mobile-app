@@ -48,8 +48,6 @@ export class UserGeolocationService {
       .then(this.requestBackgroundPermission)  // request their background permission
       .then(_this.getLocation); // get the users location
     }
-
-    this.startForegroundWatch()
   }
 
   async startBackgroundWatch() {
@@ -119,12 +117,12 @@ export class UserGeolocationService {
   }
 
   public requestForegroundPermission(): Promise<Location.LocationPermissionResponse> {
-    return Location.getForegroundPermissionsAsync()
+    return Location.requestForegroundPermissionsAsync()
   }
 
   
   public requestBackgroundPermission(): Promise<Location.LocationPermissionResponse> {
-    return Location.getBackgroundPermissionsAsync()
+    return Location.requestBackgroundPermissionsAsync()
   }
 }
 
