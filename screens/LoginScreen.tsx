@@ -17,28 +17,25 @@ const App : FC = ( { route, navigation }:any ) => {
 
     const [errorMessage, setErrorMessage] = useState<string>("");
 
-    //const navigation = props.navigation
     const Login = async () => {
         try {
             if (!email || !password ) {
                 return 
             }
             const user = await Auth.signIn(email!, password!);
-            route.params.updateUser(true)
+            // route.params.updateUser(true)
 
             console.log(user);
         } catch (err: any) {
             console.log('error signing in',err );
-            //console.log('errro obj', Object.keys(error) );
-
             setErrorMessage(err.message);
         }
     }
 
     const FederatedLogin = async () => {
         Auth.federatedSignIn({ provider:CognitoHostedUIIdentityProvider.Google })
-        .then((user) => console.log(user))
-        .catch((err) => console.log("Federated Error: ", err))
+        .then((user) => console.log("NewUser", user))
+        .catch((err) => setErrorMessage(err))
     }
 
     return (

@@ -8,20 +8,16 @@ import { RotationGestureHandler } from 'react-native-gesture-handler';
 
 const App : FC = ( { navigation , route} : any ) => {
 
-    async function checkAuthState() {
-        try {
-            await Auth.currentAuthenticatedUser()
-            .catch((err) => console.log(err));
-            console.log('User is signed in');
-            route.params.updateUser(true);
-        } catch (err) {
-            console.log('User is not signed in');
-            navigation.navigate('login');
-        }
-    }
-
     useEffect(() => {
-        checkAuthState()
+        const checkAuthState = async () => {
+            await Auth.currentAuthenticatedUser()
+            .then((data) => console.log("User is Signed In",data))
+            .catch((err) => navigation.navigate('login'))
+            // .finally(() => route.params.updateUser(true));
+    
+        }
+
+        checkAuthState();
     }, [])
 
     return (
