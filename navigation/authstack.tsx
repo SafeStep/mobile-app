@@ -1,7 +1,7 @@
 import React, {FC} from 'react'
 import {createStackNavigator} from '@react-navigation/stack'
 
-import {SignUp, Login, ConfirmCode, LoadingScreen, ResetPassword} from '../screens/index'
+import {SignUp, Login, ConfirmCode, LoadingScreen, ResetPassword, ResetPasswordConfirm} from '../screens/index'
 
 const {Navigator, Screen} = createStackNavigator();
 
@@ -16,6 +16,7 @@ const AuthStack : FC = (props:any) => {
             <Screen name='signup' component={SignUp} />
             <Screen name='confirm_code' component={ConfirmCode} />
             <Screen name='reset_password' component={ResetPassword} />
+            <Screen name='reset_password_confirm' component={ResetPasswordConfirm} />
 
         </Navigator>
     )

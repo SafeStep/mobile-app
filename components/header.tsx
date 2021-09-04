@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import {Dimensions, Text, View, StyleSheet} from 'react-native'
 import {TouchableOpacity } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
-
+import ColorPalette from '../constants/ColorPalette'
 const {height, width} = Dimensions.get('screen')
 
 interface Props {
@@ -34,9 +34,8 @@ const styles = StyleSheet.create({
         width: width,
         height: '12%',
         flexDirection: 'row',
-        // backgroundColor: 'pink',
         position: 'absolute',
-        shadowColor: '#000',
+        shadowColor: ColorPalette.black,
         shadowOffset: { width: 1, height: 4},
         shadowOpacity: 0.5,
         shadowRadius: 1,
@@ -59,7 +58,7 @@ const styles = StyleSheet.create({
     titleContainer: {
         width: '80%',
         height: '100%',
-        backgroundColor: '#fff',
+        backgroundColor: ColorPalette.white,
     },
     title: {
         fontSize: 20,

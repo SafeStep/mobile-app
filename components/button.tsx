@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import {Dimensions, Text, StyleSheet} from 'react-native'
 import {TouchableOpacity} from 'react-native-gesture-handler'
+import ColorPalette from '../constants/ColorPalette'
 
 const {height, width} = Dimensions.get('screen')
 
@@ -21,24 +22,24 @@ export default Button;
 
 const styles = StyleSheet.create({
     container: {
-        width: width / 1.1,
-        height: height * 0.065,
-        backgroundColor: '#90E4FF',
+        width: width *0.8,
+        height: 50,
+        backgroundColor: ColorPalette.mainBlue,
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'center',
         padding: 10,
-        borderRadius: 10,
+        borderRadius: 5,
         marginVertical: 10,
 
-        shadowColor: '#000',
+        shadowColor: ColorPalette.black,
         shadowOffset: { width: 1, height: 4},
         shadowOpacity: 0.5,
         shadowRadius: 1,
         elevation: 5,
     },
     text: {
-        color: '#000',
+        color: ColorPalette.white,
         fontSize: 20,
         fontWeight: 'bold',
     }
