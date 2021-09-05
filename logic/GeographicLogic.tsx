@@ -1,5 +1,7 @@
 import { ConsoleLogger } from "@aws-amplify/core";
 
+const LAT_LONG_PER_M_AT_EQUATOR = 0.00000899321
+
 export const diffBetweenLatlong = function (lat1:number, lon1:number, lat2:number, lon2:number): number {
     const R = 6371e3; // metres
     const theta1 = lat1 * Math.PI/180; // φ, λ in radians
@@ -98,20 +100,22 @@ const intersects = (point1: Point, point2: Point, point3: Point, point4: Point):
 
 };
 
-export const calcIntersections = (userLocation: Point, path: Point[], rangeRadius: number, intersectionCheckLength: number): boolean => {
+export const calcIntersections = (userLocation: Point, path: Point[], rangeRadius: number): boolean => {
   for (let i = 0; i < path.length-1; i++) {
 
       const direction = path[i].calculateDirection(path[i+1]).normalise()
       const perpendicular = direction.perpendicular();
 
-      const endPoint = new Point(userLocation.long+(perpendicular.x * intersectionCheckLength), userLocation.lat+(perpendicular.y * intersectionCheckLength))  // range radius will be huge here and not represent meters
-      const startPoint = new Point(userLocation.long-(perpendicular.x * intersectionCheckLength), userLocation.lat-(perpendicular.y * intersectionCheckLength))
+      const endPoint = new Point(userLocation.long+(perpendicular.x * rangeRadius * LAT_LONG_PER_M_AT_EQUATOR), userLocation.lat+(perpendicular.y * rangeRadius * LAT_LONG_PER_M_AT_EQUATOR))  // range radius will be huge here and not represent meters
+      const startPoint = new Point(userLocation.long-(perpendicular.x * rangeRadius * LAT_LONG_PER_M_AT_EQUATOR), userLocation.lat-(perpendicular.y * rangeRadius * LAT_LONG_PER_M_AT_EQUATOR))
 
       try {
-        if (intersects(startPoint, endPoint, path[i], path[i+1])) {
+        const interSectionPoint = intersects(startPoint, endPoint, path[i], path[i+1])
+        console.log("intersection with line")
+        if (interSectionPoint.distanceTo(userLocation) <= rangeRadius) {  // if the user is close enough to the line
+          console.log("Users normal overlaps line and is within the radius")
           return true;
         } // TODO check the length of the intersection and make the radius for checking the size of the range at the equator (the largest possible gap in lat long for x meters) e.g. if 10m get lat long of 10m at equator and use as intersection range
-        // then after use the distanceTo function to get more precise value taking into consideration lat long
       }
       catch {}  // no intersection found with normals
       // see if the ends of the line are within distance

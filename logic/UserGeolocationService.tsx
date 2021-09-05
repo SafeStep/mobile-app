@@ -5,7 +5,6 @@ import { LocationAccuracy } from "expo-location";
 import { calcIntersections, Point } from "./GeographicLogic";
 
 const BACKGROUND_TASK_NAME = "TRACK-PATH"
-const INTERSECTION_CHECK_LENGTH = 0.1 // in lat long
 const RANGE_RADIUS = 50  // in meters
 
 TaskManager.defineTask(BACKGROUND_TASK_NAME, ({ data, error } : any) => {
@@ -77,7 +76,7 @@ export class UserGeolocationService {
       throw "Users position not cached"
     }
     const userPoint = new Point(this.cachedLocation.long, this.cachedLocation.lat)
-    return calcIntersections(userPoint, this.trackedPath, RANGE_RADIUS, INTERSECTION_CHECK_LENGTH);
+    return calcIntersections(userPoint, this.trackedPath, RANGE_RADIUS);
   }
 
   async startPathTracking(path: number[][]) {
