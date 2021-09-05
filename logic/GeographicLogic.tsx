@@ -1,3 +1,5 @@
+import { ConsoleLogger } from "@aws-amplify/core";
+
 export const diffBetweenLatlong = function (lat1:number, lon1:number, lat2:number, lon2:number): number {
     const R = 6371e3; // metres
     const theta1 = lat1 * Math.PI/180; // φ, λ in radians
@@ -15,27 +17,21 @@ export const diffBetweenLatlong = function (lat1:number, lon1:number, lat2:numbe
 }
 
 
-class Point {
-  x: number;
-  y: number;
-  constructor(x: number,y: number) {
-      this.x = x;
-      this.y = y;
+export class Point {
+  long: number;
+  lat: number;
+  constructor(long: number,lat: number) {
+      this.long = long;
+      this.lat = lat;
   };
 
   calculateDirection(destination: Point) {
-      return new DirectionVector(destination.x-this.x, destination.y-this.y)
+      return new DirectionVector(destination.long-this.long, destination.lat-this.lat)
   }
 
   distanceTo(destination: Point) {
-      return Math.sqrt((this.x-destination.x)**2+(this.y-destination.y)**2);
-  }
-}
-
-class GeoPoint extends Point {
-  distanceTo(destination: GeoPoint) {
     console.log("calcing distance between lat longs")
-    return diffBetweenLatlong(this.x, this.y, destination.x, destination.y)
+    return diffBetweenLatlong(this.lat, this.long, destination.lat, destination.long)
   }
 }
 
@@ -75,19 +71,19 @@ class Vector {
 
 const intersects = (point1: Point, point2: Point, point3: Point, point4: Point): Point => {
     // Check if none of the lines are of length 0
-    if ((point1.x === point2.x && point1.y === point2.y) || (point3.x === point4.x && point3.y === point4.y)) {
+    if ((point1.long === point2.long && point1.lat === point2.lat) || (point3.long === point4.long && point3.lat === point4.lat)) {
       throw "no intersection found"
     }
 
-    const denominator = ((point4.y - point3.y) * (point2.x - point1.x) - (point4.x - point3.x) * (point2.y - point1.y))
+    const denominator = ((point4.lat - point3.lat) * (point2.long - point1.long) - (point4.long - point3.long) * (point2.lat - point1.lat))
 
     // Lines are parallel
     if (denominator === 0) {
       throw "no intersection found"
     }
 
-    let ua = ((point4.x - point3.x) * (point1.y - point3.y) - (point4.y - point3.y) * (point1.x - point3.x)) / denominator
-    let ub = ((point2.x - point1.x) * (point1.y - point3.y) - (point2.y - point1.y) * (point1.x - point3.x)) / denominator
+    let ua = ((point4.long - point3.long) * (point1.lat - point3.lat) - (point4.lat - point3.lat) * (point1.long - point3.long)) / denominator
+    let ub = ((point2.long - point1.long) * (point1.lat - point3.lat) - (point2.lat - point1.lat) * (point1.long - point3.long)) / denominator
 
     // is the intersection along the segments
     if (ua < 0 || ua > 1 || ub < 0 || ub > 1) {
@@ -95,44 +91,44 @@ const intersects = (point1: Point, point2: Point, point3: Point, point4: Point):
     }
 
     // Return a object with the x and y coordinates of the intersection
-    let x = point1.x + ua * (point2.x - point1.x)
-    let y = point1.y + ua * (point2.y - point1.y)
-
-    if (point1 instanceof GeoPoint) {
-      return new GeoPoint(x, y)
-    }
+    let x = point1.long + ua * (point2.long - point1.long)
+    let y = point1.lat + ua * (point2.lat - point1.lat)
 
     return new Point(x,y)
 
 };
 
-const calcIntersections = (userLocation: Point, path: Point[], rangeRadius: number) => {
+export const calcIntersections = (userLocation: Point, path: Point[], rangeRadius: number, intersectionCheckLength: number): boolean => {
   for (let i = 0; i < path.length-1; i++) {
 
-      const  direction = path[i].calculateDirection(path[i+1]).normalise()
-      const  perpendicular = direction.perpendicular();
+      const direction = path[i].calculateDirection(path[i+1]).normalise()
+      const perpendicular = direction.perpendicular();
 
-      const  endPoint = new Point(userLocation.x+(perpendicular.x * rangeRadius), userLocation.y+(perpendicular.y * rangeRadius))  // range radius will be huge here and not represent meters
-      const  startPoint = new Point(userLocation.x-(perpendicular.x * rangeRadius), userLocation.y-(perpendicular.y * rangeRadius))
+      const endPoint = new Point(userLocation.long+(perpendicular.x * intersectionCheckLength), userLocation.lat+(perpendicular.y * intersectionCheckLength))  // range radius will be huge here and not represent meters
+      const startPoint = new Point(userLocation.long-(perpendicular.x * intersectionCheckLength), userLocation.lat-(perpendicular.y * intersectionCheckLength))
 
-      if (intersects(startPoint, endPoint, path[i], path[i+1])) { // TODO make this get the point of intersection, not a bool (http://paulbourke.net/geometry/pointlineplane/)
+      try {
+        if (intersects(startPoint, endPoint, path[i], path[i+1])) {
           return true;
-      } // TODO check the length of the intersection and make the radius for checking the size of the range at the equator (the largest possible gap in lat long for x meters) e.g. if 10m get lat long of 10m at equator and use as intersection range
-      // then after use the distanceTo function to get more precise value taking into consideration lat long
-      
+        } // TODO check the length of the intersection and make the radius for checking the size of the range at the equator (the largest possible gap in lat long for x meters) e.g. if 10m get lat long of 10m at equator and use as intersection range
+        // then after use the distanceTo function to get more precise value taking into consideration lat long
+      }
+      catch {}  // no intersection found with normals
       // see if the ends of the line are within distance
 
       const distanceToStart = userLocation.distanceTo(path[i])
       if (distanceToStart <= rangeRadius) {
-          return true;
+        console.log("close to start of point")
+        return true;
       }
 
       const distanceToEnd = userLocation.distanceTo(path[i+1])
       if (distanceToEnd <= rangeRadius) {
-          return true;
+        console.log("close to end of point")
+        return true;
       }
   }
-
+  console.log("no intersections found");
   return false; // all lines were checked and none were close enough
 }
 

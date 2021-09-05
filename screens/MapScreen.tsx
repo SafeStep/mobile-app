@@ -126,12 +126,12 @@ const App : FC = ( { navigation, route } : any ) => {
     const [markers, setMarkers] = useState([] as PhysicalLocation[]);  // store list of markers
 
     useEffect(() => {  // need to get the users location here too
-      if (UserGeolocationService.instance.cachedLocation === null) {
+      if (UserGeolocationService.instance.getCachedLocation() === null) {
         console.warn("Cant create path as no user location available");
         UserGeolocationService.instance.getLocation();  // bypass the 30 second timer
         return;
       }      
-      let waypoints = [UserGeolocationService.instance.cachedLocation, ...markers]  // append the user location to the start of the array
+      let waypoints = [UserGeolocationService.instance.getCachedLocation(), ...markers]  // append the user location to the start of the array
 
       let latLongs = [] as coordinatesObject[];
 

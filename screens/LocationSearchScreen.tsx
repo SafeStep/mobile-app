@@ -97,7 +97,7 @@ const App : FC = ( { route, navigation } : any) => {
     }
 
     const searchLocations = (inputValue: string) => {  // run the mapbox api 
-        let currentLocation = UserGeolocationService.instance.cachedLocation;
+        let currentLocation = UserGeolocationService.instance.getCachedLocation();
         if (!currentLocation) {
             alert("Cant get your location right now!");
         }

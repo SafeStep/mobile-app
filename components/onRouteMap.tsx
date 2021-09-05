@@ -43,7 +43,7 @@ export const OnRouteMap = ({ path }: mapProps) => {
         <MapboxGL.Camera 
         followUserLocation={followUser}
         followUserMode={MapboxGL.UserTrackingModes.FollowWithHeading}  
-        onUserTrackingModeChange={(data) => {console.log(data.nativeEvent.payload); setFollowUser(data.nativeEvent.payload.followUserLocation)}}
+        onUserTrackingModeChange={(data) => {setFollowUser(data.nativeEvent.payload.followUserLocation)}}
         />
         :
         <MapboxGL.Camera 

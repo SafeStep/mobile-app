@@ -2,8 +2,10 @@ import { PhysicalLocation } from "../types";
 import * as TaskManager from "expo-task-manager";
 import * as Location from "expo-location";
 import { LocationAccuracy } from "expo-location";
+import { calcIntersections, Point } from "./GeographicLogic";
 
 const BACKGROUND_TASK_NAME = "TRACK-PATH"
+const INTERSECTION_CHECK_LENGTH = 0.1 // in lat long
 const RANGE_RADIUS = 50  // in meters
 
 TaskManager.defineTask(BACKGROUND_TASK_NAME, ({ data, error } : any) => {
@@ -12,10 +14,9 @@ TaskManager.defineTask(BACKGROUND_TASK_NAME, ({ data, error } : any) => {
     return;
   }
   const location = {lat: data.locations[0].coords.latitude, long:  data.locations[0].coords.longitude, title: "Current Location" } as PhysicalLocation  // TODO check if this is the most recent or the oldest value
-  UserGeolocationService.instance.cachedLocation = location
-
-
-
+  UserGeolocationService.instance.setCachedLocation(location);
+  const isOnPath = UserGeolocationService.instance.isUserOnPath();
+  console.log(" is user on path: " + isOnPath);
   console.log('Received new locations', location);
 });
 
@@ -27,8 +28,8 @@ const defaultWatchRemove = () => {
 }
 
 export class UserGeolocationService {
-  cachedLocation: PhysicalLocation | null = null;
-  trackedPath: number[][] = [];
+  private cachedLocation: PhysicalLocation | null = null;
+  private trackedPath: Point[] = [];
   static instance: UserGeolocationService;
   
   watchRemove: CallableFunction = defaultWatchRemove
@@ -54,6 +55,31 @@ export class UserGeolocationService {
     }
   }
 
+  setCachedLocation(location: PhysicalLocation) {
+    this.cachedLocation = location;
+  }
+
+  getCachedLocation(): PhysicalLocation | null {
+    return this.cachedLocation;
+  }
+
+  setTrackedPath(path: number[][]) {
+    const trackedPath = [] as Point[];
+    path.forEach(point => {
+      trackedPath.push(new Point(point[0], point[1]));
+    });
+
+    this.trackedPath = trackedPath;
+  }
+
+  isUserOnPath(): boolean {
+    if (!this.cachedLocation) {
+      throw "Users position not cached"
+    }
+    const userPoint = new Point(this.cachedLocation.long, this.cachedLocation.lat)
+    return calcIntersections(userPoint, this.trackedPath, RANGE_RADIUS, INTERSECTION_CHECK_LENGTH);
+  }
+
   async startPathTracking(path: number[][]) {
     try {
       await this.stopForegroundWatch();  // stop the foreground watch and let background watch takeover
@@ -61,7 +87,7 @@ export class UserGeolocationService {
     catch{}  // dont care about successfulness
     console.log("Starting background watch")
 
-    this.trackedPath = path;
+    this.setTrackedPath(path);
 
     Location.startLocationUpdatesAsync(BACKGROUND_TASK_NAME, {
       foregroundService: {
