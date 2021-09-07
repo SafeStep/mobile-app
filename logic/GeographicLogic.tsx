@@ -32,7 +32,6 @@ export class Point {
   }
 
   distanceTo(destination: Point) {
-    console.log("calcing distance between lat longs")
     return diffBetweenLatlong(this.lat, this.long, destination.lat, destination.long)
   }
 }
