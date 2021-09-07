@@ -43,7 +43,7 @@ const OnRouteMap = ({ path }: mapProps) => {
         <MapboxGL.UserLocation/>
         <MapboxGL.Camera 
         followUserLocation={followUser} 
-        followUserMode={MapboxGL.UserTrackingModes.FollowWithCourse} 
+        followUserMode={MapboxGL.UserTrackingModes.FollowWithHeading} 
         followZoomLevel={20}  // avoid changing this and the follow pitch as IOS really freaks out with any higher numbers
         followPitch={80}
         onUserTrackingModeChange={(data) => {setFollowUser(data.nativeEvent.payload.followUserLocation)}}
