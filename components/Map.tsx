@@ -32,7 +32,7 @@ interface mapProps {
 export const Map = ({ path, markers}: mapProps) => {
 
   MapboxGL.setAccessToken(MAPBOX_KEY);
-  let userPosition = UserGeolocationService.instance.cachedLocation;
+  let userPosition = UserGeolocationService.instance.getCachedLocation();
   return (       
     <MapboxGL.MapView style={styles.map} >
 

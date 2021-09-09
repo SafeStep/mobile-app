@@ -28,7 +28,7 @@ const App : FC = ( { route, navigation } : any ) => {
     return (
         <SafeAreaView style={styles.mapContainer} edges={['right', "top", 'left']}>
             <View style={styles.map}>
-                {<OnRouteMap path={route.params.path} /> }
+                <OnRouteMap path={route.params.path} /> 
                 
                 <TouchableOpacity onPress={endJourney}>
                     <Text> End </Text>

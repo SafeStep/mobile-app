@@ -102,7 +102,7 @@ export const DestinationSearch = ({ navigation, markerUpdateCallback }: Destinat
 
     const renderItem = useCallback( ({ item, index, drag, isActive }: RenderItemParams<destinationInputProps>) => {
         return <DestinationInput physicalLocation={item.physicalLocation} updateCallback={updateSingleValue} id={item.id} dragCallback={drag} navigation={navigation} />;
-    }, [UserGeolocationService.instance.cachedLocation]);
+    }, [UserGeolocationService.instance.getCachedLocation]);
 
     const addDestination = useCallback(() => {  // add a new destination input to the screen
         setCurrentDestinations( oldValues => [...oldValues, {updateCallback: updateSingleValue, id:uuidv4(), navigation: navigation}]);
@@ -114,7 +114,7 @@ export const DestinationSearch = ({ navigation, markerUpdateCallback }: Destinat
     }, [currentDestinations])
 
     useEffect(() => {  // add the first input value
-            setCurrentDestinations([{updateCallback: updateSingleValue, id:uuidv4(), navigation: navigation, physicalLocation: UserGeolocationService.instance.cachedLocation}]);
+            setCurrentDestinations([{updateCallback: updateSingleValue, id:uuidv4(), navigation: navigation, physicalLocation: UserGeolocationService.instance.getCachedLocation()}]);
     }, []);
 
     return (  // set preferable heights in second view

@@ -1,9 +1,8 @@
 import MapboxGL from "@react-native-mapbox-gl/maps";
-import React, {useState} from "react";
+import React, {useState, useMemo} from "react";
 import {Button} from "react-native"
 import * as config from "../configuration.json";
 import { makeGeoJSON } from "../logic/GeographicLogic";
-import { UserGeolocationService } from "../logic/UserGeolocationService";
 
 const MAPBOX_KEY = config.mapbox_key
 
@@ -26,40 +25,34 @@ const styles = {
 interface mapProps {
     path: number[][],
 }
-
-export const OnRouteMap = ({ path }: mapProps) => { 
+ 
+const OnRouteMap = ({ path }: mapProps) => { 
     MapboxGL.setAccessToken(MAPBOX_KEY);
-  
-    const [mapLoaded, setMapLoaded] = useState(false)
-    const [followUser, setFollowUser] = useState(true)
-    
-    const geoJsonPath = makeGeoJSON(path); 
 
+    const [mapLoaded, setMapLoaded] = useState(false)
+
+    const [followUser, setFollowUser] = useState(true)
+    const renderPath = useMemo(()=>{
+        const geoJsonPath = makeGeoJSON(path); 
+        return  <MapboxGL.ShapeSource id='finalLine' shape={geoJsonPath}>
+                    <MapboxGL.LineLayer id="finalPath" style={{lineColor: "blue", lineWidth: 15, lineOpacity: 0.4}} />
+                </MapboxGL.ShapeSource>}, [mapLoaded])
+    
     return <>
-    <MapboxGL.MapView style={styles.map} onDidFinishLoadingMap={()=>{setMapLoaded(true)}}>
+    <MapboxGL.MapView style={styles.map} onDidFinishLoadingMap={() => setMapLoaded(true)}>
         <MapboxGL.UserLocation/>
-        {
-        !mapLoaded ?
-        <MapboxGL.Camera 
-        followUserLocation={followUser}
-        followUserMode={MapboxGL.UserTrackingModes.FollowWithHeading}  
-        onUserTrackingModeChange={(data) => {console.log(data.nativeEvent.payload); setFollowUser(data.nativeEvent.payload.followUserLocation)}}
-        />
-        :
         <MapboxGL.Camera 
         followUserLocation={followUser} 
         followUserMode={MapboxGL.UserTrackingModes.FollowWithHeading} 
         followZoomLevel={20}  // avoid changing this and the follow pitch as IOS really freaks out with any higher numbers
         followPitch={80}
+        onUserTrackingModeChange={(data) => {setFollowUser(data.nativeEvent.payload.followUserLocation)}}
         />
-        }
         
-        <MapboxGL.ShapeSource id='finalLine' shape={geoJsonPath}>
-            <MapboxGL.LineLayer id="finalPath" style={{lineColor: "blue", lineWidth: 15, lineOpacity: 0.4}} />
-        </MapboxGL.ShapeSource>
-
+        {renderPath}
     </MapboxGL.MapView>
-    <Button onPress={() => {setFollowUser(true)}} title={"Recenter"}></Button></>;
+    <Button onPress={() => {setFollowUser(true)}} title={"Recenter"}></Button>
+    </>;
 }
 
 export default OnRouteMap;
