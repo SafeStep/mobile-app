@@ -101,8 +101,7 @@ const App : FC = ( { route, navigation } : any) => {
         if (!currentLocation) {
             alert("Cant get your location right now!");
         }
-        axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${inputValue}.json?proximity=${currentLocation!.long},${currentLocation!.lat}&access_token=${MAPBOX_KEY}`)
-        //axios.get(`https://y5yyrwkg42.execute-api.eu-west-1.amazonaws.com/dev/places?query=${inputValue}&lat=${currentLocation.lat}&long=${currentLocation.long}`)
+        axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${inputValue}.json?proximity=${currentLocation!.long},${currentLocation!.lat}&autocomplete=true&fuzzyMatch=true&access_token=${MAPBOX_KEY}`)
         .then(function (response: any) {
 
             let results = [] as PhysicalLocation[]
