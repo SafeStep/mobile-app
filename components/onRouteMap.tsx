@@ -30,8 +30,8 @@ const OnRouteMap = ({ path }: mapProps) => {
     MapboxGL.setAccessToken(MAPBOX_KEY);
 
     const [mapLoaded, setMapLoaded] = useState(false)
-
     const [followUser, setFollowUser] = useState(true)
+
     const renderPath = useMemo(()=>{
         const geoJsonPath = makeGeoJSON(path); 
         return  <MapboxGL.ShapeSource id='finalLine' shape={geoJsonPath}>
@@ -39,7 +39,7 @@ const OnRouteMap = ({ path }: mapProps) => {
                 </MapboxGL.ShapeSource>}, [mapLoaded])
     
     return <>
-    <MapboxGL.MapView style={styles.map} onDidFinishLoadingMap={() => setMapLoaded(true)}>
+    <MapboxGL.MapView style={styles.map} onDidFinishLoadingMap={() => {setMapLoaded(true); setFollowUser(true);}}>
         <MapboxGL.UserLocation/>
         <MapboxGL.Camera 
         followUserLocation={followUser} 
