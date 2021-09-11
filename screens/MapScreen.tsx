@@ -111,16 +111,10 @@ import {Auth} from 'aws-amplify';
 const App : FC = ( { navigation, route } : any ) => {
 
 
-  async function LogOut() {
-    try {
-        await Auth.signOut();
-        // updateAuthState('loggedOut');
-        // props.updateUser(null);
-        route.params.updateUser(null)
-    } catch (error) {
-        console.log('error signing out: ', error);
-    }
-}
+  const LogOut = async () => {
+      await Auth.signOut()
+      .catch((err) => console.log("Error Siging Out:", err));
+  }
 
     const [path, setPath] = useState([] as number[][]);
     const [markers, setMarkers] = useState([] as PhysicalLocation[]);  // store list of markers

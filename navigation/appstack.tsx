@@ -7,7 +7,7 @@ import AddContactScreen from '../screens/AddContactScreen';
 
 const {Navigator, Screen} = createStackNavigator();
 
-const AppStack : FC = (props:any) => {
+const AppStack : FC = () => {
     // console.log([props]);
     
     return (
@@ -15,7 +15,7 @@ const AppStack : FC = (props:any) => {
         <Navigator screenOptions={{headerShown: false}}>
 
             <Screen name="location_perm_check" component={LocationPermCheckScreen} />
-            <Screen name='map' component={MapScreen} initialParams={{ updateUser: props.updateUser }}  />
+            <Screen name='map' component={MapScreen} />
             <Screen name="on_route" component={OnRouteScreen}/>
             <Screen name='contacts' component={Contacts} options={contactsOptions} />
             <Screen name="location_search" component={LocationSearchScreen} />
