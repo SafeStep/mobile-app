@@ -7,6 +7,7 @@ import 'react-native-get-random-values';
 import { PhysicalLocation } from '../../types';
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
+import {max_waypoints as MAX_WAYPOINTS} from "../../configuration.json"
 
 const styles = {
     destinationInputContainer: {
@@ -116,7 +117,7 @@ export const DestinationSearch = ({ navigation, markerUpdateCallback, waypoints 
                     onDragEnd={({ data }) => { markerUpdateCallback(data); }}
                 />
             </View>
-            <Button title={"Add"} disabled={waypoints.length >= 5} onPress={addDestination}></Button>
+            <Button title={"Add"} disabled={waypoints.length >= MAX_WAYPOINTS} onPress={addDestination}></Button>
         </View>
         );
 };

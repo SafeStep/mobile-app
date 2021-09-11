@@ -9,6 +9,7 @@ import { UserGeolocationService } from "../logic/UserGeolocationService";
 import * as config from "../configuration.json";
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
+import {max_waypoints as MAX_WAYPOINTS} from "../configuration.json"
 
 const MAPBOX_KEY = config.mapbox_key
 
@@ -182,8 +183,9 @@ const App : FC = ( { navigation, route } : any ) => {
    }
 
    const createAdhocMarker = (lat: number, long: number) => {
-     console.log(lat, long);
-      setMarkers([...markers, {id: uuidv4(), point: {lat: lat, long: long, title: "Long Press Marker"}}]);
+     if (markers.length < MAX_WAYPOINTS){
+       setMarkers([...markers, {id: uuidv4(), point: {lat: lat, long: long, title: "Long Press Marker"}}]);
+     }
    }
 
    const startJourney= useCallback(() => {

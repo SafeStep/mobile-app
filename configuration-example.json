@@ -1,4 +1,5 @@
 {
     "mapbox_key": "",
-    "api_url": "api.safe-step.net"
+    "api_url": "api.safe-step.net",
+    "max_waypoints": 5
 }
