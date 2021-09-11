@@ -3,7 +3,7 @@ declare module 'config' {
     export const mapbox_url: string;
 }
 
-type Waypoint = {
+interface Waypoint {
     point: PhysicalLocation,
     id: string
 }

@@ -179,8 +179,7 @@ const App : FC = ( { navigation, route } : any ) => {
    }
 
    const markersDelete = (id: string) => {
-     console.log(markers.filter(item => {return item.id !== id}));
-    setMarkers(markers.filter(item => {return item.id !== id}))  // filter out the bad id
+     setMarkers(markers.filter(item => {return item.id !== id}))  // filter out the bad id
    }
 
    const createAdhocMarker = (lat: number, long: number): void => {  // will place adhoc marker in position closest to two nodes

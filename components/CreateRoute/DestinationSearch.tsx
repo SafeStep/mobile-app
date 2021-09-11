@@ -8,6 +8,7 @@ import { PhysicalLocation } from '../../types';
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
 import {max_waypoints as MAX_WAYPOINTS} from "../../configuration.json"
+import { makeQuerablePromise } from '@aws-amplify/core';
 
 const styles = {
     destinationInputContainer: {
@@ -62,10 +63,12 @@ interface destinationInputProps {
     updateCallback: Function,
     deleteCallback: Function,
     navigation: any,
-    waypoint: Waypoint
+    waypoint: WaypointWithAmount
 }
 
 const DestinationInput = ({ dragCallback, id, navigation, updateCallback, deleteCallback, waypoint}: destinationInputProps) => {
+    
+    console.log(waypoint);
     return (  
         <View style={styles.destinationInputContainer as any} > 
             <View  style={styles.destinationInputWrapper as any}>
@@ -75,13 +78,19 @@ const DestinationInput = ({ dragCallback, id, navigation, updateCallback, delete
                     </View>
                 </TouchableOpacity>
             </View>
-            
-            <TouchableOpacity onLongPress={dragCallback} style={styles.dragWrapper as any}>
-                <Text>Drag</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => {deleteCallback(waypoint.id)}} style={styles.deleteWrapper as any}>
-                <Text>Delete</Text>
-            </TouchableOpacity>
+            {
+                waypoint.amountOfWaypoints > 1
+                ? 
+                <>
+                <TouchableOpacity onLongPress={dragCallback} style={styles.dragWrapper as any}>
+                    <Text>Drag</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {deleteCallback(waypoint.id)}} style={styles.deleteWrapper as any}>
+                    <Text>Delete</Text>
+                </TouchableOpacity>
+                </>
+                : null
+            }
         </View>
     );
 };
@@ -91,6 +100,10 @@ interface DestinationSearchProps {
     waypointUpdateCallback: Function,
     waypointDeleteCallback: Function,
     waypoints: Waypoint[]
+}
+
+interface WaypointWithAmount extends Waypoint {
+    amountOfWaypoints: number
 }
 
 export const DestinationSearch = ({ navigation, waypointUpdateCallback, waypoints, waypointDeleteCallback }: DestinationSearchProps) => {
@@ -108,7 +121,7 @@ export const DestinationSearch = ({ navigation, waypointUpdateCallback, waypoint
         }
     }
 
-    const renderItem = ({ item, index, drag, isActive }: RenderItemParams<Waypoint>) => {
+    const renderItem = ({ item, index, drag, isActive }: RenderItemParams<WaypointWithAmount>) => {
         return <DestinationInput waypoint={item} updateCallback={updateSingleValue} deleteCallback={waypointDeleteCallback} id={item.id} dragCallback={drag} navigation={navigation} />;
     };
 
@@ -116,11 +129,16 @@ export const DestinationSearch = ({ navigation, waypointUpdateCallback, waypoint
         waypointUpdateCallback([...waypoints, {id: uuidv4(), point: null}]);
     }
 
+    let waypointsWithAmounts = [] as WaypointWithAmount[]  // required to pass amount of way points to destination input
+    waypoints.forEach(waypoint => {
+        waypointsWithAmounts.push({...waypoint, amountOfWaypoints: waypoints.length});
+    })
+    
     return (  // set preferable heights in second view
         <View> 
             <View style={{flexDirection: "row", minHeight: 50, maxHeight: 150}}>
                 <DraggableFlatList 
-                    data = { waypoints }
+                    data = { waypointsWithAmounts as WaypointWithAmount[] }
                     keyExtractor={(item, index) => item.id}
                     renderItem = {renderItem}
                     onDragEnd={({ data }) => { waypointUpdateCallback(data); }}
