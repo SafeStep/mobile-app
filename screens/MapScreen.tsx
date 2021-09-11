@@ -178,6 +178,11 @@ const App : FC = ( { navigation, route } : any ) => {
       setMarkers(toUpdate);
    }
 
+   const markersDelete = (id: string) => {
+     console.log(markers.filter(item => {return item.id !== id}));
+    setMarkers(markers.filter(item => {return item.id !== id}))  // filter out the bad id
+   }
+
    const createAdhocMarker = (lat: number, long: number): void => {  // will place adhoc marker in position closest to two nodes
      if (markers.length >= MAX_WAYPOINTS){
        return;
@@ -228,7 +233,7 @@ const App : FC = ( { navigation, route } : any ) => {
     return (
         <SafeAreaView style={styles.mapContainer} edges={['right', "top", 'left']}>
             <View style={styles.mapTopNav}>
-              <DestinationSearch waypoints={markers} markerUpdateCallback={markersUpdate} navigation={navigation}/>
+              <DestinationSearch waypoints={markers} waypointUpdateCallback={markersUpdate} waypointDeleteCallback={markersDelete} navigation={navigation}/>
             </View>
             <View style={styles.map}>
                 {<Map path={path} markers={markers} adhocMarkerUpdate={createAdhocMarker} /> }

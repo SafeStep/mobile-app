@@ -48,24 +48,30 @@ const styles = {
       dragWrapper: {
         justifyContent: "center", 
         height: "90%"
+      },
+
+      deleteWrapper: {
+        justifyContent: "center", 
+        height: "90%"
       }
 }
 
 interface destinationInputProps {
     id?: string,
     dragCallback?: any,
-    updateCallback: Function
+    updateCallback: Function,
+    deleteCallback: Function,
     navigation: any,
-    physicalLocation?: PhysicalLocation | null
+    waypoint: Waypoint
 }
 
-const DestinationInput = ({ dragCallback, id, navigation, updateCallback, physicalLocation}: destinationInputProps) => {
+const DestinationInput = ({ dragCallback, id, navigation, updateCallback, deleteCallback, waypoint}: destinationInputProps) => {
     return (  
         <View style={styles.destinationInputContainer as any} > 
             <View  style={styles.destinationInputWrapper as any}>
                 <TouchableOpacity onPress={() => {navigation.navigate("location_search", {inputId: id, updateCallback: updateCallback})}}>
                     <View style={styles.destinationInput as any}>
-                        <Text style={{width: "100%"}}>{physicalLocation ? physicalLocation.title : "Search"}</Text>
+                        <Text style={{width: "100%"}}>{waypoint.point ? waypoint.point.title : "Search"}</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -73,17 +79,21 @@ const DestinationInput = ({ dragCallback, id, navigation, updateCallback, physic
             <TouchableOpacity onLongPress={dragCallback} style={styles.dragWrapper as any}>
                 <Text>Drag</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => {deleteCallback(waypoint.id)}} style={styles.deleteWrapper as any}>
+                <Text>Delete</Text>
+            </TouchableOpacity>
         </View>
     );
 };
 
 interface DestinationSearchProps {
     navigation: any, 
-    markerUpdateCallback: Function,
+    waypointUpdateCallback: Function,
+    waypointDeleteCallback: Function,
     waypoints: Waypoint[]
 }
 
-export const DestinationSearch = ({ navigation, markerUpdateCallback, waypoints }: DestinationSearchProps) => {
+export const DestinationSearch = ({ navigation, waypointUpdateCallback, waypoints, waypointDeleteCallback }: DestinationSearchProps) => {
     
     const updateSingleValue = (inputId: string, newValue: PhysicalLocation) => {  // update the value of a marker e.g. marker a is now tescos, not lidl
         console.log(inputId);
@@ -92,19 +102,18 @@ export const DestinationSearch = ({ navigation, markerUpdateCallback, waypoints 
         for (let i=0; i < waypointCopy.length; i++) {
             if (waypointCopy[i].id === inputId) {
                 waypointCopy[i].point = newValue;
-                console.log(waypointCopy[i]);
-                markerUpdateCallback(waypointCopy);
+                waypointUpdateCallback(waypointCopy);
                 return;  // break the loop as the object has been found
             }
         }
     }
 
     const renderItem = ({ item, index, drag, isActive }: RenderItemParams<Waypoint>) => {
-        return <DestinationInput physicalLocation={item.point} updateCallback={updateSingleValue} id={item.id} dragCallback={drag} navigation={navigation} />;
+        return <DestinationInput waypoint={item} updateCallback={updateSingleValue} deleteCallback={waypointDeleteCallback} id={item.id} dragCallback={drag} navigation={navigation} />;
     };
 
     const addDestination = () => {
-        markerUpdateCallback([...waypoints, {id: uuidv4(), point: null}]);
+        waypointUpdateCallback([...waypoints, {id: uuidv4(), point: null}]);
     }
 
     return (  // set preferable heights in second view
@@ -114,7 +123,7 @@ export const DestinationSearch = ({ navigation, markerUpdateCallback, waypoints 
                     data = { waypoints }
                     keyExtractor={(item, index) => item.id}
                     renderItem = {renderItem}
-                    onDragEnd={({ data }) => { markerUpdateCallback(data); }}
+                    onDragEnd={({ data }) => { waypointUpdateCallback(data); }}
                 />
             </View>
             <Button title={"Add"} disabled={waypoints.length >= MAX_WAYPOINTS} onPress={addDestination}></Button>
