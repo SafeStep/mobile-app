@@ -1,11 +1,14 @@
 import React, {FC, useState, useEffect, useRef, useCallback} from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+// @ts-ignore
 import mbxClient from "@mapbox/mapbox-sdk";
 import mbxDirections from "@mapbox/mapbox-sdk/services/directions";
 import polyline from "@mapbox/polyline";
 import { UserGeolocationService } from "../logic/UserGeolocationService";
 import * as config from "../configuration.json";
+// @ts-ignore
+import { v4 as uuidv4 } from 'uuid';
 
 const MAPBOX_KEY = config.mapbox_key
 
@@ -94,7 +97,8 @@ const getRoute = (wayPoints: coordinatesObject[]): Promise<number[][]> => {
       directionsClient.getDirections({
         profile: 'walking',
         overview: "full",
-        waypoints: wayPoints
+        // @ts-ignore
+        waypoints: wayPoints 
       }).send()
       .then((response: any) => {
         const directions = response.body;
@@ -109,29 +113,29 @@ const getRoute = (wayPoints: coordinatesObject[]): Promise<number[][]> => {
 import {Auth} from 'aws-amplify';
 
 const App : FC = ( { navigation, route } : any ) => {
-
-
-  async function LogOut() {
-    try {
-        await Auth.signOut();
-        // updateAuthState('loggedOut');
-        // props.updateUser(null);
-        route.params.updateUser(null)
-    } catch (error) {
-        console.log('error signing out: ', error);
-    }
-}
-
     const [path, setPath] = useState([] as number[][]);
-    const [markers, setMarkers] = useState([] as PhysicalLocation[]);  // store list of markers
+    const [markers, setMarkers] = useState([] as Waypoint[]);  // store list of markers
 
-    useEffect(() => {  // need to get the users location here too
+    useEffect(() => {  // add the first search Input
+      if (markers.length == 0) {
+        setMarkers([...markers, {id: uuidv4(), point: null}])
+      }
+    }, [])
+
+    useEffect(() => {  // when ever a marker is updated need to re route the path
       if (UserGeolocationService.instance.getCachedLocation() === null) {
         console.warn("Cant create path as no user location available");
         UserGeolocationService.instance.getLocation();  // bypass the 30 second timer
         return;
       }      
-      let waypoints = [UserGeolocationService.instance.getCachedLocation(), ...markers]  // append the user location to the start of the array
+
+      console.log("markers updated")
+
+      let waypoints = [UserGeolocationService.instance.getCachedLocation()]  // append the user location to the start of the array
+
+      markers.forEach(waypoint => {
+        waypoints.push(waypoint.point);
+      })
 
       let latLongs = [] as coordinatesObject[];
 
@@ -157,14 +161,30 @@ const App : FC = ( { navigation, route } : any ) => {
 
     }, [markers]) // run whenever markers is updated
 
-    const markersUpdate=useCallback((positions: any[])=>{
-      let toUpdate = [] as PhysicalLocation[];
+    
+    async function LogOut() {
+      try {
+          await Auth.signOut();
+          // updateAuthState('loggedOut');
+          // props.updateUser(null);
+          route.params.updateUser(null)
+      } catch (error) {
+          console.log('error signing out: ', error);
+      }
+    }
 
+    const markersUpdate=(positions: Waypoint[])=>{  // called when destination search has modified the waypoints in some form
+      let toUpdate = [] as Waypoint[];
       positions.forEach(element => {
-        if (element.physicalLocation !== undefined) toUpdate.push(element.physicalLocation);  // will be null if search has not been fulfilled
+        if (element.point !== undefined) toUpdate.push(element);  // will be null if search has not been fulfilled
       });
       setMarkers(toUpdate);
-   }, [])
+   }
+
+   const createAdhocMarker = (lat: number, long: number) => {
+     console.log(lat, long);
+      setMarkers([...markers, {id: uuidv4(), point: {lat: lat, long: long, title: "Long Press Marker"}}]);
+   }
 
    const startJourney= useCallback(() => {
      try {
@@ -182,10 +202,10 @@ const App : FC = ( { navigation, route } : any ) => {
     return (
         <SafeAreaView style={styles.mapContainer} edges={['right', "top", 'left']}>
             <View style={styles.mapTopNav}>
-              <DestinationSearch markerUpdateCallback={markersUpdate} navigation={navigation}/>
+              <DestinationSearch waypoints={markers} markerUpdateCallback={markersUpdate} navigation={navigation}/>
             </View>
             <View style={styles.map}>
-                {<Map path={path} markers={markers} /> }
+                {<Map path={path} markers={markers} adhocMarkerUpdate={createAdhocMarker} /> }
                 
                 <TouchableOpacity style={styles.goButton} onPress={() => {startJourney()}}>
                     <Text style={styles.goButtonText}> Go </Text>
