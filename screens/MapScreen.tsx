@@ -9,16 +9,14 @@ import { UserGeolocationService } from "../logic/UserGeolocationService";
 import * as config from "../configuration.json";
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
-import {max_waypoints as MAX_WAYPOINTS} from "../configuration.json"
+import { max_waypoints as MAX_WAYPOINTS } from "../configuration.json"
+import { Point } from "../logic/GeographicLogic";
+import {Map, DestinationSearch} from '../components'
 
 const MAPBOX_KEY = config.mapbox_key
 
 const baseClient = mbxClient({ accessToken: MAPBOX_KEY });
 const directionsClient = mbxDirections(baseClient);
-
-import {Map, DestinationSearch} from '../components'
-
-import { PhysicalLocation } from '../types';
 
 let styles = require('./styles');
 
@@ -130,8 +128,6 @@ const App : FC = ( { navigation, route } : any ) => {
         return;
       }      
 
-      console.log("markers updated")
-
       let waypoints = [UserGeolocationService.instance.getCachedLocation()]  // append the user location to the start of the array
 
       markers.forEach(waypoint => {
@@ -182,10 +178,38 @@ const App : FC = ( { navigation, route } : any ) => {
       setMarkers(toUpdate);
    }
 
-   const createAdhocMarker = (lat: number, long: number) => {
-     if (markers.length < MAX_WAYPOINTS){
-       setMarkers([...markers, {id: uuidv4(), point: {lat: lat, long: long, title: "Long Press Marker"}}]);
+   const createAdhocMarker = (lat: number, long: number): void => {  // will place adhoc marker in position closest to two nodes
+     if (markers.length >= MAX_WAYPOINTS){
+       return;
      }
+
+     let markersCopy = [...markers]
+     const userLocation = UserGeolocationService.instance.getCachedLocation();
+     
+     if (userLocation) {  // if the location is not null
+      markersCopy.unshift({id: "user-location", point: {lat: userLocation!.lat, long: userLocation!.long, title: "user-location"}});  
+     }
+
+     let closestIndex: number;
+     let closestDistance = Infinity
+
+     for (let i = 0; i < markersCopy.length-1; i++) {
+      const startMarker = new Point(markersCopy[i].point.long, markersCopy[i].point.lat);
+      const endMarker = new Point(markersCopy[i+1].point.long, markersCopy[i+1].point.lat);
+      const longPressPoint = new Point(long, lat);
+      const totalDistance = startMarker.distanceTo(longPressPoint) + endMarker.distanceTo(longPressPoint);
+       
+      if (totalDistance < closestDistance) {
+        closestDistance = totalDistance;
+        closestIndex = i+1;  // place it inbetween these two waypoints
+      }
+     }
+
+     markersCopy.splice(closestIndex!, 0, {id: uuidv4(), point: {lat: lat, long: long, title: "Long Press Marker"}})
+
+     if (userLocation) markersCopy.shift() // remove the users location from the start of the array
+
+     setMarkers(markersCopy);
    }
 
    const startJourney= useCallback(() => {
