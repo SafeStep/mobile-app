@@ -8,50 +8,14 @@ const defaultWatchRemove = () => {
   throw "No watch to remove"
 }
 
-export class UserGeolocationService {
-  public static readonly FOREGROUND_LOCATION_INTERVAL = 30;
-  public static readonly BACKGROUND_LOCATION_INTERVAL = 10;
-  public static readonly CONSEC_ON_TRACK_TO_START = 3;  // how many times has the user got to be reported as being 'on-track' to start the journey
-  public static readonly BACKGROUND_TASK_NAME = "TRACK-PATH"
-  public static readonly RANGE_RADIUS = 50  // in meters
+class UserGeolocationServiceState {
+  private trackedPath: Point[]
+  private consecOnTracks:number = 0
+  private pathJoined: boolean = false
+  private panicMode: boolean = false
 
-  private cachedLocation: PhysicalLocation | null = null;
-  private trackedPath: Point[] = [];
-  private consecOnTracks=0;
-  private pathJoined=false;
-
-  static instance: UserGeolocationService;
-  
-  watchRemove: CallableFunction = defaultWatchRemove
-
-  private constructor() {
-    UserGeolocationService.instance = this;
-
-    this.cachedLocation = null;
-
-    if (TaskManager.isTaskDefined(UserGeolocationService.BACKGROUND_TASK_NAME)) {
-      this.stopBackgroundWatch()
-    }
-  }
-
-  static build(): UserGeolocationService {  // creates a new UserGeoLocation service 
-    if (UserGeolocationService.instance) { throw "UserGeolocationService already exists" }  // enforce singleton
-    return new UserGeolocationService();  // create a new 
-  }
-
-  reset(): UserGeolocationService {  // will remove the current usergeolocation service
-    const lastLocation = this.cachedLocation;
-    new UserGeolocationService()  // create a new service to replace the old one
-    UserGeolocationService.instance.cachedLocation = lastLocation;  // move the old cachedLocation to the new object
-    return UserGeolocationService.instance;
-  }
-
-  setCachedLocation(location: PhysicalLocation): void {
-    this.cachedLocation = location;
-  }
-
-  getCachedLocation(): PhysicalLocation | null {
-    return this.cachedLocation;
+  constructor(trackedPath: Point[] = []) {
+    this.trackedPath = trackedPath;
   }
 
   setTrackedPath(path: number[][]): void {
@@ -83,12 +47,67 @@ export class UserGeolocationService {
     return this.pathJoined
   }
 
+  getTrackedPath(): Point[] {
+    return this.trackedPath;
+  }
+
+  triggerPanic(): void {
+    this.panicMode = true;
+  }
+
+  inPanicMode(): boolean {
+    return this.panicMode;
+  }
+}
+
+export class UserGeolocationService {
+  public static readonly FOREGROUND_LOCATION_INTERVAL = 30;
+  public static readonly BACKGROUND_LOCATION_INTERVAL = 10;
+  public static readonly CONSEC_ON_TRACK_TO_START = 3;  // how many times has the user got to be reported as being 'on-track' to start the journey
+  public static readonly BACKGROUND_TASK_NAME = "TRACK-PATH"
+  public static readonly RANGE_RADIUS = 50  // in meters
+
+  public static instance: UserGeolocationService;
+
+  private cachedLocation: PhysicalLocation | null = null;
+  private watchRemove: CallableFunction = defaultWatchRemove
+  public state: UserGeolocationServiceState;
+
+  private constructor(state?: UserGeolocationServiceState) {
+    UserGeolocationService.instance = this;
+
+    this.cachedLocation = null;
+
+    this.state = state ? state : new UserGeolocationServiceState();
+
+    if (TaskManager.isTaskDefined(UserGeolocationService.BACKGROUND_TASK_NAME)) {
+      this.stopBackgroundWatch()
+    }
+  }
+
+  static build(): UserGeolocationService {  // creates a new UserGeoLocation service 
+    if (UserGeolocationService.instance) { throw "UserGeolocationService already exists" }  // enforce singleton
+    return new UserGeolocationService();  // create a new 
+  }
+
+  reset(): void {  // resets the state
+    this.state = new UserGeolocationServiceState();
+  }
+
+  setCachedLocation(location: PhysicalLocation): void {
+    this.cachedLocation = location;
+  }
+
+  getCachedLocation(): PhysicalLocation | null {
+    return this.cachedLocation;
+  }
+
   isUserOnPath(): boolean {
     if (!this.cachedLocation) {
       throw "Users position not cached"
     }
     const userPoint = new Point(this.cachedLocation.long, this.cachedLocation.lat)
-    return calcIntersections(userPoint, this.trackedPath, UserGeolocationService.RANGE_RADIUS);
+    return calcIntersections(userPoint, this.state.getTrackedPath(), UserGeolocationService.RANGE_RADIUS);
   }
 
   async startPathTracking(path: number[][]): Promise<void> {
@@ -98,7 +117,7 @@ export class UserGeolocationService {
     catch{}  // dont care about successfulness
     console.log("Starting background watch")
 
-    this.setTrackedPath(path);
+    this.state.setTrackedPath(path);
 
     Location.startLocationUpdatesAsync(UserGeolocationService.BACKGROUND_TASK_NAME, {
       foregroundService: {
@@ -129,7 +148,6 @@ export class UserGeolocationService {
 
   stopBackgroundWatch(): void {
     console.log("Stopping background watch")
-    this.trackedPath = [];  // reset the tracked path 
     const _this = this;
     if (TaskManager.isTaskDefined(UserGeolocationService.BACKGROUND_TASK_NAME) && Location.hasStartedLocationUpdatesAsync(UserGeolocationService.BACKGROUND_TASK_NAME)) {  // if the task exists and has started
       Location.stopLocationUpdatesAsync(UserGeolocationService.BACKGROUND_TASK_NAME)
@@ -181,20 +199,28 @@ TaskManager.defineTask(UserGeolocationService.BACKGROUND_TASK_NAME, ({ data, err
   const isOnPath = UserGeolocationService.instance.isUserOnPath();
   console.log('async location update');
 
-  if (!UserGeolocationService.instance.getPathJoined()) {
+  if (!UserGeolocationService.instance.state.getPathJoined()) {
     if (isOnPath) {
-      UserGeolocationService.instance.incrimentOnTracks();
+      UserGeolocationService.instance.state.incrimentOnTracks();
       console.log("Incrimented on track consecs")
     }
     else {
-      UserGeolocationService.instance.resetOnTracks();
+      UserGeolocationService.instance.state.resetOnTracks();
       console.log("Rest on track consecs")
     }
   }
   
   else {  // user has joined the path
-    if (isOnPath) console.log("User is on path")
-    else console.log("User is off path throw alarm")
+    if (UserGeolocationService.instance.state.inPanicMode()) {
+      console.log("http call with location")
+    }
+    else {
+      if (isOnPath) console.log("User is on path")
+      else {
+        console.log("User is off path")
+        UserGeolocationService.instance.state.triggerPanic();
+      }
+    }
+
   }
-    
 });
