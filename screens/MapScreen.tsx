@@ -180,33 +180,38 @@ const App : FC = ( { navigation, route } : any ) => {
        return;
      }
 
-     let markersCopy = [...markers]
-     const userLocation = UserGeolocationService.instance.getCachedLocation();
-     
-     if (userLocation) {  // if the location is not null
-      markersCopy.unshift({id: "user-location", point: {lat: userLocation!.lat, long: userLocation!.long, title: "user-location"}});  
+     if (markers.length < 2) {
+      setMarkers([...markers,  {id: uuidv4(), point: {lat: lat, long: long, title: "Long Press Marker"}}]);
      }
-
-     let closestIndex: number;
-     let closestDistance = Infinity
-
-     for (let i = 0; i < markersCopy.length-1; i++) {
-      const startMarker = new Point(markersCopy[i].point.long, markersCopy[i].point.lat);
-      const endMarker = new Point(markersCopy[i+1].point.long, markersCopy[i+1].point.lat);
-      const longPressPoint = new Point(long, lat);
-      const totalDistance = startMarker.distanceTo(longPressPoint) + endMarker.distanceTo(longPressPoint);
-       
-      if (totalDistance < closestDistance) {
-        closestDistance = totalDistance;
-        closestIndex = i+1;  // place it inbetween these two waypoints
+     else {
+      let markersCopy = [...markers]
+      const userLocation = UserGeolocationService.instance.getCachedLocation();
+      
+      if (userLocation) {  // if the location is not null
+       markersCopy.unshift({id: "user-location", point: {lat: userLocation!.lat, long: userLocation!.long, title: "user-location"}});  
       }
+ 
+      let closestIndex: number;
+      let closestDistance = Infinity
+ 
+      for (let i = 0; i < markersCopy.length-1; i++) {
+       const startMarker = new Point(markersCopy[i].point.long, markersCopy[i].point.lat);
+       const endMarker = new Point(markersCopy[i+1].point.long, markersCopy[i+1].point.lat);
+       const longPressPoint = new Point(long, lat);
+       const totalDistance = startMarker.distanceTo(longPressPoint) + endMarker.distanceTo(longPressPoint);
+        
+       if (totalDistance < closestDistance) {
+         closestDistance = totalDistance;
+         closestIndex = i+1;  // place it inbetween these two waypoints
+       }
+      }
+
+      markersCopy.splice(closestIndex!, 0, {id: uuidv4(), point: {lat: lat, long: long, title: "Long Press Marker"}})
+
+      if (userLocation) markersCopy.shift() // remove the users location from the start of the array
+
+      setMarkers(markersCopy);
      }
-
-     markersCopy.splice(closestIndex!, 0, {id: uuidv4(), point: {lat: lat, long: long, title: "Long Press Marker"}})
-
-     if (userLocation) markersCopy.shift() // remove the users location from the start of the array
-
-     setMarkers(markersCopy);
    }
 
    const startJourney= useCallback(() => {
