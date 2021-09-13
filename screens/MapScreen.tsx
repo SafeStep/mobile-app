@@ -1,4 +1,4 @@
-import React, {FC, useState, useEffect, useRef, useCallback} from 'react';
+import React, {FC, useState, useEffect, useCallback} from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 // @ts-ignore
@@ -158,16 +158,9 @@ const App : FC = ( { navigation, route } : any ) => {
 
     }, [markers]) // run whenever markers is updated
 
-    
-    async function LogOut() {
-      try {
-          await Auth.signOut();
-          // updateAuthState('loggedOut');
-          // props.updateUser(null);
-          route.params.updateUser(null)
-      } catch (error) {
-          console.log('error signing out: ', error);
-      }
+    const LogOut = async () => {
+      await Auth.signOut()
+      .catch((err) => console.log("Error Siging Out:", err));
     }
 
     const markersUpdate=(positions: Waypoint[])=>{  // called when destination search has modified the waypoints in some form
