@@ -9,7 +9,7 @@ const App : FC = ( { navigation }: any ) => {
     const [backgroundLocationPermission, setBackgroundLocationPermission] = useState("waiting");
 
     useEffect(()=> {
-        new UserGeolocationService(false);  // create the geolocation service
+        UserGeolocationService.build();  // create the geolocation service
         UserGeolocationService.instance.requestForegroundPermission()
         .then(result => {
             setForegroundLocationPermission(result.granted.toString());

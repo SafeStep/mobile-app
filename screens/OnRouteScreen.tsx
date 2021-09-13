@@ -18,6 +18,7 @@ const App : FC = ( { route, navigation } : any ) => {
         navigation.navigate('map')
         try {
             UserGeolocationService.instance.stopBackgroundWatch()
+            UserGeolocationService.instance.reset();  // reset the service
         }
         catch (err){
             console.error(err)
