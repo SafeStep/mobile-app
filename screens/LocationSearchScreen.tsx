@@ -7,11 +7,12 @@ import {Header} from '../components'
 import Navigation from '../navigation/first_index';
 import { PhysicalLocation } from "../types"
 import { UserGeolocationService } from '../logic/UserGeolocationService';
+import { Point } from "../logic/GeographicLogic";
 
 import * as config from "../configuration.json";
 
 const MAPBOX_KEY = config.mapbox_key
-
+const METER_TO_MILE = 0.000621371192;
 const axios = require('axios');
 
 const styles = {
@@ -71,10 +72,15 @@ interface locationResultInterface extends PhysicalLocation {
 }
 
 const LocationResult = ( { navigation, title, lat, long, inputId, clickCallback } : locationResultInterface) => {
-
+    let distance;
+    const userLocation = UserGeolocationService.instance.getCachedLocation()
+    if (userLocation != null) {  // if the users location is null dont generate
+        distance = (new Point(long, lat)).distanceTo(new Point(userLocation!.long, userLocation!.lat)) * METER_TO_MILE
+        distance = Math.round(distance*10)/10 // round to 1dp
+    }
     return (
         <TouchableOpacity onPress={() => {navigation.navigate("map", {inputId: inputId, location: {title: title, lat:lat, long:long}}); clickCallback(inputId, {title:title, lat:lat, long:long}); }}>
-            <Text>{ title }</Text>
+            {distance ? <Text>{distance + " mi"}</Text> : null}<Text>{ title }</Text>
         </TouchableOpacity>
     )
 }
@@ -101,8 +107,7 @@ const App : FC = ( { route, navigation } : any) => {
         if (!currentLocation) {
             alert("Cant get your location right now!");
         }
-        axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${inputValue}.json?proximity=${currentLocation!.long},${currentLocation!.lat}&access_token=${MAPBOX_KEY}`)
-        //axios.get(`https://y5yyrwkg42.execute-api.eu-west-1.amazonaws.com/dev/places?query=${inputValue}&lat=${currentLocation.lat}&long=${currentLocation.long}`)
+        axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${inputValue}.json?proximity=${currentLocation!.long},${currentLocation!.lat}&autocomplete=true&fuzzyMatch=true&access_token=${MAPBOX_KEY}`)
         .then(function (response: any) {
 
             let results = [] as PhysicalLocation[]
