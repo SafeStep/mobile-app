@@ -1,7 +1,6 @@
 import MapboxGL from "@react-native-mapbox-gl/maps";
 import React from "react";
 import { UserGeolocationService } from "../logic/UserGeolocationService";
-import { PhysicalLocation } from '../types';
 import { View, Text } from "react-native";
 import * as config from "../configuration.json";
 import { makeGeoJSON } from "../logic/GeographicLogic"
@@ -26,23 +25,25 @@ const styles = {
 
 interface mapProps {
     path: number[][],
-    markers?: PhysicalLocation[],
+    markers?: Waypoint[],
+    adhocMarkerUpdate: CallableFunction
 }
 
-export const Map = ({ path, markers}: mapProps) => {
+export const Map = ({ path, markers, adhocMarkerUpdate}: mapProps) => {
 
   MapboxGL.setAccessToken(MAPBOX_KEY);
   let userPosition = UserGeolocationService.instance.getCachedLocation();
   return (       
-    <MapboxGL.MapView style={styles.map} >
+    // @ts-ignore
+    <MapboxGL.MapView style={styles.map} onLongPress={(feature) => {adhocMarkerUpdate(feature.geometry.coordinates[1], feature.geometry.coordinates[0])}}>
 
         <MapboxGL.Camera followUserLocation={true} />
 
         <MapboxGL.UserLocation/>
         {
         markers?.map((location, index) => {
-          if (location && location.long){
-            return (  <MapboxGL.MarkerView key={location.lat.toString() + location.long.toString()} id={location.title} coordinate={[location.long,location.lat]}>
+          if (location && location.point){
+            return (  <MapboxGL.MarkerView key={location.id} id={location.id} coordinate={[location.point.long,location.point.lat]}>
                        <View style={styles.marker}>
                          <Text style={{alignSelf:"center"}}>{String.fromCharCode(index+65)}</Text>
                        </View>
