@@ -84,8 +84,7 @@ const DestinationInput = ({
               inputId: id,
               updateCallback: updateCallback,
             });
-          }}
-        >
+          }}>
           <View style={styles.destinationInput as any}>
             <Text style={{width: "100%"}}>
               {waypoint.point ? waypoint.point.title : "Search"}
@@ -97,16 +96,14 @@ const DestinationInput = ({
         <>
           <TouchableOpacity
             onLongPress={dragCallback}
-            style={styles.dragWrapper as any}
-          >
+            style={styles.dragWrapper as any}>
             <Text>Drag</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               deleteCallback(waypoint.id);
             }}
-            style={styles.deleteWrapper as any}
-          >
+            style={styles.deleteWrapper as any}>
             <Text>Delete</Text>
           </TouchableOpacity>
         </>
@@ -192,8 +189,7 @@ export const DestinationSearch = ({
       <Button
         title={"Add"}
         disabled={waypoints.length >= MAX_WAYPOINTS}
-        onPress={addDestination}
-      ></Button>
+        onPress={addDestination}></Button>
     </View>
   );
 };

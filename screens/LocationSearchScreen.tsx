@@ -105,8 +105,7 @@ const LocationResult = ({
           location: {title: title, lat: lat, long: long},
         });
         clickCallback(inputId, {title: title, lat: lat, long: long});
-      }}
-    >
+      }}>
       {distance ? <Text>{distance + " mi"}</Text> : null}
       <Text>{title}</Text>
     </TouchableOpacity>
@@ -182,8 +181,7 @@ const App: FC = ({route, navigation}: any) => {
           style={styles.backButton as any}
           onPress={() => {
             navigation.navigate("map");
-          }}
-        >
+          }}>
           <Text style={{alignSelf: "center"}}>{"<-"}</Text>
         </TouchableOpacity>
         <TextInput

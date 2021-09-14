@@ -9,8 +9,7 @@ const App: FC = ({navigation, route}: any) => {
       <Text>{"Emergency Contacts Email"}</Text>
       <TextInput
         keyboardType="email-address"
-        style={{backgroundColor: "green"}}
-      ></TextInput>
+        style={{backgroundColor: "green"}}></TextInput>
       <Text>{"Emergency Contact First Name"}</Text>
       <TextInput style={{backgroundColor: "green"}}></TextInput>
       <Text>

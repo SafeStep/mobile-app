@@ -51,8 +51,7 @@ const OnRouteMap = ({path}: mapProps) => {
         onDidFinishLoadingMap={() => {
           setMapLoaded(true);
           setFollowUser(true);
-        }}
-      >
+        }}>
         <MapboxGL.UserLocation />
         <MapboxGL.Camera
           followUserLocation={followUser}
@@ -70,8 +69,7 @@ const OnRouteMap = ({path}: mapProps) => {
         onPress={() => {
           setFollowUser(true);
         }}
-        title={"Recenter"}
-      ></Button>
+        title={"Recenter"}></Button>
     </>
   );
 };
