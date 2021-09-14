@@ -285,7 +285,8 @@ const App: FC = ({navigation, route}: any) => {
           style={styles.goButton}
           onPress={() => {
             startJourney();
-          }}>
+          }}
+        >
           <Text style={styles.goButtonText}> Go </Text>
         </TouchableOpacity>
 
@@ -295,7 +296,8 @@ const App: FC = ({navigation, route}: any) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.mapBottomNavButtons}
-            onPress={() => navigation.navigate("contacts")}>
+            onPress={() => navigation.navigate("contacts")}
+          >
             <Text style={styles.mapBottomNavText}> Contacts </Text>
           </TouchableOpacity>
         </View>
