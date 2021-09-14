@@ -24,4 +24,4 @@ jobs:
         with:
           dry: true
           # This part is also where you can pass other options, for example:
-          prettier_options: --config .prettierrc
+          prettier_options: --config $GITHUB_WORKSPACE/.prettierrc --ignore-path $GITHUB_WORKSPACE/.prettierignore
