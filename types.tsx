@@ -17,22 +17,22 @@ export type TabTwoParamList = {
 };
 
 export type PhysicalLocation = {
-  title: string,
-  lat: number,
-  long: number,
-}
+  title: string;
+  lat: number;
+  long: number;
+};
 
 export type responsibility = {
   greenID: string;
   RID: string;
-  status: "accepted" | "pending"
-}  
+  status: "accepted" | "pending";
+};
 
-export type EC  = {
+export type EC = {
   ECID: string;
   firstName: string;
   email: string;
   phone: null | string;
   dialingCode: null | string;
-  responsibilities: responsibility[]
-}
+  responsibilities: responsibility[];
+};

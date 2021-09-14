@@ -1,12 +1,23 @@
-import Input from './input'
-import Button from './button'
-import HeadingCurve from './headerCurve'
-import Header from './header'
-import AuthError from './authErrors'
-import ContactsList from './Contacts/ContactList'
-import Map from './Map'
-import DestinationSearch from './CreateRoute/DestinationSearch'
-import RoundButton from './RoundButton'
-import OnRouteMap from './onRouteMap'
+import Input from "./input";
+import Button from "./button";
+import HeadingCurve from "./headerCurve";
+import Header from "./header";
+import AuthError from "./authErrors";
+import ContactsList from "./Contacts/ContactList";
+import Map from "./Map";
+import DestinationSearch from "./CreateRoute/DestinationSearch";
+import RoundButton from "./RoundButton";
+import OnRouteMap from "./onRouteMap";
 
-export {Input, Button, HeadingCurve, Header, AuthError, ContactsList, Map, DestinationSearch, RoundButton, OnRouteMap}
+export {
+  Input,
+  Button,
+  HeadingCurve,
+  Header,
+  AuthError,
+  ContactsList,
+  Map,
+  DestinationSearch,
+  RoundButton,
+  OnRouteMap,
+};
