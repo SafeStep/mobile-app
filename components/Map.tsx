@@ -41,8 +41,7 @@ export const Map = ({path, markers, adhocMarkerUpdate}: mapProps) => {
           feature.geometry.coordinates[1],
           feature.geometry.coordinates[0],
         );
-      }}
-    >
+      }}>
       <MapboxGL.Camera followUserLocation={true} />
 
       <MapboxGL.UserLocation />
@@ -52,8 +51,7 @@ export const Map = ({path, markers, adhocMarkerUpdate}: mapProps) => {
             <MapboxGL.MarkerView
               key={location.id}
               id={location.id}
-              coordinate={[location.point.long, location.point.lat]}
-            >
+              coordinate={[location.point.long, location.point.lat]}>
               <View style={styles.marker}>
                 <Text style={{alignSelf: "center"}}>
                   {String.fromCharCode(index + 65)}

@@ -1,7 +1,7 @@
- {
-"bracketSpacing":false, 
-"jsxBracketSameLine":true, 
-"singleQuote":false, 
-"trailingComma":"all", 
-"arrowParens":"avoid"
+{
+  "bracketSpacing": false,
+  "bracketSameLine": true,
+  "singleQuote": false,
+  "trailingComma": "all",
+  "arrowParens": "avoid"
 }

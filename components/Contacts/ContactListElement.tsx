@@ -21,8 +21,7 @@ export const ContactListElement: FC<contactProps> = (props): JSX.Element => {
               props.removeContactCallback(props.contact);
             }) // remove the contact
             .catch(); // the user does not want to delete the contact
-        }}
-      >
+        }}>
         <Text>Delete</Text>
       </TouchableOpacity>
     </>

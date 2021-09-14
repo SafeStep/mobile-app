@@ -1,14 +1,11 @@
 {
-    "name": "SafeStep",
-    "displayName": "SafeStep",
-    "expo": {
-        "ios": {
-        "infoPlist": {
-            "UIBackgroundModes": [
-            "location",
-            "fetch"
-            ]
-        }
-        }
+  "name": "SafeStep",
+  "displayName": "SafeStep",
+  "expo": {
+    "ios": {
+      "infoPlist": {
+        "UIBackgroundModes": ["location", "fetch"]
+      }
     }
+  }
 }
