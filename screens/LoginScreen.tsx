@@ -40,7 +40,7 @@ const App: FC = ({route, navigation}: any) => {
   const FederatedLogin = async () => {
     Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Google})
       .then(user => console.log("NewUser", user))
-      .catch(err => setErrorMessage(err));
+      .catch(err => console.log(err));
   };
 
   return (
@@ -68,8 +68,7 @@ const App: FC = ({route, navigation}: any) => {
           <Text style={styles.intextButton}>Forgot</Text>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate("reset_password")}
-          >
+            onPress={() => navigation.navigate("reset_password")}>
             <Text style={styles.span}> Password </Text>
           </TouchableOpacity>
         </View>
