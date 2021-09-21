@@ -48,7 +48,6 @@ const MainNav: FC = () => {
       case "configured":
         console.log("the Auth module is configured");
     }
-<<<<<<< HEAD
   });
 
   const notAuth = (err: string) => {
@@ -92,48 +91,6 @@ const MainNav: FC = () => {
     );
   }
 };
-=======
-
-    useEffect(() => {
-        const currentUser = async () => {
-            await Auth.currentAuthenticatedUser()
-            .then(() => setSignedIn(true))
-            .catch((err) => notAuth(err))
-            .finally(() => setLoading(false));
-        }
-
-        currentUser();
-    }, [])
-
-
-
-    if (loading) {
-        return (
-            <View style={styles.container}>
-                <HeadingCurve text='SafeSteps'/>
-                <View style={styles.loading}>
-                    <View style={styles.logo}>
-                        <RoundButton icon={Images.logo} onPress={() => {return}} />
-                    </View>
-                    <ActivityIndicator size="large" color="#fff" />
-    
-                </View>
-            </View>
-        )
-    } else {
-        return (
-            <NavigationContainer>
-                 {signedIn  ? <AppStack/> : <AuthStack/>}
-            </NavigationContainer>
-        )
-    }
-    
-    
-    
-
-    
-}
->>>>>>> c5afbe4 (Added Bottom tabs)
 
 export default MainNav;
 
