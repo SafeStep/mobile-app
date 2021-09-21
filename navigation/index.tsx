@@ -20,7 +20,7 @@ import Amplify, {Auth, Hub} from "aws-amplify";
 import awsconfig from "../aws-exports";
 // import awsconfig from '../aws_config';
 
-import Test from './test'
+import Test from "./test";
 
 Amplify.configure(awsconfig);
 
