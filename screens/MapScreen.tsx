@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 import React, {FC, useState, useEffect, useCallback} from "react";
 import {View, Text, TouchableOpacity} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 // @ts-ignore
+=======
+import React, {FC, useState, useEffect, useCallback} from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+>>>>>>> 6e49f50 (Removed undessasary nav buttons)
 import mbxClient from "@mapbox/mapbox-sdk";
 import mbxDirections from "@mapbox/mapbox-sdk/services/directions";
 import polyline from "@mapbox/polyline";
@@ -112,12 +118,16 @@ const getRoute = (wayPoints: coordinatesObject[]): Promise<number[][]> => {
   });
 };
 
+<<<<<<< HEAD
 import {Auth} from "aws-amplify";
+=======
+>>>>>>> 6e49f50 (Removed undessasary nav buttons)
 
 const App: FC = ({navigation, route}: any) => {
   const [path, setPath] = useState([] as number[][]);
   const [markers, setMarkers] = useState([] as Waypoint[]); // store list of markers
 
+<<<<<<< HEAD
   useEffect(() => {
     // add the first search Input
     if (markers.length == 0) {
@@ -140,6 +150,27 @@ const App: FC = ({navigation, route}: any) => {
     });
 
     let latLongs = [] as coordinatesObject[];
+=======
+    const [path, setPath] = useState([] as number[][]);
+    const [markers, setMarkers] = useState([] as PhysicalLocation[]);  // store list of markers
+
+    useEffect(() => {  // need to get the users location here too
+      if (UserGeolocationService.instance.getCachedLocation() === null) {
+        console.warn("Cant create path as no user location available");
+        UserGeolocationService.instance.getLocation();  // bypass the 30 second timer
+        return;
+      }      
+      let waypoints = [UserGeolocationService.instance.getCachedLocation(), ...markers]  // append the user location to the start of the array
+
+      let latLongs = [] as coordinatesObject[];
+
+      waypoints.forEach(element => {  // convert to lat longs instead of physicalLocations
+        if (!element || !element.long) {
+          return;  // skip this current element as it is empty
+        }
+        latLongs.push({ coordinates: [element.long, element.lat]});
+      });
+>>>>>>> 6e49f50 (Removed undessasary nav buttons)
 
     waypoints.forEach(element => {
       // convert to lat longs instead of physicalLocations
@@ -206,6 +237,7 @@ const App: FC = ({navigation, route}: any) => {
           title: "user-location",
         },
       });
+<<<<<<< HEAD
     }
     let closestDistance = Infinity;
 
@@ -303,5 +335,39 @@ const App: FC = ({navigation, route}: any) => {
     </SafeAreaView>
   );
 };
+=======
+      setMarkers(toUpdate);
+   }, [])
+
+   const startJourney= useCallback(() => {
+     try {
+       UserGeolocationService.instance.stopForegroundWatch(); // if throws an error something is really wrong 
+     }
+     catch {
+      console.log("Foreground watch not defined in foreground mode :(")
+     }
+     UserGeolocationService.instance.startPathTracking(path); 
+     navigation.navigate("on_route", {
+       path: path
+     });
+   }, [path])
+
+    return (
+        <SafeAreaView style={styles.mapContainer} edges={['right', "top", 'left']}>
+            <View style={styles.mapTopNav}>
+              <DestinationSearch markerUpdateCallback={markersUpdate} navigation={navigation}/>
+            </View>
+            <View style={styles.map}>
+                {<Map path={path} markers={markers} /> }
+                
+                <TouchableOpacity style={styles.goButton} onPress={() => {startJourney()}}>
+                    <Text style={styles.goButtonText}> Go </Text>
+                </TouchableOpacity>
+
+            </View>
+        </SafeAreaView>
+    )
+}
+>>>>>>> 6e49f50 (Removed undessasary nav buttons)
 
 export default App;
