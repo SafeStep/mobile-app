@@ -6,7 +6,7 @@ import ColorPalette from "../constants/ColorPalette";
 const {height, width} = Dimensions.get("screen");
 
 const App: FC = ({navigation, route}: any) => {
-  const [ecEmail, changeEcEmail] = useState("");
+  const [ecEmail, changeECEmail] = useState("");
   const [ecName, changeECName] = useState("");
 
   return (
