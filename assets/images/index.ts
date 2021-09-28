@@ -1,8 +1,4 @@
-interface IIndexable {
-    [key: string]: any;
-}
-
-const images : IIndexable = {
+const images = {
     login: {
         googleIcon: require('./google-icon.jpg'),
         facebookIcon: require('./facebook-icon.png'),
