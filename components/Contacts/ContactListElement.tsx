@@ -106,20 +106,20 @@ const styles = StyleSheet.create({
   accepted: {
     width: 70,
     textAlign: "center",
-    backgroundColor: "#00FF38",
+    backgroundColor: ColorPalette.acceptedGreen,
     borderRadius: 5,
   },
   pending: {
     width: 70,
     textAlign: "center",
-    backgroundColor: "#FFD600",
+    backgroundColor: ColorPalette.pendingYellow,
     borderRadius: 5,
 
   },
   delete: {
     width: 70,
     textAlign: "center",
-    backgroundColor: "#FF6666",
+    backgroundColor: ColorPalette.deleteRed,
     borderRadius: 5,
   }
 });
