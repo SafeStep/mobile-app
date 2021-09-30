@@ -10,7 +10,10 @@ const App: FC = ({navigation}: any) => {
     useState("waiting");
 
   useEffect(() => {
+    console.log("UserGeolocationService is built")
     UserGeolocationService.build(); // create the geolocation service
+    console.log(UserGeolocationService.instance)
+
     UserGeolocationService.instance
       .requestForegroundPermission()
       .then(result => {

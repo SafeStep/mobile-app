@@ -24,6 +24,7 @@ const Home = () => {
     <Tab.Navigator
       initialRouteName="Map"
       screenOptions={{
+
         headerShown: false,
         tabBarInactiveBackgroundColor: ColorPalette.white,
         tabBarStyle: [
@@ -35,7 +36,7 @@ const Home = () => {
       }}>
       <Tab.Screen
         name="Map"
-        component={MapStuff}
+        component={MapScreen}
         options={({route}) => ({
           tabBarShowLabel: false,
           headerStyle: styles.headerStyle,
@@ -56,8 +57,15 @@ const Home = () => {
       />
       <Tab.Screen
         name="Contact"
-        component={ContactStuff}
-        options={({route}) => ({
+        component={Contacts}
+        options={({navigation}) => ({
+          headerShown: true,
+          title: "Emergency Contacts",
+          headerRight: () => (
+            <TouchableOpacity onPress={() => navigation.navigate("add_contact")}>
+              <Text>{"New"}</Text>
+            </TouchableOpacity>
+          ),
           tabBarShowLabel: false,
           headerStyle: styles.headerStyle,
           headerTitleStyle: styles.headerTitleStyle,
@@ -121,45 +129,21 @@ const Home = () => {
   );
 };
 
-const MapStuff = () => {
+const AppStack: FC = () => {
   return (
     <Navigator screenOptions={{headerShown: false}}>
       <Screen name="location_perm_check" component={LocationPermCheckScreen} />
-      <Screen name="map" component={MapScreen} />
+      <Screen name="map" component={Home} />
       <Screen name="on_route" component={OnRouteScreen} />
       <Screen name="location_search" component={LocationSearchScreen} />
-    </Navigator>
-  );
-};
-
-const ContactStuff = () => {
-  return (
-    <Navigator screenOptions={{headerShown: false}}>
-      <Screen name="contacts" component={Contacts} options={contactsOptions} />
-
       <Screen
         name="add_contact"
         component={AddContactScreen}
         options={{headerShown: true, title: "New Emergency Contact"}}
       />
-    </Navigator>
-  );
+  </Navigator>
+  )
 };
-
-const AppStack: FC = () => {
-  // console.log([props]);
-  return <Home />;
-};
-
-const contactsOptions = ({route, navigation}: any) => ({
-  headerShown: true,
-  title: "Emergency Contacts",
-  headerRight: () => (
-    <TouchableOpacity onPress={() => navigation.navigate("add_contact")}>
-      <Text>{"New"}</Text>
-    </TouchableOpacity>
-  ),
-});
 
 export default AppStack;
 
