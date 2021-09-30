@@ -24,7 +24,6 @@ const Home = () => {
     <Tab.Navigator
       initialRouteName="Map"
       screenOptions={{
-
         headerShown: false,
         tabBarInactiveBackgroundColor: ColorPalette.white,
         tabBarStyle: [
@@ -62,7 +61,8 @@ const Home = () => {
           headerShown: true,
           title: "Emergency Contacts",
           headerRight: () => (
-            <TouchableOpacity onPress={() => navigation.navigate("add_contact")}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("add_contact")}>
               <Text>{"New"}</Text>
             </TouchableOpacity>
           ),
@@ -141,8 +141,8 @@ const AppStack: FC = () => {
         component={AddContactScreen}
         options={{headerShown: true, title: "New Emergency Contact"}}
       />
-  </Navigator>
-  )
+    </Navigator>
+  );
 };
 
 export default AppStack;
