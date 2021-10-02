@@ -10,6 +10,8 @@ import AddContactScreen from "./AddContactScreen";
 import LocationPermCheckScreen from "./LocationPermissionCheck";
 import ResetPasswordConfirm from "./ResetPasswordConfirm";
 import OnRouteScreen from "./OnRouteScreen";
+import Profile from "./Profile";
+import Settings from "./Settings";
 
 export {
   SignUp,
@@ -24,4 +26,6 @@ export {
   LocationPermCheckScreen,
   ResetPasswordConfirm,
   OnRouteScreen,
+  Profile,
+  Settings,
 };

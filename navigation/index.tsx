@@ -1,5 +1,4 @@
 import React, {FC, useState, useEffect} from "react";
-
 import {
   View,
   Text,
@@ -19,6 +18,9 @@ import AuthStack from "./authstack";
 import Amplify, {Auth, Hub} from "aws-amplify";
 import awsconfig from "../aws-exports";
 // import awsconfig from '../aws_config';
+
+import {LogBox} from "react-native";
+LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 Amplify.configure(awsconfig);
 
