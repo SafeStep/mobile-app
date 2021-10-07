@@ -17,7 +17,6 @@ import {Auth} from "aws-amplify";
 import { getProviderStatusAsync } from "expo-location";
 
 const App: FC = ({route, navigation}: any) => {
-  // const [email, setEmail] = useState<string | null>(null)
   const [email, setEmail] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
 
