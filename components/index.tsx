@@ -8,7 +8,7 @@ import Map from "./Map";
 import DestinationSearch from "./CreateRoute/DestinationSearch";
 import RoundButton from "./RoundButton";
 import OnRouteMap from "./onRouteMap";
-
+import DisplayProfile from "./Profile/DisplayProfile";
 export {
   Input,
   Button,
@@ -20,4 +20,5 @@ export {
   DestinationSearch,
   RoundButton,
   OnRouteMap,
+  DisplayProfile
 };
