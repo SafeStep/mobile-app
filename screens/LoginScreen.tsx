@@ -14,7 +14,6 @@ import ColorPalette from "../constants/ColorPalette";
 import Images from "../assets/images";
 
 import {Auth} from "aws-amplify";
-import { getProviderStatusAsync } from "expo-location";
 
 const App: FC = ({route, navigation}: any) => {
   const [email, setEmail] = useState<string | null>(null);
