@@ -35,7 +35,7 @@ const App: FC = ({route, navigation}: any) => {
     }
   };
 
-  const FederatedLogin = async ( provider : CognitoHostedUIIdentityProvider ) => {
+  const FederatedLogin = async (provider: CognitoHostedUIIdentityProvider) => {
     if (provider) {
       Auth.federatedSignIn({provider})
         .then(user => console.log("NewUser", user))
@@ -78,11 +78,15 @@ const App: FC = ({route, navigation}: any) => {
         <View style={styles.alternatives}>
           <RoundButton
             icon={Images.login.googleIcon}
-            onPress={() => FederatedLogin(CognitoHostedUIIdentityProvider.Google)}
+            onPress={() =>
+              FederatedLogin(CognitoHostedUIIdentityProvider.Google)
+            }
           />
           <RoundButton
             icon={Images.login.facebookIcon}
-            onPress={() => FederatedLogin(CognitoHostedUIIdentityProvider.Facebook)}
+            onPress={() =>
+              FederatedLogin(CognitoHostedUIIdentityProvider.Facebook)
+            }
           />
           <RoundButton
             icon={Images.login.appleIcon}
