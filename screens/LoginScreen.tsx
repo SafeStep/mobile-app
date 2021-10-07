@@ -24,14 +24,14 @@ const App: FC = ({route, navigation}: any) => {
 
   const Login = async () => {
     try {
-      if (!email || !password) {
-        return;
+      if (email && password) {
+        const user = await Auth.signIn(email!, password!);
+        console.log(user);
       }
-      const user = await Auth.signIn(email!, password!);
-      // route.params.updateUser(true)
-
-      console.log(user);
     } catch (err: any) {
+      if (err.message == "User is not confirmed.") {
+        navigation.navigate("confirm_code", {username: email});
+      }
       console.log("error signing in", err);
       setErrorMessage(err.message);
     }
