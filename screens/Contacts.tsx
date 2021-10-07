@@ -1,5 +1,5 @@
 import React, {FC, useState, useEffect, useCallback} from "react";
-import {View, Text, FlatList} from "react-native";
+import {Dimensions, ActivityIndicator} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {EC} from "../types";
 import Auth from "@aws-amplify/auth";
@@ -7,6 +7,8 @@ import Auth from "@aws-amplify/auth";
 import {ContactsList} from "../components";
 
 import * as config from "../configuration.json";
+import ColorPalette from "../constants/ColorPalette";
+const {height, width} = Dimensions.get("screen");
 
 const API_URL = config.api_url;
 
@@ -48,9 +50,9 @@ const App: FC = ({navigation}: any) => {
   }, []);
 
   return (
-    <SafeAreaView style={{}}>
+    <SafeAreaView style={{backgroundColor: ColorPalette.white, height: height}}>
       {loading ? (
-        <Text>{"Spinny Spinny loader"}</Text>
+        <ActivityIndicator size="large" color={ColorPalette.mainBlue} />
       ) : (
         <ContactsList
           contacts={loadedContacts}

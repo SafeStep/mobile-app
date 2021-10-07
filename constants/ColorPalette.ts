@@ -5,4 +5,7 @@ export default {
   fontDarkGrey: "#808080",
   white: "#fff",
   black: "#000",
+  pendingYellow: "#FFD600",
+  acceptedGreen: "#00FF38",
+  deleteRed: "#FF6666",
 };

@@ -12,6 +12,6 @@ const images = {
   },
   logo: require("./icon.png"),
   backIcon: require("./back-icon.png"),
+  addContact: require("./add-contact-icon.png"),
 };
-
 export default images;
