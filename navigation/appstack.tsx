@@ -13,9 +13,8 @@ import {
   Settings,
 } from "../screens/index";
 import AddContactScreen from "../screens/AddContactScreen";
-import Images from "../assets/images/index";
+import Images from "../assets/images"
 import ColorPalette from "../constants/ColorPalette";
-
 const {Navigator, Screen} = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -36,11 +35,11 @@ const Home = () => {
       <Tab.Screen
         name="Map"
         component={MapScreen}
-        options={({route}) => ({
+        options={() => ({
           tabBarShowLabel: false,
           headerStyle: styles.headerStyle,
           headerTitleStyle: styles.headerTitleStyle,
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({focused} : any) => (
             <Image
               style={{
                 height: 25,
@@ -57,19 +56,27 @@ const Home = () => {
       <Tab.Screen
         name="Contact"
         component={Contacts}
-        options={({navigation}) => ({
+        options={({navigation} : any) => ({
           headerShown: true,
-          title: "Emergency Contacts",
+          headerStyle: {
+            backgroundColor: ColorPalette.white,
+            height: 100,
+          },
+          headerTitleAlign: "center",
+          headerTintColor: ColorPalette.mainBlue,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            marginHorizontal: 20,
+            fontSize: 25,
+          },
+          title: "Contacts",
           headerRight: () => (
-            <TouchableOpacity
-              onPress={() => navigation.navigate("add_contact")}>
-              <Text>{"New"}</Text>
+            <TouchableOpacity onPress={() => navigation.navigate("add_contact")}>
+              <Image style={styles.add} source={Images.addContact} />
             </TouchableOpacity>
           ),
           tabBarShowLabel: false,
-          headerStyle: styles.headerStyle,
-          headerTitleStyle: styles.headerTitleStyle,
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({focused} : any) => (
             <Image
               style={{
                 height: 25,
@@ -86,11 +93,11 @@ const Home = () => {
       <Tab.Screen
         name="Profile"
         component={Profile}
-        options={({route}) => ({
+        options={() => ({
           tabBarShowLabel: false,
           headerStyle: styles.headerStyle,
           headerTitleStyle: styles.headerTitleStyle,
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({focused} : any) => (
             <Image
               style={{
                 height: 25,
@@ -107,11 +114,11 @@ const Home = () => {
       <Tab.Screen
         name="Settings"
         component={Settings}
-        options={({route}) => ({
+        options={() => ({
           tabBarShowLabel: false,
           headerStyle: styles.headerStyle,
           headerTitleStyle: styles.headerTitleStyle,
-          tabBarIcon: ({focused}) => (
+          tabBarIcon: ({focused} : any) => (
             <Image
               style={{
                 height: 25,
@@ -136,10 +143,25 @@ const AppStack: FC = () => {
       <Screen name="map" component={Home} />
       <Screen name="on_route" component={OnRouteScreen} />
       <Screen name="location_search" component={LocationSearchScreen} />
-      <Screen
-        name="add_contact"
-        component={AddContactScreen}
-        options={{headerShown: true, title: "New Emergency Contact"}}
+
+      {/* <Screen name="contacts" component={Contacts} options={contactsOptions} />  */}
+      <Screen name="add_contact" component={AddContactScreen} options={
+        { 
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: ColorPalette.white,
+            height: 100,
+          },
+          headerTitleAlign: "center",
+          headerTintColor: ColorPalette.mainBlue,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            marginHorizontal: 20,
+            fontSize: 25,
+          },
+          title: "Add Contact"
+        }
+      }
       />
     </Navigator>
   );
@@ -154,4 +176,10 @@ const styles = StyleSheet.create({
   headerTitleStyle: {
     color: "#eee",
   },
+  add: {
+    height: 25,
+    width: 25,
+    marginHorizontal: 30,
+  }
 });
+

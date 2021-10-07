@@ -1,6 +1,6 @@
 import Input from "./input";
 import Button from "./button";
-import HeadingCurve from "./headerCurve";
+import HeadingCurve from "./MainHeader";
 import Header from "./header";
 import AuthError from "./authErrors";
 import ContactsList from "./Contacts/ContactList";
