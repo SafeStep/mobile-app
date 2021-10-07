@@ -1,7 +1,11 @@
 import React, {FC} from "react";
+<<<<<<< HEAD
 import {Text, Image, StyleSheet} from "react-native";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+=======
+import {Image, StyleSheet} from "react-native";
+>>>>>>> 4f6f2dd37cd27ac0db3483fd3df87ae3eb190c25
 import {createStackNavigator} from "@react-navigation/stack";
 import {
   MapScreen,
@@ -14,6 +18,10 @@ import {
 } from "../screens/index";
 import AddContactScreen from "../screens/AddContactScreen";
 import Images from "../assets/images"
+<<<<<<< HEAD
+=======
+import Styles from "@mapbox/mapbox-sdk/services/styles";
+>>>>>>> 4f6f2dd37cd27ac0db3483fd3df87ae3eb190c25
 import ColorPalette from "../constants/ColorPalette";
 const {Navigator, Screen} = createStackNavigator();
 const Tab = createBottomTabNavigator();
