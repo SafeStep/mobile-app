@@ -1,7 +1,7 @@
 import Styles from "@mapbox/mapbox-sdk/services/styles";
 import React, {FC, useState} from "react";
 import {View, StyleSheet, Text, Dimensions} from "react-native";
-import { Input } from "../components";
+import {Input} from "../components";
 import ColorPalette from "../constants/ColorPalette";
 const {height, width} = Dimensions.get("screen");
 
@@ -12,8 +12,16 @@ const App: FC = ({navigation, route}: any) => {
   return (
     <View style={styles.container}>
       <View style={styles.form}>
-        <Input label="EC Email" placeholder="Email" onChangeText={(text) => changeEcEmail(text)}/>
-        <Input label="EC Name" placeholder="Name" onChangeText={(text) => changeECName(text)}/>
+        <Input
+          label="EC Email"
+          placeholder="Email"
+          onChangeText={text => changeEcEmail(text)}
+        />
+        <Input
+          label="EC Name"
+          placeholder="Name"
+          onChangeText={text => changeECName(text)}
+        />
       </View>
 
       <Text style={styles.info}>
@@ -29,7 +37,7 @@ const App: FC = ({navigation, route}: any) => {
 export default App;
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     // marginVertical: 20,
     alignItems: "center",
     backgroundColor: ColorPalette.white,
@@ -37,11 +45,11 @@ const styles = StyleSheet.create({
   },
   form: {
     height: 200,
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   info: {
-    width: width*0.8,
+    width: width * 0.8,
     fontSize: 15,
     marginVertical: 10,
-  }
-})
+  },
+});

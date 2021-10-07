@@ -2,7 +2,7 @@ import {TouchableOpacity} from "react-native-gesture-handler";
 import React, {FC, useState, useEffect, useCallback} from "react";
 import {View, Text, StyleSheet, Alert} from "react-native";
 import {EC} from "../../types";
-import ColorPalette from '../../constants/ColorPalette'
+import ColorPalette from "../../constants/ColorPalette";
 interface contactProps {
   contact: EC;
   removeContactCallback: CallableFunction;
@@ -19,23 +19,26 @@ export const ContactListElement: FC<contactProps> = (props): JSX.Element => {
         <Text>{props.contact.phone}</Text>
       </View>
       <View style={styles.info}>
-          {
-            props.contact.responsibilities[0].status == "accepted"
-              ? <Text style={styles.accepted}>{props.contact.responsibilities[0].status}</Text>
-              : <Text style={styles.pending}>{props.contact.responsibilities[0].status}</Text>
-          }
-          <TouchableOpacity
-            onPress={() => {
-              showDeleteAlert(props.contact) // ask the user for confirmation
-                .then(() => {
-                  props.removeContactCallback(props.contact);
-                }) // remove the contact
-                .catch(); // the user does not want to delete the contact
-            }}>
-            <Text style={styles.delete}>Delete</Text>
-          </TouchableOpacity>
-      </View >
-        
+        {props.contact.responsibilities[0].status == "accepted" ? (
+          <Text style={styles.accepted}>
+            {props.contact.responsibilities[0].status}
+          </Text>
+        ) : (
+          <Text style={styles.pending}>
+            {props.contact.responsibilities[0].status}
+          </Text>
+        )}
+        <TouchableOpacity
+          onPress={() => {
+            showDeleteAlert(props.contact) // ask the user for confirmation
+              .then(() => {
+                props.removeContactCallback(props.contact);
+              }) // remove the contact
+              .catch(); // the user does not want to delete the contact
+          }}>
+          <Text style={styles.delete}>Delete</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   ); // safe to use first responsibility because it should be the only responsibility (as shouldnt be able to see other responsibilities of EC)
 };
@@ -96,12 +99,11 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 25,
-    fontWeight: "bold"
-
+    fontWeight: "bold",
   },
   info: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   accepted: {
     width: 70,
@@ -114,12 +116,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     backgroundColor: ColorPalette.pendingYellow,
     borderRadius: 5,
-
   },
   delete: {
     width: 70,
     textAlign: "center",
     backgroundColor: ColorPalette.deleteRed,
     borderRadius: 5,
-  }
+  },
 });

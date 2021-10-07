@@ -13,7 +13,7 @@ import {
   Settings,
 } from "../screens/index";
 import AddContactScreen from "../screens/AddContactScreen";
-import Images from "../assets/images"
+import Images from "../assets/images";
 import ColorPalette from "../constants/ColorPalette";
 const {Navigator, Screen} = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -39,7 +39,7 @@ const Home = () => {
           tabBarShowLabel: false,
           headerStyle: styles.headerStyle,
           headerTitleStyle: styles.headerTitleStyle,
-          tabBarIcon: ({focused} : any) => (
+          tabBarIcon: ({focused}: any) => (
             <Image
               style={{
                 height: 25,
@@ -56,7 +56,7 @@ const Home = () => {
       <Tab.Screen
         name="Contact"
         component={Contacts}
-        options={({navigation} : any) => ({
+        options={({navigation}: any) => ({
           headerShown: true,
           headerStyle: {
             backgroundColor: ColorPalette.white,
@@ -65,18 +65,19 @@ const Home = () => {
           headerTitleAlign: "center",
           headerTintColor: ColorPalette.mainBlue,
           headerTitleStyle: {
-            fontWeight: 'bold',
+            fontWeight: "bold",
             marginHorizontal: 20,
             fontSize: 25,
           },
           title: "Contacts",
           headerRight: () => (
-            <TouchableOpacity onPress={() => navigation.navigate("add_contact")}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("add_contact")}>
               <Image style={styles.add} source={Images.addContact} />
             </TouchableOpacity>
           ),
           tabBarShowLabel: false,
-          tabBarIcon: ({focused} : any) => (
+          tabBarIcon: ({focused}: any) => (
             <Image
               style={{
                 height: 25,
@@ -97,7 +98,7 @@ const Home = () => {
           tabBarShowLabel: false,
           headerStyle: styles.headerStyle,
           headerTitleStyle: styles.headerTitleStyle,
-          tabBarIcon: ({focused} : any) => (
+          tabBarIcon: ({focused}: any) => (
             <Image
               style={{
                 height: 25,
@@ -118,7 +119,7 @@ const Home = () => {
           tabBarShowLabel: false,
           headerStyle: styles.headerStyle,
           headerTitleStyle: styles.headerTitleStyle,
-          tabBarIcon: ({focused} : any) => (
+          tabBarIcon: ({focused}: any) => (
             <Image
               style={{
                 height: 25,
@@ -145,8 +146,10 @@ const AppStack: FC = () => {
       <Screen name="location_search" component={LocationSearchScreen} />
 
       {/* <Screen name="contacts" component={Contacts} options={contactsOptions} />  */}
-      <Screen name="add_contact" component={AddContactScreen} options={
-        { 
+      <Screen
+        name="add_contact"
+        component={AddContactScreen}
+        options={{
           headerShown: true,
           headerStyle: {
             backgroundColor: ColorPalette.white,
@@ -155,13 +158,12 @@ const AppStack: FC = () => {
           headerTitleAlign: "center",
           headerTintColor: ColorPalette.mainBlue,
           headerTitleStyle: {
-            fontWeight: 'bold',
+            fontWeight: "bold",
             marginHorizontal: 20,
             fontSize: 25,
           },
-          title: "Add Contact"
-        }
-      }
+          title: "Add Contact",
+        }}
       />
     </Navigator>
   );
@@ -180,6 +182,5 @@ const styles = StyleSheet.create({
     height: 25,
     width: 25,
     marginHorizontal: 30,
-  }
+  },
 });
-
