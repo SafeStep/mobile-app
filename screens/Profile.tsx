@@ -1,8 +1,8 @@
 import React, {FC, useState, useEffect} from 'react';
-import { SafeAreaView, Text, StyleSheet, TouchableOpacity, Image, Alert} from 'react-native';
+import { SafeAreaView, Text, StyleSheet, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
 import {Input, Button, Header, AuthError, DisplayProfile} from '../components'
 import { Auth } from 'aws-amplify';
-
+import ColorPalette from '../constants/ColorPalette';
 const App : FC = ({ navigation, route } : any ) => {
 
     const [loading, updateLoading] = useState(true);
@@ -24,10 +24,12 @@ const App : FC = ({ navigation, route } : any ) => {
     
     return (
 
-        <SafeAreaView style={{}}>
-            <Header title="Profile" onBackPress={navigation.navigate("map")}/>
+        <SafeAreaView style={styles.container}>
 
-            {loading ? <Text>{"loader go vroom"}</Text> : <DisplayProfile title='Profile' attributes={userAttributes} />}
+            { loading 
+            ? <ActivityIndicator size="large" color={ColorPalette.mainBlue} />
+            : <DisplayProfile title='Profile' attributes={userAttributes} />
+            }
         
             <Button title="Attr" onPress={updateProfile} />
 
@@ -41,8 +43,6 @@ export default App;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: '40%'
+        backgroundColor: ColorPalette.white
     },
 })

@@ -13,13 +13,8 @@ interface Props {
 const DisplayProfile : FC<Props> = (props) => {
     return (
         <View style={styles.container}> 
-            <View style={styles.attributes}> 
-                <Text style={styles.text}> {props.attributes.email} </Text>
-                <Text style={styles.text}> phone </Text>
-
-            </View>
-            
-
+            <Text style={styles.text}> {props.attributes.email} </Text>
+            <Text style={styles.text}> phone </Text>
         </View>
     )
 }
@@ -28,24 +23,14 @@ export default DisplayProfile;
 
 const styles = StyleSheet.create({
     container: {
-        top: 0, 
         width: width,
         height: height * 0.3,
         // justifyContent: 'center',
-        alignSelf: 'flex-end',
+        // alignSelf: 'flex-end',
         // backgroundColor: '#fff',
-        // overflow: 'hidden'
-    },
-    attributes: {
-        width: width,
-        height: width,
-        // alignSelf: 'center',
-        marginTop: 20,
-        backgroundColor: "white",
     },
     text: {
         width: width,
-        height: '100%',
         textAlignVertical: 'center',
 
         // textAlign: 'center',

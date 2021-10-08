@@ -95,9 +95,21 @@ const Home = () => {
         name="Profile"
         component={Profile}
         options={() => ({
+          title: "Profile",
+
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: ColorPalette.white,
+            height: 100,
+          },
+          headerTitleAlign: "center",
+          headerTintColor: ColorPalette.mainBlue,
+          headerTitleStyle: {
+            fontWeight: "bold",
+            marginHorizontal: 20,
+            fontSize: 25,
+          },
           tabBarShowLabel: false,
-          headerStyle: styles.headerStyle,
-          headerTitleStyle: styles.headerTitleStyle,
           tabBarIcon: ({focused}: any) => (
             <Image
               style={{
