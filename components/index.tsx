@@ -20,5 +20,5 @@ export {
   DestinationSearch,
   RoundButton,
   OnRouteMap,
-  DisplayProfile
+  DisplayProfile,
 };

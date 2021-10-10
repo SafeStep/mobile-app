@@ -12,6 +12,7 @@ import ResetPasswordConfirm from "./ResetPasswordConfirm";
 import OnRouteScreen from "./OnRouteScreen";
 import Profile from "./Profile";
 import Settings from "./Settings";
+import TempHome from "./temphome";
 
 export {
   SignUp,
@@ -28,4 +29,5 @@ export {
   OnRouteScreen,
   Profile,
   Settings,
+  TempHome,
 };

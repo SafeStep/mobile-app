@@ -4,7 +4,7 @@ import {View, Text, StyleSheet} from "react-native";
 const App: FC = () => {
   return (
     <View style={styles.container}>
-      <Text> home page 2</Text>
+      <Text> Coming Soon </Text>
     </View>
   );
 };

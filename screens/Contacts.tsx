@@ -51,13 +51,14 @@ const App: FC = ({navigation}: any) => {
 
   return (
     <SafeAreaView style={{backgroundColor: ColorPalette.white, height: height}}>
-      { loading 
-      ? <ActivityIndicator size="large" color={ColorPalette.mainBlue} />
-      : <ContactsList
+      {loading ? (
+        <ActivityIndicator size="large" color={ColorPalette.mainBlue} />
+      ) : (
+        <ContactsList
           contacts={loadedContacts}
           removeContactCallback={removeContact}
         />
-      }
+      )}
     </SafeAreaView>
   );
 };
