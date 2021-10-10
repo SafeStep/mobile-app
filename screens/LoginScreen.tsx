@@ -23,17 +23,17 @@ const App: FC = ({route, navigation}: any) => {
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const Login = async () => {
-      if (email && password) {
-        Auth.signIn(email!, password!)
-        .then((user) => console.log(user))
-        .catch((err) => {
+    if (email && password) {
+      Auth.signIn(email!, password!)
+        .then(user => console.log(user))
+        .catch(err => {
           if (err.name == "UserNotConfirmedException") {
             navigation.navigate("confirm_code", {username: email});
           } else {
-            setErrorMessage(err.message)
+            setErrorMessage(err.message);
           }
         });
-      }
+    }
   };
 
   const FederatedLogin = async () => {
