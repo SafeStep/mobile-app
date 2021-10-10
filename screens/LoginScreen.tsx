@@ -23,17 +23,16 @@ const App: FC = ({route, navigation}: any) => {
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const Login = async () => {
-    try {
-      if (!email || !password) {
-        return;
-      }
-      const user = await Auth.signIn(email!, password!);
-      // route.params.updateUser(true)
-
-      console.log(user);
-    } catch (err: any) {
-      console.log("error signing in", err);
-      setErrorMessage(err.message);
+    if (email && password) {
+      Auth.signIn(email!, password!)
+        .then(user => console.log(user))
+        .catch(err => {
+          if (err.name == "UserNotConfirmedException") {
+            navigation.navigate("confirm_code", {username: email});
+          } else {
+            setErrorMessage(err.message);
+          }
+        });
     }
   };
 
