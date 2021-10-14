@@ -1,5 +1,5 @@
 import React, {FC, useState, useEffect, useCallback} from "react";
-import {View, Text, TouchableOpacity} from "react-native";
+import {View, Text, TouchableOpacity ,StyleSheet} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 // @ts-ignore
 import mbxClient from "@mapbox/mapbox-sdk";
@@ -18,10 +18,8 @@ const MAPBOX_KEY = config.mapbox_key;
 const baseClient = mbxClient({accessToken: MAPBOX_KEY});
 const directionsClient = mbxDirections(baseClient);
 
-let styles = require("./styles");
-
-styles = {
-  ...styles,
+const styles = StyleSheet.create(
+{
   mapContainer: {
     flex: 1,
     flexDirection: "column",
@@ -85,9 +83,8 @@ styles = {
   goButtonText: {
     fontSize: 18,
     alignSelf: "center",
-  },
-};
-
+  }
+})
 interface coordinatesObject {
   coordinates: number[];
 }
