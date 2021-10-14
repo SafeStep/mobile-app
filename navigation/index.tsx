@@ -86,9 +86,8 @@ const MainNav: FC = () => {
   } else {
     return (
       <NavigationContainer>
-        {signedIn ? <AppStack /> : <AppStack />}
+        {signedIn ? <AppStack /> : <AuthStack />}
 
-        {/* {signedIn ? <AppStack /> : <AuthStack />} */}
       </NavigationContainer>
     );
   }
