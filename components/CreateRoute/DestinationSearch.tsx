@@ -1,61 +1,14 @@
 import React from "react";
-import {View, Button, Text, TouchableOpacity} from "react-native";
+import {View, Button, Text, TouchableOpacity, StyleSheet} from "react-native";
 import DraggableFlatList, {
   RenderItemParams,
 } from "react-native-draggable-flatlist";
+import ColorPalette from "../../constants/ColorPalette";
 import "react-native-get-random-values";
 import {PhysicalLocation} from "../../types";
 // @ts-ignore
 import {v4 as uuidv4} from "uuid";
 import {max_waypoints as MAX_WAYPOINTS} from "../../configuration.json";
-import {makeQuerablePromise} from "@aws-amplify/core";
-
-const styles = {
-  destinationInputContainer: {
-    width: "90%",
-    height: 50,
-
-    backgroundColor: "#fff",
-    borderRadius: 10,
-
-    marginBottom: "2.5%",
-    marginHorizontal: "5%",
-
-    // IOS
-    shadowColor: "#000",
-    shadowOffset: {width: 1, height: 4},
-    shadowOpacity: 0.5,
-    shadowRadius: 1,
-    elevation: 3,
-    position: "relative",
-    flexDirection: "row",
-  },
-  destinationInput: {
-    paddingLeft: 10,
-    paddingTop: 0,
-    flexDirection: "column",
-    justifyContent: "center",
-    height: "90%",
-  },
-
-  destinationInputWrapper: {
-    flexDirection: "column",
-    justifyContent: "center",
-    flex: 1,
-    marginRight: 10,
-    height: "100%",
-  },
-
-  dragWrapper: {
-    justifyContent: "center",
-    height: "90%",
-  },
-
-  deleteWrapper: {
-    justifyContent: "center",
-    height: "90%",
-  },
-};
 
 interface destinationInputProps {
   id?: string;
@@ -64,7 +17,10 @@ interface destinationInputProps {
   deleteCallback: Function;
   navigation: any;
   waypoint: WaypointWithAmount;
+  index: number;
 }
+const letters = ["A", "B", "C", "D", "E"]
+
 
 const DestinationInput = ({
   dragCallback,
@@ -73,11 +29,18 @@ const DestinationInput = ({
   updateCallback,
   deleteCallback,
   waypoint,
+  index
 }: destinationInputProps) => {
   console.log(waypoint);
+
   return (
-    <View style={styles.destinationInputContainer as any}>
-      <View style={styles.destinationInputWrapper as any}>
+    <View style={styles.destinationInputContainer}>
+      { waypoint.amountOfWaypoints > 1 ? (
+      <Text style={styles.destinationInputLabel}>{letters[index]}:</Text>
+      
+      ) : null }
+      <View style={[waypoint.amountOfWaypoints > 1 ? styles.destinationInputWrapperSmall : styles.destinationInputWrapperFull]}>
+
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("location_search", {
@@ -85,7 +48,8 @@ const DestinationInput = ({
               updateCallback: updateCallback,
             });
           }}>
-          <View style={styles.destinationInput as any}>
+            
+          <View style={styles.destinationInput}>
             <Text style={{width: "100%"}}>
               {waypoint.point ? waypoint.point.title : "Search"}
             </Text>
@@ -96,15 +60,15 @@ const DestinationInput = ({
         <>
           <TouchableOpacity
             onLongPress={dragCallback}
-            style={styles.dragWrapper as any}>
-            <Text>Drag</Text>
+            style={styles.dragWrapper}>
+            <Text>☰</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               deleteCallback(waypoint.id);
             }}
-            style={styles.deleteWrapper as any}>
-            <Text>Delete</Text>
+            style={styles.deleteWrapper}>
+            <Text>✖</Text>
           </TouchableOpacity>
         </>
       ) : null}
@@ -152,6 +116,7 @@ export const DestinationSearch = ({
     return (
       <DestinationInput
         waypoint={item}
+        index={index as number}
         updateCallback={updateSingleValue}
         deleteCallback={waypointDeleteCallback}
         id={item.id}
@@ -176,18 +141,20 @@ export const DestinationSearch = ({
   return (
     // set preferable heights in second view
     <View>
-      <View style={{flexDirection: "row", minHeight: 50, maxHeight: 150}}>
+      <View style={styles.dragBox}>
         <DraggableFlatList
           data={waypointsWithAmounts as WaypointWithAmount[]}
           keyExtractor={(item, index) => item.id}
           renderItem={renderItem}
           onDragEnd={({data}) => {
+            console.log("THIS IS THE DATA",data)
             waypointUpdateCallback(data);
           }}
         />
       </View>
       <Button
         title={"Add"}
+        color={ColorPalette.mainBlue}
         disabled={waypoints.length >= MAX_WAYPOINTS}
         onPress={addDestination}></Button>
     </View>
@@ -195,3 +162,51 @@ export const DestinationSearch = ({
 };
 
 export default DestinationSearch;
+
+
+const styles = StyleSheet.create({
+  dragBox: {
+    flexDirection: "row", 
+    minHeight: 50, 
+    maxHeight: 150, 
+    paddingTop: 10
+  },
+  destinationInputContainer: {
+    width: "95%",
+    height: 45,
+    marginBottom: 10,
+    marginLeft: "2.5%",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-around",
+
+  },
+  destinationInputWrapperSmall: {
+    width: "75%"
+  },
+  destinationInputWrapperFull: {
+    width: "90%"
+  },
+  destinationInput: {
+    width: "100%",
+    height: "100%",
+    paddingLeft: 10,
+    paddingTop: 0,
+    justifyContent: "center",
+    borderWidth: 0.5,
+    borderRadius: 10,
+    backgroundColor: ColorPalette.white
+
+  },
+  destinationInputLabel: {
+    fontSize: 16,
+    fontWeight: "bold",
+    justifyContent: "center",
+  },  
+  dragWrapper: {
+
+  },
+  deleteWrapper: {
+
+  },
+});
