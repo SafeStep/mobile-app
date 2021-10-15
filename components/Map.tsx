@@ -38,8 +38,8 @@ export const Map = ({path, markers, adhocMarkerUpdate}: mapProps) => {
       style={styles.map}
       onLongPress={feature => {
         adhocMarkerUpdate(
-          feature.geometry.coordinates[1],
-          feature.geometry.coordinates[0],
+          (feature.geometry as GeoJSON.Point).coordinates[1],
+          (feature.geometry as GeoJSON.Point).coordinates[0],
         );
       }}>
       <MapboxGL.Camera followUserLocation={true} />
