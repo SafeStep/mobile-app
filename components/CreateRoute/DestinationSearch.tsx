@@ -19,8 +19,7 @@ interface destinationInputProps {
   waypoint: WaypointWithAmount;
   index: number;
 }
-const letters = ["A", "B", "C", "D", "E"]
-
+const letters = ["A", "B", "C", "D", "E"];
 
 const DestinationInput = ({
   dragCallback,
@@ -29,18 +28,21 @@ const DestinationInput = ({
   updateCallback,
   deleteCallback,
   waypoint,
-  index
+  index,
 }: destinationInputProps) => {
   console.log(waypoint);
 
   return (
     <View style={styles.destinationInputContainer}>
-      { waypoint.amountOfWaypoints > 1 ? (
-      <Text style={styles.destinationInputLabel}>{letters[index]}:</Text>
-      
-      ) : null }
-      <View style={[waypoint.amountOfWaypoints > 1 ? styles.destinationInputWrapperSmall : styles.destinationInputWrapperFull]}>
-
+      {waypoint.amountOfWaypoints > 1 ? (
+        <Text style={styles.destinationInputLabel}>{letters[index]}:</Text>
+      ) : null}
+      <View
+        style={[
+          waypoint.amountOfWaypoints > 1
+            ? styles.destinationInputWrapperSmall
+            : styles.destinationInputWrapperFull,
+        ]}>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("location_search", {
@@ -48,7 +50,6 @@ const DestinationInput = ({
               updateCallback: updateCallback,
             });
           }}>
-            
           <View style={styles.destinationInput}>
             <Text style={{width: "100%"}}>
               {waypoint.point ? waypoint.point.title : "Search"}
@@ -147,7 +148,7 @@ export const DestinationSearch = ({
           keyExtractor={(item, index) => item.id}
           renderItem={renderItem}
           onDragEnd={({data}) => {
-            console.log("THIS IS THE DATA",data)
+            console.log("THIS IS THE DATA", data);
             waypointUpdateCallback(data);
           }}
         />
@@ -163,13 +164,12 @@ export const DestinationSearch = ({
 
 export default DestinationSearch;
 
-
 const styles = StyleSheet.create({
   dragBox: {
-    flexDirection: "row", 
-    minHeight: 50, 
-    maxHeight: 150, 
-    paddingTop: 10
+    flexDirection: "row",
+    minHeight: 50,
+    maxHeight: 150,
+    paddingTop: 10,
   },
   destinationInputContainer: {
     width: "95%",
@@ -179,13 +179,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-around",
-
   },
   destinationInputWrapperSmall: {
-    width: "75%"
+    width: "75%",
   },
   destinationInputWrapperFull: {
-    width: "95%"
+    width: "95%",
   },
   destinationInput: {
     width: "100%",
@@ -195,18 +194,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 0.5,
     borderRadius: 10,
-    backgroundColor: ColorPalette.white
-
+    backgroundColor: ColorPalette.white,
   },
   destinationInputLabel: {
     fontSize: 16,
     fontWeight: "bold",
     justifyContent: "center",
-  },  
-  dragWrapper: {
-
   },
-  deleteWrapper: {
-
-  },
+  dragWrapper: {},
+  deleteWrapper: {},
 });

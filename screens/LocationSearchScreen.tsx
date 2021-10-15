@@ -27,7 +27,7 @@ const axios = require("axios");
 
 const styles = StyleSheet.create({
   inputBox: {
-    flex:5,
+    flex: 5,
     marginVertical: 20,
     padding: 10,
     height: 50,
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "95%",
     alignItems: "center",
-    justifyContent: "flex-start"
+    justifyContent: "flex-start",
   },
 
   backButton: {
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
 
   result: {
-    flex:1,
+    flex: 1,
     borderRadius: 5,
     borderColor: ColorPalette.fontGrey,
     borderBottomWidth: 1,
@@ -69,15 +69,14 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
   },
-  resultItems:{
+  resultItems: {
     flexDirection: "row",
   },
   resultDistance: {
     padding: 5,
-    flex:1,
+    flex: 1,
     borderRightWidth: 1,
     borderRightColor: ColorPalette.fontGrey,
-
   },
   resultDistanceText: {
     fontWeight: "100",
@@ -86,11 +85,11 @@ const styles = StyleSheet.create({
   resultTitle: {
     flex: 5,
   },
-  resultTitleText:{
+  resultTitleText: {
     fontWeight: "bold",
     fontSize: 15,
     padding: 5,
-  }
+  },
 });
 
 interface locationResultInterface extends PhysicalLocation {
@@ -128,12 +127,12 @@ const LocationResult = ({
         clickCallback(inputId, {title: title, lat: lat, long: long});
       }}>
       <View style={styles.resultDistance}>
-        {distance ? <Text style={styles.resultDistanceText}>{distance + " mi"}</Text> : null}
-
+        {distance ? (
+          <Text style={styles.resultDistanceText}>{distance + " mi"}</Text>
+        ) : null}
       </View>
       <View style={styles.resultTitle}>
-       <Text style={styles.resultTitleText}>{title}</Text>
-
+        <Text style={styles.resultTitleText}>{title}</Text>
       </View>
     </TouchableOpacity>
   );

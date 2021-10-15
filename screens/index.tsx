@@ -27,5 +27,5 @@ export {
   ResetPasswordConfirm,
   OnRouteScreen,
   Profile,
-  Settings
+  Settings,
 };

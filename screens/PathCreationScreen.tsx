@@ -1,5 +1,5 @@
 import React, {FC, useState, useEffect, useCallback} from "react";
-import {View, Text, TouchableOpacity ,StyleSheet} from "react-native";
+import {View, Text, TouchableOpacity, StyleSheet} from "react-native";
 import ColorPalette from "../constants/ColorPalette";
 import {SafeAreaView} from "react-native-safe-area-context";
 // @ts-ignore
@@ -221,71 +221,70 @@ const App: FC = ({navigation, route}: any) => {
 
 export default App;
 
-const styles = StyleSheet.create(
-  {
-    mapContainer: {
-      flex: 1,
-      flexDirection: "column",
-      backgroundColor: ColorPalette.white,
-    },
-    map: {
-      width: "100%",
-      flex: 1,
-      backgroundColor: ColorPalette.fontGrey,
-    },
-    mapBottomNav: {
-      position: "absolute",
-      bottom: 30,
-      width: "100%",
-      height: "10%",
-      flexDirection: "row",
-      justifyContent: "space-evenly",
-      alignSelf: "center",
-    },
-    mapBottomNavButtons: {
-      width: 150,
-      height: 40,
-      backgroundColor: ColorPalette.white,
-  
-      borderRadius: 20,
-      shadowColor: ColorPalette.black,
-      shadowOffset: {width: 1, height: 4},
-      shadowOpacity: 0.5,
-      shadowRadius: 1,
-      elevation: 5,
-  
-      flexDirection: "column",
-      justifyContent: "center",
-    },
-    mapBottomNavText: {
-      alignSelf: "center",
-    },
-    mapTopNav: {
-      width: "100%",
-      backgroundColor: ColorPalette.white,
-    },
-    goButton: {
-      width: 150,
-      height: 40,
-      backgroundColor: ColorPalette.mainBlue,
-      borderRadius: 50,
-  
-      position: "absolute",
-      alignSelf: "center",
-      bottom: 50,
-      flexDirection: "column",
-      justifyContent: "center",
-  
-      // IOS
-      shadowColor: "#000",
-      shadowOffset: {width: 1, height: 4},
-      shadowOpacity: 0.5,
-      shadowRadius: 1,
-      elevation: 4,
-    },
-    goButtonText: {
-      fontSize: 18,
-      alignSelf: "center",
-      color: ColorPalette.white
-    }
-  })
+const styles = StyleSheet.create({
+  mapContainer: {
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: ColorPalette.white,
+  },
+  map: {
+    width: "100%",
+    flex: 1,
+    backgroundColor: ColorPalette.fontGrey,
+  },
+  mapBottomNav: {
+    position: "absolute",
+    bottom: 30,
+    width: "100%",
+    height: "10%",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignSelf: "center",
+  },
+  mapBottomNavButtons: {
+    width: 150,
+    height: 40,
+    backgroundColor: ColorPalette.white,
+
+    borderRadius: 20,
+    shadowColor: ColorPalette.black,
+    shadowOffset: {width: 1, height: 4},
+    shadowOpacity: 0.5,
+    shadowRadius: 1,
+    elevation: 5,
+
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  mapBottomNavText: {
+    alignSelf: "center",
+  },
+  mapTopNav: {
+    width: "100%",
+    backgroundColor: ColorPalette.white,
+  },
+  goButton: {
+    width: 150,
+    height: 40,
+    backgroundColor: ColorPalette.mainBlue,
+    borderRadius: 50,
+
+    position: "absolute",
+    alignSelf: "center",
+    bottom: 50,
+    flexDirection: "column",
+    justifyContent: "center",
+
+    // IOS
+    shadowColor: "#000",
+    shadowOffset: {width: 1, height: 4},
+    shadowOpacity: 0.5,
+    shadowRadius: 1,
+    elevation: 4,
+  },
+  goButtonText: {
+    fontSize: 18,
+    alignSelf: "center",
+    color: ColorPalette.white,
+  },
+});
