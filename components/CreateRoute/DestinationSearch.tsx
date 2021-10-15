@@ -19,7 +19,6 @@ interface destinationInputProps {
   waypoint: WaypointWithAmount;
   index: number;
 }
-const letters = ["A", "B", "C", "D", "E"];
 
 const DestinationInput = ({
   dragCallback,
@@ -35,7 +34,7 @@ const DestinationInput = ({
   return (
     <View style={styles.destinationInputContainer}>
       {waypoint.amountOfWaypoints > 1 ? (
-        <Text style={styles.destinationInputLabel}>{letters[index]}:</Text>
+        <Text style={styles.destinationInputLabel}>{String.fromCharCode(index + 65)}:</Text>
       ) : null}
       <View
         style={[
@@ -148,7 +147,6 @@ export const DestinationSearch = ({
           keyExtractor={(item, index) => item.id}
           renderItem={renderItem}
           onDragEnd={({data}) => {
-            console.log("THIS IS THE DATA", data);
             waypointUpdateCallback(data);
           }}
         />
