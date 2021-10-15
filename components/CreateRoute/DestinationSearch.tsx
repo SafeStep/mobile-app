@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     width: "75%"
   },
   destinationInputWrapperFull: {
-    width: "90%"
+    width: "95%"
   },
   destinationInput: {
     width: "100%",
