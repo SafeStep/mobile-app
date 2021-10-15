@@ -34,7 +34,9 @@ const DestinationInput = ({
   return (
     <View style={styles.destinationInputContainer}>
       {waypoint.amountOfWaypoints > 1 ? (
-        <Text style={styles.destinationInputLabel}>{String.fromCharCode(index + 65)}:</Text>
+        <Text style={styles.destinationInputLabel}>
+          {String.fromCharCode(index + 65)}:
+        </Text>
       ) : null}
       <View
         style={[
