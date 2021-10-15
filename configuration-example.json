@@ -1,5 +1,7 @@
 {
   "mapbox_key": "",
   "api_url": "api.safe-step.net",
-  "max_waypoints": 5
+  "max_waypoints": 5,
+  "add_responsibility_url": "https://sqs.eu-west-1.amazonaws.com/209523969378/add-responsibility-queue",
+  "aws_region": "eu-west-1"
 }

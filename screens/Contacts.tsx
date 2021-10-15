@@ -8,7 +8,7 @@ import {ContactsList} from "../components";
 
 import * as config from "../configuration.json";
 import ColorPalette from "../constants/ColorPalette";
-import { useIsFocused } from "@react-navigation/core";
+
 const {height, width} = Dimensions.get("screen");
 
 const API_URL = config.api_url;
@@ -17,11 +17,8 @@ const App: FC = ({navigation}: any) => {
   const [loading, updateLoading] = useState(true);
   const [loadedContacts, setLoadedContacts] = useState([] as EC[]);
 
-  const isFocused = useIsFocused();
-
   const removeContact = useCallback(
     contactToDelete => {
-      console.log(contactToDelete);
       const contactIndex = loadedContacts.findIndex(
         contact => contact.ECID === contactToDelete.ECID,
       ); // find the index of the user
@@ -35,29 +32,27 @@ const App: FC = ({navigation}: any) => {
     [loadedContacts], // recache this function whenever loadedContacts changes
   );
 
-  const getContacts = async() => {
+  const getContacts = async () => {
     try {
-      const authenticatedUserInfo = await Auth.currentUserInfo()
+      const authenticatedUserInfo = await Auth.currentUserInfo();
       const response = await fetch(
         API_URL +
           "/1.0/responsibilities?greenid=" +
           authenticatedUserInfo.attributes.sub,
         {method: "GET"},
-      )
-      setLoadedContacts(await response.json())
-    }
-    catch {
-      console.log("Failed to load contacts")
-    }
-    finally {
+      );
+      setLoadedContacts(await response.json());
+    } catch {
+      console.log("Failed to load contacts");
+    } finally {
       updateLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      updateLoading(true)
-      getContacts()
+    const unsubscribe = navigation.addListener("focus", () => {
+      updateLoading(true);
+      getContacts();
     });
 
     // Return the function to unsubscribe from the event so it gets removed on unmount

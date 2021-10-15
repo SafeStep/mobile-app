@@ -1,26 +1,32 @@
 import Styles from "@mapbox/mapbox-sdk/services/styles";
 import React, {FC, useState} from "react";
 import {View, StyleSheet, Text, Dimensions} from "react-native";
-import {Input} from "../components";
+import {Button, Input} from "../components";
+import AddResponsibilityQueue from "../logic/AddResponsibilityQueue";
+
 import ColorPalette from "../constants/ColorPalette";
 const {height, width} = Dimensions.get("screen");
 
 const App: FC = ({navigation, route}: any) => {
-  const [ecEmail, changeECEmail] = useState("");
-  const [ecName, changeECName] = useState("");
+  const [ecEmail, setEcEmail] = useState("");
+  const [ecName, setEcName] = useState("");
+
+  const createUser = async () => {
+    AddResponsibilityQueue.add(ecEmail, ecName);
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.form}>
         <Input
-          label="EC Email"
-          placeholder="Email"
-          onChangeText={text => changeECEmail(text)}
+          label="Contact Name"
+          placeholder="Name"
+          onChangeText={setEcName}
         />
         <Input
-          label="EC Name"
-          placeholder="Name"
-          onChangeText={text => changeECName(text)}
+          label="Contact Email"
+          placeholder="Email"
+          onChangeText={setEcEmail}
         />
       </View>
 
@@ -30,6 +36,7 @@ const App: FC = ({navigation, route}: any) => {
           They will receive an invitation to become one of your emergency contacts via email."
         }
       </Text>
+      <Button title="Create" onPress={createUser} />
     </View>
   );
 };
