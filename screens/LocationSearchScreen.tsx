@@ -9,6 +9,7 @@ import {
   Image,
   KeyboardAvoidingView,
 } from "react-native";
+import Images from "../assets/images";
 import {ScrollView} from "react-native-gesture-handler";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {Header} from "../components";
@@ -18,60 +19,78 @@ import {UserGeolocationService} from "../logic/UserGeolocationService";
 import {Point} from "../logic/GeographicLogic";
 
 import * as config from "../configuration.json";
+import ColorPalette from "../constants/ColorPalette";
 
 const MAPBOX_KEY = config.mapbox_key;
 const METER_TO_MILE = 0.000621371192;
 const axios = require("axios");
 
-const styles = {
+const styles = StyleSheet.create({
   inputBox: {
-    margin: 10,
+    flex: 5,
+    marginVertical: 20,
     padding: 10,
     height: 50,
     borderRadius: 5,
-    backgroundColor: "white",
-    elevation: 5,
-
-    //IOS Shadow
-    shadowColor: "#000",
-    shadowOffset: {width: 1, height: 4},
-    shadowOpacity: 0.5,
-    shadowRadius: 1,
-    flex: 1,
+    backgroundColor: ColorPalette.white,
+    borderWidth: 0.5,
   },
-
   searchContainer: {
     flexDirection: "row",
-    width: "100%",
+    width: "95%",
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
 
   backButton: {
-    flexDirection: "column",
-    justifyContent: "center",
-    width: 50,
+    marginLeft: 15,
+    flex: 1,
   },
-
+  backArrow: {
+    fontSize: 50,
+    paddingTop: 0,
+    tintColor: ColorPalette.black,
+  },
   resultsContainer: {
-    width: "95%",
+    width: "90%",
     height: 500,
     alignSelf: "center",
-    borderTopWidth: 2,
-    borderColor: "grey",
-    padding: 10,
+    borderTopWidth: 1,
+    borderColor: ColorPalette.fontGrey,
   },
 
   result: {
-    width: "100%",
+    flex: 1,
     borderRadius: 5,
-    borderColor: "#C4C4C4",
-    borderWidth: 2,
-    height: 50,
-    padding: 10,
-    marginVertical: 5,
+    borderColor: ColorPalette.fontGrey,
+    borderBottomWidth: 1,
+    height: 60,
+    padding: 15,
     flexDirection: "column",
     justifyContent: "center",
   },
-};
+  resultItems: {
+    flexDirection: "row",
+  },
+  resultDistance: {
+    padding: 5,
+    flex: 1,
+    borderRightWidth: 1,
+    borderRightColor: ColorPalette.fontGrey,
+  },
+  resultDistanceText: {
+    fontWeight: "100",
+    fontSize: 13,
+  },
+  resultTitle: {
+    flex: 5,
+  },
+  resultTitleText: {
+    fontWeight: "bold",
+    fontSize: 15,
+    padding: 5,
+  },
+});
 
 interface locationResultInterface extends PhysicalLocation {
   navigation: any;
@@ -99,6 +118,7 @@ const LocationResult = ({
   }
   return (
     <TouchableOpacity
+      style={styles.resultItems}
       onPress={() => {
         navigation.navigate("map", {
           inputId: inputId,
@@ -106,8 +126,14 @@ const LocationResult = ({
         });
         clickCallback(inputId, {title: title, lat: lat, long: long});
       }}>
-      {distance ? <Text>{distance + " mi"}</Text> : null}
-      <Text>{title}</Text>
+      <View style={styles.resultDistance}>
+        {distance ? (
+          <Text style={styles.resultDistanceText}>{distance + " mi"}</Text>
+        ) : null}
+      </View>
+      <View style={styles.resultTitle}>
+        <Text style={styles.resultTitleText}>{title}</Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -175,14 +201,14 @@ const App: FC = ({route, navigation}: any) => {
   }, []);
 
   return (
-    <SafeAreaView style={{}}>
-      <View style={styles.searchContainer as any}>
+    <SafeAreaView style={{backgroundColor: ColorPalette.white}}>
+      <View style={styles.searchContainer}>
         <TouchableOpacity
-          style={styles.backButton as any}
+          style={styles.backButton}
           onPress={() => {
             navigation.navigate("map");
           }}>
-          <Text style={{alignSelf: "center"}}>{"<-"}</Text>
+          <Image style={styles.backArrow} source={Images.backIcon} />
         </TouchableOpacity>
         <TextInput
           ref={textInputRef}
@@ -190,12 +216,11 @@ const App: FC = ({route, navigation}: any) => {
           placeholder={"Search"}
           onChangeText={queryString => handleTypingTimeout(queryString)}
         />
-        <View style={styles.backButton as any}></View>
       </View>
       <KeyboardAvoidingView style={{}}>
-        <ScrollView style={styles.resultsContainer as any}>
+        <ScrollView style={styles.resultsContainer}>
           {results.map(location => (
-            <View style={styles.result as any} key={location.title}>
+            <View style={styles.result} key={location.title}>
               <LocationResult
                 clickCallback={route.params.updateCallback}
                 inputId={inputId}

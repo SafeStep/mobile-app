@@ -1,5 +1,6 @@
 import React, {FC, useState, useEffect, useCallback} from "react";
-import {View, Text, TouchableOpacity} from "react-native";
+import {View, Text, TouchableOpacity, StyleSheet} from "react-native";
+import ColorPalette from "../constants/ColorPalette";
 import {SafeAreaView} from "react-native-safe-area-context";
 // @ts-ignore
 import mbxClient from "@mapbox/mapbox-sdk";
@@ -17,77 +18,6 @@ const MAPBOX_KEY = config.mapbox_key;
 
 const baseClient = mbxClient({accessToken: MAPBOX_KEY});
 const directionsClient = mbxDirections(baseClient);
-
-let styles = require("./styles");
-
-styles = {
-  ...styles,
-  mapContainer: {
-    flex: 1,
-    flexDirection: "column",
-    backgroundColor: "white",
-  },
-  map: {
-    width: "100%",
-    flex: 1,
-    backgroundColor: "#eee",
-  },
-  mapBottomNav: {
-    position: "absolute",
-    bottom: 30,
-    width: "100%",
-    height: "10%",
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignSelf: "center",
-  },
-  mapBottomNavButtons: {
-    width: 150,
-    height: 40,
-    backgroundColor: "#fff",
-
-    borderRadius: 20,
-    shadowColor: "#000",
-    shadowOffset: {width: 1, height: 4},
-    shadowOpacity: 0.5,
-    shadowRadius: 1,
-    elevation: 5,
-
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-  mapBottomNavText: {
-    alignSelf: "center",
-  },
-  mapTopNav: {
-    width: "100%",
-    backgroundColor: "#fff",
-  },
-  goButton: {
-    width: 150,
-    height: 40,
-    backgroundColor: "#90E4FF",
-    borderRadius: 50,
-
-    position: "absolute",
-    alignSelf: "center",
-    bottom: 120,
-    flexDirection: "column",
-    justifyContent: "center",
-
-    // IOS
-    shadowColor: "#000",
-    shadowOffset: {width: 1, height: 4},
-    shadowOpacity: 0.5,
-    shadowRadius: 1,
-    elevation: 4,
-  },
-  goButtonText: {
-    fontSize: 18,
-    alignSelf: "center",
-  },
-};
-
 interface coordinatesObject {
   coordinates: number[];
 }
@@ -164,10 +94,6 @@ const App: FC = ({navigation, route}: any) => {
 
     // get the users current location and add it to the start of the list then generate the path and set it as the path variable
   }, [markers]); // run whenever markers is updated
-
-  const LogOut = async () => {
-    await Auth.signOut().catch(err => console.log("Error Siging Out:", err));
-  };
 
   const markersUpdate = (positions: Waypoint[]) => {
     // called when destination search has modified the waypoints in some form
@@ -288,20 +214,77 @@ const App: FC = ({navigation, route}: any) => {
           }}>
           <Text style={styles.goButtonText}> Go </Text>
         </TouchableOpacity>
-
-        <View style={styles.mapBottomNav}>
-          <TouchableOpacity onPress={LogOut} style={styles.mapBottomNavButtons}>
-            <Text style={styles.mapBottomNavText}> Logout </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.mapBottomNavButtons}
-            onPress={() => navigation.navigate("contacts")}>
-            <Text style={styles.mapBottomNavText}> Contacts </Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </SafeAreaView>
   );
 };
 
 export default App;
+
+const styles = StyleSheet.create({
+  mapContainer: {
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: ColorPalette.white,
+  },
+  map: {
+    width: "100%",
+    flex: 1,
+    backgroundColor: ColorPalette.fontGrey,
+  },
+  mapBottomNav: {
+    position: "absolute",
+    bottom: 30,
+    width: "100%",
+    height: "10%",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignSelf: "center",
+  },
+  mapBottomNavButtons: {
+    width: 150,
+    height: 40,
+    backgroundColor: ColorPalette.white,
+
+    borderRadius: 20,
+    shadowColor: ColorPalette.black,
+    shadowOffset: {width: 1, height: 4},
+    shadowOpacity: 0.5,
+    shadowRadius: 1,
+    elevation: 5,
+
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  mapBottomNavText: {
+    alignSelf: "center",
+  },
+  mapTopNav: {
+    width: "100%",
+    backgroundColor: ColorPalette.white,
+  },
+  goButton: {
+    width: 150,
+    height: 40,
+    backgroundColor: ColorPalette.mainBlue,
+    borderRadius: 50,
+
+    position: "absolute",
+    alignSelf: "center",
+    bottom: 50,
+    flexDirection: "column",
+    justifyContent: "center",
+
+    // IOS
+    shadowColor: "#000",
+    shadowOffset: {width: 1, height: 4},
+    shadowOpacity: 0.5,
+    shadowRadius: 1,
+    elevation: 4,
+  },
+  goButtonText: {
+    fontSize: 18,
+    alignSelf: "center",
+    color: ColorPalette.white,
+  },
+});

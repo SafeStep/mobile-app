@@ -1,6 +1,6 @@
 import SignUp from "./SignUp";
 import Login from "./LoginScreen";
-import MapScreen from "./MapScreen";
+import MapScreen from "./PathCreationScreen";
 import Contacts from "./Contacts";
 import LocationSearchScreen from "./LocationSearchScreen";
 import ConfirmCode from "./ConfirmCode";
