@@ -8,6 +8,7 @@ import Map from "./Map";
 import DestinationSearch from "./CreateRoute/DestinationSearch";
 import RoundButton from "./RoundButton";
 import OnRouteMap from "./onRouteMap";
+import ValidationError from "./validationError";
 
 export {
   Input,
@@ -20,4 +21,5 @@ export {
   DestinationSearch,
   RoundButton,
   OnRouteMap,
+  ValidationError,
 };

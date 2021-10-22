@@ -3,16 +3,35 @@ import React, {FC, useState} from "react";
 import {View, StyleSheet, Text, Dimensions} from "react-native";
 import {Button, Input} from "../components";
 import AddResponsibilityQueue from "../logic/AddResponsibilityQueue";
+import {ValidationError} from "../components";
 
 import ColorPalette from "../constants/ColorPalette";
 const {height, width} = Dimensions.get("screen");
 
 const App: FC = ({navigation, route}: any) => {
-  const [ecEmail, setEcEmail] = useState("");
-  const [ecName, setEcName] = useState("");
+  enum FormInputs {
+    Name,
+    Email,
+  }
+
+  const [ecEmail, setEcEmail] = useState<string>("");
+  const [ecName, setEcName] = useState<string>("");
+  const [validationErrors, setValidationErrors] = useState<
+    Map<FormInputs, string>
+  >(new Map());
+
+  const validateInputs = (): boolean => {
+    let newValidationErrors = validationErrors
+    
+    setValidationErrors(newValidationErrors)
+
+    return false
+  };
 
   const createUser = async () => {
-    AddResponsibilityQueue.add(ecEmail, ecName);
+    const valid = validateInputs();
+
+    if (valid) AddResponsibilityQueue.add(ecEmail, ecName);
   };
 
   return (
@@ -23,11 +42,21 @@ const App: FC = ({navigation, route}: any) => {
           placeholder="Name"
           onChangeText={setEcName}
         />
+        {validationErrors.get(FormInputs.Name) != undefined ? (
+          <ValidationError
+            errMessage={validationErrors.get(FormInputs.Name) as string}
+          />
+        ) : null}
         <Input
           label="Contact Email"
           placeholder="Email"
           onChangeText={setEcEmail}
         />
+        {validationErrors.get(FormInputs.Email) != undefined ? (
+          <ValidationError
+            errMessage={validationErrors.get(FormInputs.Email) as string}
+          />
+        ) : null}
       </View>
 
       <Text style={styles.info}>

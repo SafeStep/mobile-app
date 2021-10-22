@@ -28,9 +28,9 @@ export default class AddResponsibilityQueue {
         MessageBody: JSON.stringify(message),
       };
 
-      const result = await sqs.sendMessage(params).promise()
+      const result = await sqs.sendMessage(params).promise();
 
-      console.log(result);  // output the result to the console
+      console.log(result); // output the result to the console
     } catch (e) {
       console.error(e);
       console.log("failed to add responsibility");
