@@ -2,13 +2,11 @@ import React, {FC} from "react";
 import {Dimensions, View, StyleSheet, Text} from "react-native";
 import {TextInput} from "react-native-gesture-handler";
 import ColorPalette from "../constants/ColorPalette";
+import {TextInputProps} from "react-native";
 const {height, width} = Dimensions.get("screen");
 
-interface Props {
+interface Props extends TextInputProps {
   label: string;
-  placeholder: string;
-  onChangeText: (text: string) => void;
-  secureTextEntry?: boolean;
 }
 
 const Input: FC<Props> = props => {
@@ -16,11 +14,9 @@ const Input: FC<Props> = props => {
     <View style={styles.container}>
       <Text style={styles.label}> {props.label} </Text>
       <TextInput
+        {...props} // pass all props contained in this object props
         style={styles.input}
         placeholderTextColor="#808080"
-        placeholder={props.placeholder}
-        onChangeText={props.onChangeText}
-        secureTextEntry={props.secureTextEntry || false}
       />
     </View>
   );

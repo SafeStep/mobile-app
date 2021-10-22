@@ -8,7 +8,8 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "strict": true,
-    "typeRoots": ["node_modules/@types", "./src/types"]
+    "typeRoots": ["node_modules/@types", "./src/types"],
+    "useUnknownInCatchVariables": false
   },
   "exclude": ["node_modules"]
 }

@@ -1,9 +1,14 @@
-import Styles from "@mapbox/mapbox-sdk/services/styles";
 import React, {FC, useState} from "react";
 import {View, StyleSheet, Text, Dimensions} from "react-native";
 import {Button, Input} from "../components";
 import AddResponsibilityQueue from "../logic/AddResponsibilityQueue";
 import {ValidationError} from "../components";
+
+import {
+  ec_email_regex as EC_EMAIL_REGEX,
+  invalid_ec_email_msg as INVALID_EC_EMAIL_MSG,
+  invalid_ec_name_msg as INVALID_EC_NAME_MSG,
+} from "../configuration.json"; // this should be modified to use dependancy injection
 
 import ColorPalette from "../constants/ColorPalette";
 const {height, width} = Dimensions.get("screen");
@@ -21,17 +26,35 @@ const App: FC = ({navigation, route}: any) => {
   >(new Map());
 
   const validateInputs = (): boolean => {
-    let newValidationErrors = validationErrors
-    
-    setValidationErrors(newValidationErrors)
+    let newValidationErrors = new Map(validationErrors);
+    let valid = true;
 
-    return false
+    if (ecName.replaceAll(" ", "").length == 0) {
+      valid = false;
+      newValidationErrors.set(FormInputs.Name, INVALID_EC_NAME_MSG);
+    } else {
+      newValidationErrors.delete(FormInputs.Name);
+    }
+
+    if (!ecEmail.match(EC_EMAIL_REGEX)) {
+      valid = false;
+      newValidationErrors.set(FormInputs.Email, INVALID_EC_EMAIL_MSG);
+    } else {
+      newValidationErrors.delete(FormInputs.Email);
+    }
+
+    setValidationErrors(newValidationErrors);
+    return valid;
   };
 
-  const createUser = async () => {
+  const createUser = () => {
     const valid = validateInputs();
-
-    if (valid) AddResponsibilityQueue.add(ecEmail, ecName);
+    if (valid) {
+      AddResponsibilityQueue.add(ecEmail, ecName);
+      alert("Contact Created");
+      setEcEmail(""); // reset values
+      setEcName("");
+    }
   };
 
   return (
@@ -40,7 +63,11 @@ const App: FC = ({navigation, route}: any) => {
         <Input
           label="Contact Name"
           placeholder="Name"
-          onChangeText={setEcName}
+          onChangeText={text => {
+            setEcName(text);
+            if (validationErrors.get(FormInputs.Name)) validateInputs(); // if the name was invalid check after every keystroke to remove the message
+          }}
+          value={ecName}
         />
         {validationErrors.get(FormInputs.Name) != undefined ? (
           <ValidationError
@@ -50,7 +77,11 @@ const App: FC = ({navigation, route}: any) => {
         <Input
           label="Contact Email"
           placeholder="Email"
-          onChangeText={setEcEmail}
+          onChangeText={text => {
+            setEcEmail(text);
+            if (validationErrors.get(FormInputs.Email)) validateInputs();
+          }}
+          value={ecEmail}
         />
         {validationErrors.get(FormInputs.Email) != undefined ? (
           <ValidationError
