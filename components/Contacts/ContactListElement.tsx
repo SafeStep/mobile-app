@@ -12,7 +12,7 @@ export const ContactListElement: FC<contactProps> = (props): JSX.Element => {
   return (
     <View style={styles.contactCcontainer}>
       <View>
-        <Text style={styles.name}>{props.contact.firstName}</Text>
+        <Text style={styles.name}>{props.contact.f_name}</Text>
       </View>
       <View style={styles.info}>
         <Text>{props.contact.email}</Text>
@@ -52,8 +52,8 @@ const deleteEC = (ECID: string): Promise<void> => {
 const showDeleteAlert = (EC: EC): Promise<void> => {
   return new Promise((resolve, reject) => {
     Alert.alert(
-      `Are you sure you want to remove ${EC.firstName}?`,
-      `This will remove ${EC.firstName} as an emergency contact for your account, and they will no longer be notified ` +
+      `Are you sure you want to remove ${EC.f_name}?`,
+      `This will remove ${EC.f_name} as an emergency contact for your account, and they will no longer be notified ` +
         `in the event of you leaving your generated route.`,
       [
         {

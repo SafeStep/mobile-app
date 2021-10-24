@@ -5,13 +5,11 @@ import {EC} from "../types";
 import Auth from "@aws-amplify/auth";
 
 import {ContactsList} from "../components";
+import GetEcsLambda from "../logic/GetEcsLambda";
 
-import * as config from "../configuration.json";
 import ColorPalette from "../constants/ColorPalette";
 
 const {height, width} = Dimensions.get("screen");
-
-const API_URL = config.api_url;
 
 const App: FC = ({navigation}: any) => {
   const [loading, updateLoading] = useState(true);
@@ -34,14 +32,14 @@ const App: FC = ({navigation}: any) => {
 
   const getContacts = async () => {
     try {
-      const authenticatedUserInfo = await Auth.currentUserInfo();
-      const response = await fetch(
-        API_URL +
-          "/1.0/responsibilities?greenid=" +
-          authenticatedUserInfo.attributes.sub,
-        {method: "GET"},
-      );
-      setLoadedContacts(await response.json());
+      const rawResponse = await GetEcsLambda.invoke();
+      const jsonResponse = JSON.parse(rawResponse!.Payload as string);
+
+      if (rawResponse!.StatusCode == 200) {
+        setLoadedContacts(jsonResponse.data);
+      } else {
+        alert("Failed to load emergency contacts");
+      }
     } catch {
       console.log("Failed to load contacts");
     } finally {
