@@ -36,10 +36,10 @@ const App: FC = ({route, navigation}: any) => {
     }
   };
 
-  const FederatedLogin = async () => {
+  const FederatedLogin = async (provider: CognitoHostedUIIdentityProvider) => {
     try {
       const user = await Auth.federatedSignIn({
-        provider: CognitoHostedUIIdentityProvider.Google,
+        provider: provider,
       });
       console.log("NewUser", user);
     } catch (err) {
