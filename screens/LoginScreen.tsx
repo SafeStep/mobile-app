@@ -16,7 +16,6 @@ import Images from "../assets/images";
 import {Auth} from "aws-amplify";
 
 const App: FC = ({route, navigation}: any) => {
-  // const [email, setEmail] = useState<string | null>(null)
   const [email, setEmail] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
 
@@ -36,10 +35,12 @@ const App: FC = ({route, navigation}: any) => {
     }
   };
 
-  const FederatedLogin = async () => {
-    Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Google})
-      .then(user => console.log("NewUser", user))
-      .catch(err => console.log(err));
+  const FederatedLogin = async (provider: CognitoHostedUIIdentityProvider) => {
+    if (provider) {
+      Auth.federatedSignIn({provider})
+        .then(user => console.log("NewUser", user))
+        .catch(err => console.log(err));
+    }
   };
 
   return (
@@ -77,11 +78,15 @@ const App: FC = ({route, navigation}: any) => {
         <View style={styles.alternatives}>
           <RoundButton
             icon={Images.login.googleIcon}
-            onPress={FederatedLogin}
+            onPress={() =>
+              FederatedLogin(CognitoHostedUIIdentityProvider.Google)
+            }
           />
           <RoundButton
             icon={Images.login.facebookIcon}
-            onPress={() => console.log("pressed")}
+            onPress={() =>
+              FederatedLogin(CognitoHostedUIIdentityProvider.Facebook)
+            }
           />
           <RoundButton
             icon={Images.login.appleIcon}
