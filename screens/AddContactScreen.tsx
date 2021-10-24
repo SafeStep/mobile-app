@@ -15,7 +15,7 @@ const App: FC = ({navigation, route}: any) => {
         <Input
           label="EC Email"
           placeholder="Email"
-          onChangeText={text => changeEcEmail(text)}
+          onChangeText={text => changeECEmail(text)}
         />
         <Input
           label="EC Name"
