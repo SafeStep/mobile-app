@@ -23,23 +23,27 @@ const App: FC = ({route, navigation}: any) => {
 
   const Login = async () => {
     if (email && password) {
-      Auth.signIn(email!, password!)
-        .then(user => console.log(user))
-        .catch(err => {
-          if (err.name == "UserNotConfirmedException") {
-            navigation.navigate("confirm_code", {username: email});
-          } else {
-            setErrorMessage(err.message);
-          }
-        });
+      try {
+        const user = await Auth.signIn(email!, password!);
+        console.log(user);
+      } catch (err) {
+        if (err.name == "UserNotConfirmedException") {
+          navigation.navigate("confirm_code", {username: email});
+        } else {
+          setErrorMessage(err.message);
+        }
+      }
     }
   };
 
   const FederatedLogin = async (provider: CognitoHostedUIIdentityProvider) => {
-    if (provider) {
-      Auth.federatedSignIn({provider})
-        .then(user => console.log("NewUser", user))
-        .catch(err => console.log(err));
+    try {
+      const user = await Auth.federatedSignIn({
+        provider: provider,
+      });
+      console.log("NewUser", user);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -51,17 +55,13 @@ const App: FC = ({route, navigation}: any) => {
           <RoundButton icon={Images.logo} onPress={() => console.log("logo")} />
         </View>
         <AuthError errMessage={errorMessage} />
-        <Input
-          label="E-mail"
-          placeholder="E-mail"
-          onChangeText={text => setEmail(text)}
-        />
+        <Input label="E-mail" placeholder="E-mail" onChangeText={setEmail} />
 
         <Input
           label="Password"
           placeholder="Password"
           secureTextEntry={true}
-          onChangeText={text => setPassword(text)}
+          onChangeText={setPassword}
         />
 
         <View style={styles.forgot}>

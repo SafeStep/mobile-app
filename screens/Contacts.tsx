@@ -8,6 +8,7 @@ import {ContactsList} from "../components";
 
 import * as config from "../configuration.json";
 import ColorPalette from "../constants/ColorPalette";
+
 const {height, width} = Dimensions.get("screen");
 
 const API_URL = config.api_url;
@@ -18,7 +19,6 @@ const App: FC = ({navigation}: any) => {
 
   const removeContact = useCallback(
     contactToDelete => {
-      console.log(contactToDelete);
       const contactIndex = loadedContacts.findIndex(
         contact => contact.ECID === contactToDelete.ECID,
       ); // find the index of the user
@@ -32,22 +32,32 @@ const App: FC = ({navigation}: any) => {
     [loadedContacts], // recache this function whenever loadedContacts changes
   );
 
+  const getContacts = async () => {
+    try {
+      const authenticatedUserInfo = await Auth.currentUserInfo();
+      const response = await fetch(
+        API_URL +
+          "/1.0/responsibilities?greenid=" +
+          authenticatedUserInfo.attributes.sub,
+        {method: "GET"},
+      );
+      setLoadedContacts(await response.json());
+    } catch {
+      console.log("Failed to load contacts");
+    } finally {
+      updateLoading(false);
+    }
+  };
+
   useEffect(() => {
-    Auth.currentAuthenticatedUser()
-      .then(currentlyLoggedInUser =>
-        fetch(
-          API_URL +
-            "/1.0/responsibilities?greenid=" +
-            currentlyLoggedInUser.attributes.sub,
-          {method: "GET"},
-        ),
-      ) // TODO some authentication will be required here
-      .then(response => response.json()) // parse the data into js object (is sync action)
-      .then(data => setLoadedContacts(data))
-      .catch(error => console.log("failed to load contacts" + error))
-      .finally(() => updateLoading(false)); // loading has finished
-    //setTimeout(() => {updateLoading(false)}, 1000)  // update loading as loading has completed after a second for testing
-  }, []);
+    const unsubscribe = navigation.addListener("focus", () => {
+      updateLoading(true);
+      getContacts();
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <SafeAreaView style={{backgroundColor: ColorPalette.white, height: height}}>
