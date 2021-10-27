@@ -30,7 +30,7 @@ export type responsibility = {
 
 export type EC = {
   ECID: string;
-  firstName: string;
+  f_name: string;
   email: string;
   phone: null | string;
   dialingCode: null | string;
