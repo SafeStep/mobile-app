@@ -625,7 +625,7 @@ SPEC CHECKSUMS:
   EXSplashScreen: 847e0d8026731c1090bf269ede3e15ac87d88958
   EXTaskManager: a56d88d245bdd4977b1a92943e8db5b8ed2a5c48
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: 656998309a4ffdafd2da4e478b4aa58a6dba22a9
+  FBReactNativeSpec: 9092fa45cf6f60683d28fa1c9dc0fec7bcad74fc
   Flipper: d3da1aa199aad94455ae725e9f3aa43f3ec17021
   Flipper-DoubleConversion: 38631e41ef4f9b12861c67d17cb5518d06badc41
   Flipper-Folly: 755929a4f851b2fb2c347d533a23f191b008554c
