@@ -9,13 +9,11 @@ export default class GetEcsLambda {
   public static async invoke() {
     try {
       const authenticatedUserInfo = await Auth.currentUserInfo();
-      config.credentials = await Auth.currentUserCredentials();
 
-      config.update({
+      const lambda = new Lambda({
         region: AWS_REGION,
+        credentials: await Auth.currentUserCredentials(),
       });
-
-      const lambda = new Lambda();
 
       const message = JSON.stringify({
         greenID: authenticatedUserInfo.attributes.sub,
