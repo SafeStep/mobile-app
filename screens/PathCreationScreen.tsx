@@ -13,6 +13,10 @@ import {v4 as uuidv4} from "uuid";
 import {max_waypoints as MAX_WAYPOINTS} from "../configuration.json";
 import {Point} from "../logic/GeographicLogic";
 import {Map, DestinationSearch} from "../components";
+import {
+  create_journey_lambda as CREATE_JOURNEY_LAMBDA,
+  aws_region as AWS_REGION,
+} from "../configuration.json";
 
 const MAPBOX_KEY = config.mapbox_key;
 
@@ -43,6 +47,8 @@ const getRoute = (wayPoints: coordinatesObject[]): Promise<number[][]> => {
 };
 
 import {Auth} from "aws-amplify";
+import {Lambda} from "aws-sdk";
+import CreateJourneyLambda from "../logic/CreateJourneyLambda";
 
 const App: FC = ({navigation, route}: any) => {
   const [path, setPath] = useState([] as number[][]);
@@ -176,15 +182,32 @@ const App: FC = ({navigation, route}: any) => {
     setMarkers(markersCopy);
   };
 
-  const startJourney = useCallback(() => {
+  const startJourney = useCallback(async () => {
     try {
       UserGeolocationService.instance.stopForegroundWatch(); // if throws an error something is really wrong
     } catch {
       console.log("Foreground watch not defined in foreground mode :(");
     }
+
+    let journeyId;
+
+    try {
+      const result = await CreateJourneyLambda.invoke(
+        path[0],
+        path[path.length - 1],
+        path,
+      );
+      journeyId = JSON.parse(result!.Payload!.toString()).journeyId;
+    } catch (err) {
+      console.error(err);
+      alert("Could not start journey... try again later");
+      return;
+    }
+
     UserGeolocationService.instance.startPathTracking(path);
     navigation.navigate("on_route", {
       path: path,
+      journeyId: journeyId,
     });
   }, [path]);
 

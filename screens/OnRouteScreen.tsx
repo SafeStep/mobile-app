@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React, {FC, useEffect} from "react";
 import {View, Text, TouchableOpacity} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {OnRouteMap} from "../components";
@@ -13,6 +13,10 @@ let styles = {
   },
 };
 const App: FC = ({route, navigation}: any) => {
+  useEffect(() => {
+    console.log(route.params.journeyId);
+  }, []);
+
   const endJourney = () => {
     navigation.navigate("map");
     try {
