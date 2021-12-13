@@ -39,8 +39,8 @@ const App: FC = ({navigation}: any) => {
           username,
           password,
           attributes: {
-            name
-          }
+            name,
+          },
         });
         console.log(user);
         navigation.navigate("confirm_code", {username: username});
