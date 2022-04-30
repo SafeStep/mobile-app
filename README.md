@@ -1,5 +1,7 @@
 # SafeStep Mobile App
 
+SafeStep was an app (no longer being developed) for users that felt uncomfortable making journeys on their own, they would enter their destination into the app, then SafeSteps would create a route for them, then if they were to walk too far off of the generated route, something was most likely wrong, and an SMS would be sent to the users emergency contacts with a link to track the user and come to their aid.
+
 ## Installation
 
 Ensure machine is setup for react-native  
