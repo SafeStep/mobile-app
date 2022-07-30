@@ -18,15 +18,17 @@ import {ResetPassword} from ".";
 
 const App: FC = ({navigation}: any) => {
   const [email, setEmail] = useState<string | null>(null);
+  const [name, setName] = useState<string | null>(null);
+
   const [password, setPassword] = useState<string | null>(null);
   const [passwordRepeat, setPasswordRepeat] = useState<string | null>(null);
 
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const signup = async () => {
-    if (!email || !password) {
+    if (!email || !password || !name) {
       console.log("error, unfilled inputs");
-      setErrorMessage("E-mail or Password cannot be empty");
+      setErrorMessage("Please ensure all fields are filled");
     } else if (password != passwordRepeat) {
       console.log("error, unmatching password");
       setErrorMessage("Password missmatch");
@@ -36,6 +38,9 @@ const App: FC = ({navigation}: any) => {
         const {user} = await Auth.signUp({
           username,
           password,
+          attributes: {
+            name,
+          },
         });
         console.log(user);
         navigation.navigate("confirm_code", {username: username});
@@ -69,6 +74,11 @@ const App: FC = ({navigation}: any) => {
           label="Email"
           placeholder="Email"
           onChangeText={text => setEmail(text)}
+        />
+        <Input
+          label="Name"
+          placeholder="Name"
+          onChangeText={text => setName(text)}
         />
         <Input
           label="Password"
@@ -108,6 +118,5 @@ const styles = StyleSheet.create({
   },
   logo: {
     marginTop: 30,
-    marginBottom: 5,
   },
 });
